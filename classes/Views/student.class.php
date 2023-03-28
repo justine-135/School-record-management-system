@@ -83,27 +83,101 @@ class StudentView extends \Models\Student{
 }
 
 class StudentInformationView extends \Models\Student{
-    public function initSingleIndex(){
+    public function initSingleIndex($id){
+        $result = $this->singleIndex($id);
         ?>
         <main class="container-fluid w-90 border mt-4 p-4 bg-white">
         <h4 class="">Profile</h4>
-        <div class="border mt-3">
-            <div>
-            <div class="d-flex justify-content-between align-items-center pt-3 px-3 border-bottom">
-                <h5>Enrolled</h5>
-                <form class="input-group mb-3 w-25" action="">
-                    <input type="text" class="form-control" placeholder="Enter here" />
-                    <button
-                    class="btn btn-primary"
-                    id="button-addon2"
-                    type="submit"
-                    >
-                    Search
-                    </button>
-                </form> 
+        <div class="row">
+            <div class="border mt-3 col-md-6">
+                <div class="row ">
+                    <div class="pt-3 px-3 border-bottom">
+                        <h5>Information</h5>
+                    </div>
+                    <div class="d-flex align-items-center border-bottom py-3">
+                        <div class="profile-div">
+                            <input class="profile-input" type="file" name="" id="">
+                            <img class="profile-round" src="./images/profile.png" alt="">
+                        </div>
+                        <div class="ms-3 py-1">
+                            <h2 class="text-end">UPANO, JUSTINE RAY CABANG</h2>
+                            <span class="d-block text-end">2919293929192</span>
+                            <span class="d-block text-end">Grade 4 - Rose</span>
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="py-2 px-3">
+                            <div class="d-flex align-items-center justify-content-between w-50">
+                                <span class="fw-bold">LRN</span>
+                                <span>Justine Upano</span>
+                            </div>
+                        </div>
+                        <div class="py-2 px-3">
+                            <div class="d-flex align-items-center justify-content-between w-50">
+                                <span class="fw-bold">Surname</span>
+                                <span>Justine Upano</span>
+                            </div>
+                        </div>
+                        <div class="py-2 px-3">
+                            <div class="d-flex align-items-center justify-content-between w-50">
+                                <span class="fw-bold">First name</span>
+                                <span>Justine Upano</span>
+                            </div>
+                        </div>
+                        <div class="py-2 px-3">
+                            <div class="d-flex align-items-center justify-content-between w-50">
+                                <span class="fw-bold">Middle name</span>
+                                <span>Justine Upano</span>
+                            </div>
+                        </div>
+                        <div class="py-2 px-3">
+                            <div class="d-flex align-items-center justify-content-between w-50">
+                                <span class="fw-bold">Gender</span>
+                                <span>Justine Upano</span>
+                            </div>
+                        </div>
+                        <div class="py-2 px-3">
+                            <div class="d-flex align-items-center justify-content-between w-50">
+                                <span class="fw-bold">Mother's name</span>
+                                <span>Justine Upano</span>
+                            </div>
+                        </div>
+                        <div class="py-2 px-3">
+                            <div class="d-flex align-items-center justify-content-between w-50">
+                                <span class="fw-bold">Father's name</span>
+                                <span>Justine Upano</span>
+                            </div>
+                        </div>
+                        <div class="py-2 px-3">
+                            <div class="d-flex align-items-center justify-content-between w-50">
+                                <span class="fw-bold">Guardian's name</span>
+                                <span>Justine Upano</span>
+                            </div>
+                        </div>
+                        <div class="py-2 px-3">
+                            <div class="d-flex align-items-center justify-content-between w-50">
+                                <span class="fw-bold">Current address</span>
+                                <span>Justine Upano</span>
+                            </div>
+                        </div>
+                        <div class="py-2 px-3">
+                            <div class="d-flex align-items-center justify-content-between w-50">
+                                <span class="fw-bold">Religion</span>
+                                <span>Justine Upano</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            </div>
-            <div class="table-responsive">
+            <div class="border mt-3 col-md-6">
+                <div class="row">
+                    <div class="d-flex justify-content-between align-items-center pt-3 px-3 border-bottom">
+                        <h5>Subjects</h5>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center pt-3 px-3">
+                        <h5>Enrolled History</h5>
+                    </div>
+                </div>
             </div>
         </div>
         </main>
