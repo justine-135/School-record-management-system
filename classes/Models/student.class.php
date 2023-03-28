@@ -53,4 +53,19 @@ class Student extends \Dbh{
         }
         $conn = null;
     }
+
+    protected function singleIndex($id){
+        try{
+            $sql = "SELECT * FROM students_table WHERE id = $id;";
+            $stmt = $this->connection()->prepare($sql);
+            $stmt->execute();
+    
+            $results = $stmt->fetchAll();
+            return $results;
+        }
+        catch(PDOException $e) {
+            echo "Error: " . $e->getMessage();
+        }
+        $conn = null;
+    }
 }
