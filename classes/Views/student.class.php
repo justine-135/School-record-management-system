@@ -84,7 +84,6 @@ class StudentView extends \Models\Student{
 
 class StudentInformationView extends \Models\Student{
     public function initSingleIndex($id){
-        $result = $this->singleIndex($id);
         ?>
         <main class="container-fluid w-90 border mt-4 p-4 bg-white">
         <h4 class="">Profile</h4>
