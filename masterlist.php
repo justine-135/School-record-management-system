@@ -1,6 +1,7 @@
 <?php include "partials/header.php"; ?>
 
 <?php $header = "/masterlist"; ?>
+<?php $view="masterlist"; ?>
 
 <?php include "partials/nav.php"; ?>
 
@@ -23,7 +24,6 @@
       </div>
     </div>
     <div class="table-responsive">
-      <?php $view="masterlist"; ?>
       <?php include 'includes/student_view.inc.php'; ?>
     </div>
   </div>
