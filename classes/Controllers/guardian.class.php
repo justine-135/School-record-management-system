@@ -12,10 +12,12 @@ class GuardianController extends \Models\Guardian{
         $result = false;
         if ($this->emptyInputs($sname, $fname, $mname, $education, $employment, $contact_number, $beneficiary) !== false) {
             header("Location: ../enrollment.php?missing_inputs");
+            die();
         }
 
         elseif ($this->invalidContactNumber($contact_number) !== false) {
             header("Location: ../enrollment.php?invalid_contact");
+            die();
         }
 
         else{

@@ -4,8 +4,8 @@ class Dbh
 {
     private $host = "localhost";
     private $user = "root";
-    private $pwd = "sabangesICT2022";
-    // private $pwd = "";
+    // private $pwd = "sabangesICT2022";
+    private $pwd = "";
     private $dbName = "sabanges_record_system";
 
     protected function connection()

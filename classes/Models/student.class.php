@@ -21,14 +21,14 @@ class Student extends \Dbh{
 
     }
 
-    protected function create($sname, $fname, $mname, $lrn, $sy, $grade_lvl, $bdate, $age, $gender, $religion, $house_street, $subdivision, $barangay, $city, $province, $region){
+    protected function create($sname, $fname, $mname, $extname, $lrn, $sy, $grade_lvl, $bdate, $gender, $religion, $house_street, $subdivision, $barangay, $city, $province, $region){
         try{
-            $sql = "INSERT INTO students_table (surname, first_name, middle_name, lrn, sy,
-            grade_level, birth_date, age, gender, religion, house_street, subdivision, barangay, city, province, region)
+            $sql = "INSERT INTO students_table (surname, first_name, middle_name, ext, lrn, sy,
+            grade_level, birth_date, gender, religion, house_street, subdivision, barangay, city, province, region)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
             $stmt = $this->connection()->prepare($sql);
-            $stmt->execute([$sname, $fname, $mname, $lrn, $sy, $grade_lvl, $bdate, $age, $gender, $religion, $house_street, $subdivision, $barangay, $city, $province, $region]);
+            $stmt->execute([$sname, $fname, $mname, $extname, $lrn, $sy, $grade_lvl, $bdate, $gender, $religion, $house_street, $subdivision, $barangay, $city, $province, $region]);
             $stmt = null;
             
         }
@@ -41,7 +41,7 @@ class Student extends \Dbh{
 
     protected function studentExist($lrn){
         try{
-            $sql = "SELECT * FROM students_table WHERE lrn = $lrn;";
+            $sql = "SELECT * FROM students_table WHERE lrn = '$lrn';";
             $stmt = $this->connection()->prepare($sql);
             $stmt->execute();
     
@@ -56,7 +56,7 @@ class Student extends \Dbh{
 
     protected function singleIndex($id){
         try{
-            $sql = "SELECT * FROM students_table WHERE id = $id;";
+            $sql = "SELECT * FROM `students_table` WHERE `id` = '$id';";
             $stmt = $this->connection()->prepare($sql);
             $stmt->execute();
     
