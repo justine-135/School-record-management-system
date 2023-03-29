@@ -39,3 +39,11 @@ body {
   opacity: 0;
   z-index: 1;
 }
+
+.hide {
+  display: none;
+}
+
+.err-msg {
+  color: red;
+}
