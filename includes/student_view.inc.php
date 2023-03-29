@@ -4,12 +4,19 @@ include_once $_SERVER['DOCUMENT_ROOT'].'/sabanges/classes/Views/student.class.ph
 use Views\StudentView;
 use Views\StudentInformationView;
 
-$id = null;
+// isset($_POST['informations']) ? header('Location: ../student_informations.php?id=' . $id) : '';
 
-isset($_POST['id']) ? $id = $_POST['id'] : "";
-isset($_POST['informations']) ? header('Location: ../student_informations.php') : '';
+$view === "masterlist" ? getAllIndex() : "";
+$view === "student_information" ? getSingleIndex() : "";
 
-$view === "masterlist" ? $obj = new StudentView() : (($view === "student_information") ? $obj = new StudentInformationView() : "");
-$view === "masterlist" ? $obj->initIndex() : (($view === "student_information") ? $obj->initSingleIndex($id) : "");
+function getAllIndex(){
+    $obj = new StudentView();
+    $obj->initIndex();
+}
 
+function getSingleIndex(){
+    isset($_GET['id']) ? $id = $_GET['id'] : "";
+    $obj = new StudentInformationView();
+    $obj->initSingleIndex($id);
+}
 
