@@ -22,7 +22,8 @@ class EnrollmentController extends \Models\Enrollment{
         $father_employment, $father_contact, $mother_surname, $mother_fname, 
         $mother_mname, $mother_education, $mother_employment, $mother_contact,
         $guardian_surname, $guardian_fname, $guardian_mname, $guardian_education, 
-        $guardian_employment, $guardian_contact, $is_beneficary);
+        $guardian_employment, $guardian_contact, $is_beneficary
+    );
     }
 
     public function checkValidation(
@@ -51,7 +52,8 @@ class EnrollmentController extends \Models\Enrollment{
             $father_surname, $father_fname, $father_mname, $father_education, $father_employment, $father_contact, 
             $mother_surname, $mother_fname, $mother_mname, $mother_education, $mother_employment, $mother_contact,
             $guardian_surname, $guardian_fname, $guardian_mname, $guardian_education, $guardian_employment, $guardian_contact, 
-            $is_beneficary);
+            $is_beneficary
+        );
         }
 
         elseif ($this->invalidName($sname, $fname, $mname, $extname,
@@ -97,6 +99,26 @@ class EnrollmentController extends \Models\Enrollment{
             $is_beneficary);
         }
 
+        elseif ($this->invalidEducation($father_education, $mother_education, $guardian_education)) {
+            $err_msg = "invalid_education";
+            $this->rejectData($err_msg, $sname, $fname, $mname, $extname, $lrn, $from_sy, $to_sy, $grade_lvl, $bdate, $gender, $religion, 
+            $house_street, $subdivision, $barangay, $city, $province, $region,
+            $father_surname, $father_fname, $father_mname, $father_education, $father_employment, $father_contact, 
+            $mother_surname, $mother_fname, $mother_mname, $mother_education, $mother_employment, $mother_contact,
+            $guardian_surname, $guardian_fname, $guardian_mname, $guardian_education, $guardian_employment, $guardian_contact, 
+            $is_beneficary);
+        }
+
+        elseif ($this->invalidContactNumber($father_contact, $mother_contact, $guardian_contact) !== false) {
+            $err_msg = "invalid_contact";
+            $this->rejectData($err_msg, $sname, $fname, $mname, $extname, $lrn, $from_sy, $to_sy, $grade_lvl, $bdate, $gender, $religion, 
+            $house_street, $subdivision, $barangay, $city, $province, $region,
+            $father_surname, $father_fname, $father_mname, $father_education, $father_employment, $father_contact, 
+            $mother_surname, $mother_fname, $mother_mname, $mother_education, $mother_employment, $mother_contact,
+            $guardian_surname, $guardian_fname, $guardian_mname, $guardian_education, $guardian_employment, $guardian_contact, 
+            $is_beneficary);
+        }
+
         else{
             return $result;
         }
@@ -104,18 +126,24 @@ class EnrollmentController extends \Models\Enrollment{
 
     protected function emptyInputs($sname, $fname, $mname, $extname, $lrn, $from_sy, $to_sy, $grade_lvl, $bdate, 
         $gender, $religion, $house_street, $subdivision, $barangay, $city, $province, $region,
-        $father_surname, $father_fname, $father_mname, $father_contact, 
-        $mother_surname, $mother_fname, $mother_mname, $mother_contact,
-        $guardian_surname, $guardian_fname, $guardian_mname, $guardian_contact)
+        $father_surname, $father_fname, $father_mname, $father_contact, $father_education,
+        $mother_surname, $mother_fname, $mother_mname, $mother_contact, $mother_education,
+        $guardian_surname, $guardian_fname, $guardian_mname, $guardian_contact, $guardian_education,
+        $guardian_education_textbox, $father_education_textbox, $mother_education_textbox
+        )
         {
         $result = false;
         if (empty($sname) || empty($fname) || empty($mname) || empty($extname) || empty($lrn) || 
         empty($from_sy) || empty($to_sy) || empty($grade_lvl) || empty($bdate) || 
         empty($religion) || empty($house_street) || empty($subdivision) || empty($barangay) || 
         empty($city) || empty($province) || empty($region) || 
-        empty($father_surname) || empty($father_fname) || empty($father_mname) || empty($father_contact) ||
-        empty($mother_surname) || empty($mother_fname) || empty($mother_mname) || empty($mother_contact) ||
-        empty($guardian_surname) || empty($guardian_fname) || empty($guardian_mname) || empty($guardian_contact)) {
+        empty($father_surname) || empty($father_fname) || empty($father_mname) || empty($father_contact) || empty($father_education) ||
+        empty($mother_surname) || empty($mother_fname) || empty($mother_mname) || empty($mother_contact) || empty($mother_education) ||
+        empty($guardian_surname) || empty($guardian_fname) || empty($guardian_mname) || empty($guardian_contact) || 
+        empty($guardian_education) || empty($guardian_education_textbox || empty($father_education_textbox) || empty($mother_education_textbox))
+        ) 
+        
+        {
             $result = true;
         }
         return $result;
@@ -165,6 +193,14 @@ class EnrollmentController extends \Models\Enrollment{
         $age = $diff->y;
 
         if ($age < 5) {
+            $result = true;
+        }
+        return $result;
+    }
+
+    protected function invalidEducation($guardian_education, $father_education, $mother_education){
+        $result = false;
+        if (!preg_match("/^[\sa-zA-Z_\s]*$/", $guardian_education) || !preg_match("/^[a-zA-Z]*$/", $father_education) || !preg_match("/^[a-zA-Z]*$/", $mother_education)){
             $result = true;
         }
         return $result;
