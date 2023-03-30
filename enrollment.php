@@ -258,36 +258,36 @@ if (isset($_GET['enrolled'])) {
           <div class="col-md-4 ">
             <span class="d-block mb-2">Highest Educational Attainment</span>
             <div class="form-check mb-3">
-              <input type="radio" class="form-check-input education-radio" id="f-elementary-graduate" name="f-highest-education" value="Elementary Graduate" checked required>
+              <input type="radio" class="form-check-input education-radio" id="f-elementary-graduate" name="f-highest-education" value="Elementary Graduate"  <?= isset($_GET['father_education']) ? ($_GET['father_education'] === "Elementary Graduate") ? "checked" : "" : "checked" ?>  required>
               <label class="form-check-label" for="f-elementary-graduate">Elementary Graduate</label>
             </div>
             <div class="form-check mb-3">
-              <input type="radio" class="form-check-input education-radio" id="f-highschool-graduate" name="f-highest-education" value="Highschool Graduate" required>
+              <input type="radio" class="form-check-input education-radio" id="f-highschool-graduate" name="f-highest-education" value="Highschool Graduate"  <?= isset($_GET['father_education']) ? ($_GET['father_education'] === "Highschool Graduate") ? "checked" : "" : "" ?>   required>
               <label class="form-check-label" for="f-highschool-graduate">Highschool Graduate</label>
               <div class="invalid-feedback">More example invalid feedback text</div>
             </div>
             <div class="form-check mb-3">
-              <input type="radio" class="form-check-input education-radio" id="f-college-graduate" name="f-highest-education" value="College Graduate" required>
+              <input type="radio" class="form-check-input education-radio" id="f-college-graduate" name="f-highest-education" value="College Graduate"  <?= isset($_GET['father_education']) ? ($_GET['father_education'] === "College Graduate") ? "checked" : "" : "" ?>    required>
               <label class="form-check-label" for="f-college-graduate">College Graduate</label>
               <div class="invalid-feedback">More example invalid feedback text</div>
             </div>
             <div class="form-check mb-3">
-              <input type="radio" class="form-check-input education-radio" id="f-vocational" name="f-highest-education" value="Vocational" required>
+              <input type="radio" class="form-check-input education-radio" id="f-vocational" name="f-highest-education" value="Vocational"  <?= isset($_GET['father_education']) ? ($_GET['father_education'] === "Vocational") ? "checked" : "" : "" ?> required>
               <label class="form-check-label" for="f-vocational">Vocational</label>
               <div class="invalid-feedback">More example invalid feedback text</div>
             </div>
             <div class="form-check mb-3">
-              <input type="radio" class="form-check-input education-radio" id="f-master-degree" name="f-highest-education" value="Master's Doctorate Degree" required>
+              <input type="radio" class="form-check-input education-radio" id="f-master-degree" name="f-highest-education" value="Master's Doctorate Degree"  <?= isset($_GET['father_education']) ? ($_GET['father_education'] === "Master's Doctorate Degree") ? "checked" : "" : "" ?> required>
               <label class="form-check-label" for="f-master-degree">Master's Doctorate Degree</label>
               <div class="invalid-feedback">More example invalid feedback text</div>
             </div>
             <div class="form-check mb-3">
-              <input type="radio" class="form-check-input education-radio" id="f-not-attend-school" name="f-highest-education" value="Did not attend school" required>
+              <input type="radio" class="form-check-input education-radio" id="f-not-attend-school" name="f-highest-education" value="Did not attend school" <?= isset($_GET['father_education']) ? ($_GET['father_education'] === "Did not attend school") ? "checked" : "" : "" ?> required>
               <label class="form-check-label" for="f-not-attend-school">Did not attend school</label>
               <div class="invalid-feedback">More example invalid feedback text</div>
             </div>
             <div class="form-check mb-3">
-              <input type="radio" class="form-check-input other-education-radio education-radio" id="f-others" name="f-highest-education" required>
+              <input type="radio" class="form-check-input other-education-radio education-radio" id="f-others" name="f-highest-education" value="Others"  <?= isset($_GET['father_education']) ? $_GET['father_education'] !== "Elementary Graduate" || $_GET['father_education'] !== "Highschool Graduate" || $_GET['father_education'] !== "College Graduate" || $_GET['father_education'] !== "Vocational" || $_GET['father_education'] !== "Master's Doctorate Degree" || $_GET['father_education'] !== "Did not attend school" : "checked"  ?> required>
               <label class="form-check-label" for="f-others">Others</label>
               <input type="hidden" class="form-control other-education-textbox" id="f-other" name="f-others-textbox" disabled=true>
               <div class="invalid-feedback">More example invalid feedback text</div>
@@ -296,31 +296,31 @@ if (isset($_GET['enrolled'])) {
           <div class="col-md-4 ">
             <span class="d-block mb-2">Highest Educational Attainment</span>
             <div class="form-check mb-3">
-              <input type="radio" class="form-check-input education-radio" id="m-elementary-graduate" name="m-highest-education" value="Elementary Graduate" checked required>
+              <input type="radio" class="form-check-input education-radio" id="m-elementary-graduate" name="m-highest-education" value="Elementary Graduate" <?= isset($_GET['mother_education']) ? ($_GET['mother_education'] === "Elementary Graduate") ? "checked" : "" : "checked" ?> required>
               <label class="form-check-label" for="m-elementary-graduate">Elementary Graduate</label>
             </div>
             <div class="form-check mb-3">
-              <input type="radio" class="form-check-input education-radio" id="m-highschool-graduate" name="m-highest-education" value="Highschool Graduate" required>
+              <input type="radio" class="form-check-input education-radio" id="m-highschool-graduate" name="m-highest-education" value="Highschool Graduate" <?= isset($_GET['mother_education']) ? ($_GET['mother_education'] === "Highschool Graduate") ? "checked" : "" : "" ?> required>
               <label class="form-check-label" for="m-highschool-graduate">Highschool Graduate</label>
               <div class="invalid-feedback">More example invalid feedback text</div>
             </div>
             <div class="form-check mb-3">
-              <input type="radio" class="form-check-input education-radio" id="m-college-graduate" name="m-highest-education" value="College Graduate" required>
+              <input type="radio" class="form-check-input education-radio" id="m-college-graduate" name="m-highest-education" value="College Graduate" <?= isset($_GET['mother_education']) ? ($_GET['mother_education'] === "College Graduate") ? "checked" : "" : "" ?> required>
               <label class="form-check-label" for="m-college-graduate">College Graduate</label>
               <div class="invalid-feedback">More example invalid feedback text</div>
             </div>
             <div class="form-check mb-3">
-              <input type="radio" class="form-check-input education-radio" id="m-vocational" name="m-highest-education" value="Vocational" required>
+              <input type="radio" class="form-check-input education-radio" id="m-vocational" name="m-highest-education" value="Vocational" <?= isset($_GET['mother_education']) ? ($_GET['mother_education'] === "Vocational") ? "checked" : "" : "" ?> required>
               <label class="form-check-label" for="m-vocational">Vocational</label>
               <div class="invalid-feedback">More example invalid feedback text</div>
             </div>
             <div class="form-check mb-3">
-              <input type="radio" class="form-check-input education-radio" id="m-master-degree" name="m-highest-education" value="Master's Doctorate Degree" required>
+              <input type="radio" class="form-check-input education-radio" id="m-master-degree" name="m-highest-education" value="Master's Doctorate Degree" <?= isset($_GET['mother_education']) ? ($_GET['mother_education'] === "Master's Doctorate Degree") ? "checked" : "" : "" ?> required>
               <label class="form-check-label" for="m-master-degree">Master's Doctorate Degree</label>
               <div class="invalid-feedback">More example invalid feedback text</div>
             </div>
             <div class="form-check mb-3">
-              <input type="radio" class="form-check-input education-radio" id="m-not-attend-school" name="m-highest-education" value="Did not attend school" required>
+              <input type="radio" class="form-check-input education-radio" id="m-not-attend-school" name="m-highest-education" value="Did not attend school" <?= isset($_GET['mother_education']) ? ($_GET['mother_education'] === "Did not attend school") ? "checked" : "" : "" ?> required>
               <label class="form-check-label" for="m-not-attend-school">Did not attend school</label>
               <div class="invalid-feedback">More example invalid feedback text</div>
             </div>
@@ -334,31 +334,31 @@ if (isset($_GET['enrolled'])) {
           <div class="col-md-4">
             <span class="d-block mb-2">Highest Educational Attainment</span>
             <div class="form-check mb-3">
-              <input type="radio" class="form-check-input education-radio" id="g-elementary-graduate" name="g-highest-education" value="Elementary Graduate" checked required>
+              <input type="radio" class="form-check-input education-radio" id="g-elementary-graduate" name="g-highest-education" value="Elementary Graduate" <?= isset($_GET['guardian_education']) ? ($_GET['guardian_education'] === "Elementary Graduate") ? "checked" : "" : "checked" ?> required>
               <label class="form-check-label" for="g-elementary-graduate">Elementary Graduate</label>
             </div>
             <div class="form-check mb-3">
-              <input type="radio" class="form-check-input education-radio" id="g-highschool-graduate" name="g-highest-education" value="Highschool Graduate" required>
+              <input type="radio" class="form-check-input education-radio" id="g-highschool-graduate" name="g-highest-education" value="Highschool Graduate" <?= isset($_GET['guardian_education']) ? ($_GET['guardian_education'] === "Highschool Graduate") ? "checked" : "" : "" ?> required>
               <label class="form-check-label" for="g-highschool-graduate">Highschool Graduate</label>
               <div class="invalid-feedback">More example invalid feedback text</div>
             </div>
             <div class="form-check mb-3">
-              <input type="radio" class="form-check-input education-radio" id="g-college-graduate" name="g-highest-education" value="College Graduate" required>
+              <input type="radio" class="form-check-input education-radio" id="g-college-graduate" name="g-highest-education" value="College Graduate" <?= isset($_GET['guardian_education']) ? ($_GET['guardian_education'] === "College Graduate") ? "checked" : "" : "" ?> required>
               <label class="form-check-label" for="g-college-graduate">College Graduate</label>
               <div class="invalid-feedback">More example invalid feedback text</div>
             </div>
             <div class="form-check mb-3">
-              <input type="radio" class="form-check-input education-radio" id="g-vocational" name="g-highest-education" value="Vocational" required>
+              <input type="radio" class="form-check-input education-radio" id="g-vocational" name="g-highest-education" value="Vocational" <?= isset($_GET['guardian_education']) ? ($_GET['guardian_education'] === "Vocational") ? "checked" : "" : "" ?> required>
               <label class="form-check-label" for="g-vocational">Vocational</label>
               <div class="invalid-feedback">More example invalid feedback text</div>
             </div>
             <div class="form-check mb-3">
-              <input type="radio" class="form-check-input education-radio" id="g-master-degree" name="g-highest-education" value="Master's Doctorate Degree" required>
+              <input type="radio" class="form-check-input education-radio" id="g-master-degree" name="g-highest-education" value="Master's Doctorate Degree" <?= isset($_GET['guardian_education']) ? ($_GET['guardian_education'] === "Master's Doctorate Degree") ? "checked" : "" : "" ?> required>
               <label class="form-check-label" for="g-master-degree">Master's Doctorate Degree</label>
               <div class="invalid-feedback">More example invalid feedback text</div>
             </div>
             <div class="form-check mb-3">
-              <input type="radio" class="form-check-input education-radio" id="g-not-attend-school" name="g-highest-education" value="Did not attend school" required>
+              <input type="radio" class="form-check-input education-radio" id="g-not-attend-school" name="g-highest-education" value="Did not attend school" <?= isset($_GET['guardian_education']) ? ($_GET['guardian_education'] === "Did not attend school") ? "checked" : "" : "" ?> required>
               <label class="form-check-label" for="g-not-attend-school">Did not attend school</label>
               <div class="invalid-feedback">More example invalid feedback text</div>
             </div>
@@ -374,26 +374,26 @@ if (isset($_GET['enrolled'])) {
           <div class="col-md-4 ">
             <span class="d-block mb-2">Employment Status</span>
             <div class="form-check mb-3">
-              <input type="radio" class="form-check-input" id="f-fulltime" name="f-employment-status" value="Full-time" checked required>
+              <input type="radio" class="form-check-input" id="f-fulltime" name="f-employment-status" value="Full-time" <?= isset($_GET['father_employment']) ? ($_GET['father_employment'] === "Full-time") ? "checked" : "" : "checked" ?> required>
               <label class="form-check-label" for="f-fulltime">Full time</label>
             </div>
             <div class="form-check mb-3">
-              <input type="radio" class="form-check-input" id="f-parttime" name="f-employment-status" value="Part-time" required>
+              <input type="radio" class="form-check-input" id="f-parttime" name="f-employment-status" value="Part-time" <?= isset($_GET['father_employment']) ? ($_GET['father_employment'] === "Part-time") ? "checked" : "" : "" ?> required>
               <label class="form-check-label" for="f-parttime">Part time</label>
               <div class="invalid-feedback">More example invalid feedback text</div>
             </div>
             <div class="form-check mb-3">
-              <input type="radio" class="form-check-input" id="f-selfemployed" name="f-employment-status" value="Self-employed" required>
+              <input type="radio" class="form-check-input" id="f-selfemployed" name="f-employment-status" value="Self-employed"  <?= isset($_GET['father_employment']) ? ($_GET['father_employment'] === "Self-employed") ? "checked" : "" : "" ?> required>
               <label class="form-check-label" for="f-selfemployed">Self-employed (i.e family business)</label>
               <div class="invalid-feedback">More example invalid feedback text</div>
             </div>
             <div class="form-check mb-3">
-              <input type="radio" class="form-check-input" id="f-unemployed" name="f-employment-status" value="Unemployed" required>
+              <input type="radio" class="form-check-input" id="f-unemployed" name="f-employment-status" value="Unemployed" <?= isset($_GET['father_employment']) ? ($_GET['father_employment'] === "Unemployed") ? "checked" : "" : "" ?> required>
               <label class="form-check-label" for="f-unemployed">Unemployed due to community quarantine</label>
               <div class="invalid-feedback">More example invalid feedback text</div>
             </div>
             <div class="form-check mb-3">
-              <input type="radio" class="form-check-input" id="f-notworking" name="f-employment-status" value="Not Working" required>
+              <input type="radio" class="form-check-input" id="f-notworking" name="f-employment-status" value="Not Working" <?= isset($_GET['father_employment']) ? ($_GET['father_employment'] === "Not Working") ? "checked" : "" : "" ?> required>
               <label class="form-check-label" for="f-notworking">Not working</label>
               <div class="invalid-feedback">More example invalid feedback text</div>
             </div>
@@ -402,26 +402,26 @@ if (isset($_GET['enrolled'])) {
           <div class="col-md-4 ">
             <span class="d-block mb-2">Employment Status</span>
             <div class="form-check mb-3">
-              <input type="radio" class="form-check-input" id="m-fulltime" name="m-employment-status" value="Full-time" checked required>
+              <input type="radio" class="form-check-input" id="m-fulltime" name="m-employment-status" value="Full-time" <?= isset($_GET['mother_employment']) ? ($_GET['mother_employment'] === "Full-time") ? "checked" : "" : "checked" ?> required>
               <label class="form-check-label" for="m-fulltime">Full time</label>
             </div>
             <div class="form-check mb-3">
-              <input type="radio" class="form-check-input" id="m-parttime" name="m-employment-status" value="Part-time" required>
+              <input type="radio" class="form-check-input" id="m-parttime" name="m-employment-status" value="Part-time" <?= isset($_GET['mother_employment']) ? ($_GET['mother_employment'] === "Part-time") ? "checked" : "" : "" ?> required>
               <label class="form-check-label" for="m-parttime">Part time</label>
               <div class="invalid-feedback">More example invalid feedback text</div>
             </div>
             <div class="form-check mb-3">
-              <input type="radio" class="form-check-input" id="m-selfemployed" name="m-employment-status" value="Self-employed" required>
+              <input type="radio" class="form-check-input" id="m-selfemployed" name="m-employment-status" value="Self-employed" <?= isset($_GET['mother_employment']) ? ($_GET['mother_employment'] === "Self-employed") ? "checked" : "" : "" ?> required>
               <label class="form-check-label" for="m-selfemployed">Self-employed (i.e family business)</label>
               <div class="invalid-feedback">More example invalid feedback text</div>
             </div>
             <div class="form-check mb-3">
-              <input type="radio" class="form-check-input" id="m-unemployed" name="m-employment-status" value="Unemployed" required>
+              <input type="radio" class="form-check-input" id="m-unemployed" name="m-employment-status" value="Unemployed" <?= isset($_GET['mother_employment']) ? ($_GET['mother_employment'] === "Unemployed") ? "checked" : "" : "" ?>  required>
               <label class="form-check-label" for="m-unemployed">Unemployed due to community quarantine</label>
               <div class="invalid-feedback">More example invalid feedback text</div>
             </div>
             <div class="form-check mb-3">
-              <input type="radio" class="form-check-input" id="m-notworking" name="m-employment-status" value="Not Working" required>
+              <input type="radio" class="form-check-input" id="m-notworking" name="m-employment-status" value="Not Working" <?= isset($_GET['mother_employment']) ? ($_GET['mother_employment'] === "Not Working") ? "checked" : "" : "" ?> required>
               <label class="form-check-label" for="m-notworking">Not working</label>
               <div class="invalid-feedback">More example invalid feedback text</div>
             </div>
@@ -430,26 +430,26 @@ if (isset($_GET['enrolled'])) {
           <div class="col-md-4 ">
             <span class="d-block mb-2">Employment Status</span>
             <div class="form-check mb-3">
-              <input type="radio" class="form-check-input" id="g-fulltime" name="g-employment-status" value="Full-time" checked required>
+              <input type="radio" class="form-check-input" id="g-fulltime" name="g-employment-status" value="Full-time" <?= isset($_GET['guardian_employment']) ? ($_GET['guardian_employment'] === "Full-time") ? "checked" : "" : "checked" ?>  required>
               <label class="form-check-label" for="g-fulltime">Full time</label>
             </div>
             <div class="form-check mb-3">
-              <input type="radio" class="form-check-input" id="g-parttime" name="g-employment-status" value="Part-time"required>
+              <input type="radio" class="form-check-input" id="g-parttime" name="g-employment-status" value="Part-time" <?= isset($_GET['guardian_employment']) ? ($_GET['guardian_employment'] === "Part-time") ? "checked" : "" : "" ?> required>
               <label class="form-check-label" for="g-parttime">Part time</label>
               <div class="invalid-feedback">More example invalid feedback text</div>
             </div>
             <div class="form-check mb-3">
-              <input type="radio" class="form-check-input" id="g-selfemployed" name="g-employment-status" value="Self-employed"required>
+              <input type="radio" class="form-check-input" id="g-selfemployed" name="g-employment-status" value="Self-employed" <?= isset($_GET['guardian_employment']) ? ($_GET['guardian_employment'] === "Self-employed") ? "checked" : "" : "" ?> required>
               <label class="form-check-label" for="g-selfemployed">Self-employed (i.e family business)</label>
               <div class="invalid-feedback">More example invalid feedback text</div>
             </div>
             <div class="form-check mb-3">
-              <input type="radio" class="form-check-input" id="g-unemployed" name="g-employment-status" value="Unemployed" required>
+              <input type="radio" class="form-check-input" id="g-unemployed" name="g-employment-status" value="Unemployed" <?= isset($_GET['guardian_employment']) ? ($_GET['guardian_employment'] === "Unemployed") ? "checked" : "" : "" ?> required>
               <label class="form-check-label" for="g-unemployed">Unemployed due to community quarantine</label>
               <div class="invalid-feedback">More example invalid feedback text</div>
             </div>
             <div class="form-check mb-3">
-              <input type="radio" class="form-check-input" id="g-notworking" name="g-employment-status" value="Not Working" required>
+              <input type="radio" class="form-check-input" id="g-notworking" name="g-employment-status" value="Not Working" <?= isset($_GET['guardian_employment']) ? ($_GET['guardian_employment'] === "Not Working") ? "checked" : "" : "" ?> required>
               <label class="form-check-label" for="g-notworking">Not working</label>
               <div class="invalid-feedback">More example invalid feedback text</div>
             </div>
