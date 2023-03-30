@@ -32,10 +32,7 @@ if (isset($_POST["enroll"])) {
     $father_education = $_POST['f-highest-education'];
     $father_relation = "Father";
 
-    if (isset($_POST['f-others-textbox'])) {
-        $father_education = $_POST['f-others-textbox'];
-        echo "picked" . "<br>";
-    }
+    isset($_POST['f-others-textbox']) ? $father_education_textbox = $_POST['f-others-textbox'] : "";
 
     $father_employment = $_POST['f-employment-status'];
     $father_contact = $_POST['f-contact-number'];
@@ -46,12 +43,10 @@ if (isset($_POST["enroll"])) {
     $mother_fname = $_POST['m-fname'];
     $mother_mname = $_POST['m-mname'];
     $mother_education = $_POST['m-highest-education'];
+
+    isset($_POST['m-others-textbox']) ? $mother_education_textbox = $_POST['m-others-textbox'] : "";
+
     $mother_relation = "Mother";
-
-    if (isset($_POST['m-others-textbox'])) {
-        $mother_education = $_POST['m-others-textbox'];
-    }
-
     $mother_employment = $_POST['m-employment-status'];
     $mother_contact = $_POST['m-contact-number'];
 
@@ -60,12 +55,10 @@ if (isset($_POST["enroll"])) {
     $guardian_fname = $_POST['g-fname'];
     $guardian_mname = $_POST['g-mname'];
     $guardian_education = $_POST['g-highest-education'];
+
+    isset($_POST['g-others-textbox']) ? $guardian_education_textbox = $_POST['g-others-textbox'] : "";
+
     $guardian_relation = "Guardian";
-
-    if (isset($_POST['g-others-textbox'])) {
-        $guardian_education = $_POST['g-others-textbox'];
-    }
-
     $guardian_employment = $_POST['g-employment-status'];
     $guardian_contact = $_POST['g-contact-number'];
 
@@ -85,15 +78,15 @@ if (isset($_POST["enroll"])) {
         die();
     }
     else{
-        $enrollment_obj = new EnrollmentController();
-        $create_student_obj->initCreate($sname, $fname, $mname, $extname, 
-        $lrn, $from_sy, $to_sy, $grade_lvl, $bdate, $gender, $religion, 
-        $house_street, $subdivision, $barangay, $city, $province, $region,
-        $father_surname, $father_fname, $father_mname, $father_education, 
-        $father_employment, $father_contact, $mother_surname, $mother_fname, 
-        $mother_mname, $mother_education, $mother_employment, $mother_contact,
-        $guardian_surname, $guardian_fname, $guardian_mname, $guardian_education, 
-        $guardian_employment, $guardian_contact, $is_beneficary);
+        // $enrollment_obj = new EnrollmentController();
+        // $create_student_obj->initCreate($sname, $fname, $mname, $extname, 
+        // $lrn, $from_sy, $to_sy, $grade_lvl, $bdate, $gender, $religion, 
+        // $house_street, $subdivision, $barangay, $city, $province, $region,
+        // $father_surname, $father_fname, $father_mname, $father_education, 
+        // $father_employment, $father_contact, $mother_surname, $mother_fname, 
+        // $mother_mname, $mother_education, $mother_employment, $mother_contact,
+        // $guardian_surname, $guardian_fname, $guardian_mname, $guardian_education, 
+        // $guardian_employment, $guardian_contact, $is_beneficary);
         
         header("Location: ../enrollment.php?enrolled");
     }
@@ -101,4 +94,3 @@ if (isset($_POST["enroll"])) {
 else{
     header("location: ../index.php");
 }
-
