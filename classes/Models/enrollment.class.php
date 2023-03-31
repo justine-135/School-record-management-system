@@ -5,12 +5,14 @@ namespace Models;
 include_once $_SERVER['DOCUMENT_ROOT'].'/sabanges/classes/Database/dbh.class.php';
 
 class Enrollment extends \Dbh{
-    protected function create($sname, $fname, $mname, $extname, $lrn, $from_sy, $to_sy, $grade_lvl, $bdate, $gender, $religion, 
+    protected function create($sname, $fname, $mname, $extname, $lrn, $sy, $grade_lvl, $bdate, $gender, $religion, 
     $house_street, $subdivision, $barangay, $city, $province, $region,
-    $father_surname, $father_fname, $father_mname, $father_education, $father_employment, $father_contact, 
-    $mother_surname, $mother_fname, $mother_mname, $mother_education, $mother_employment, $mother_contact,
-    $guardian_surname, $guardian_fname, $guardian_mname, $guardian_education, $guardian_employment, $guardian_contact, 
-    $is_beneficary, $father_education_textbox, $mother_education_textbox, $guardian_education_textbox)
+    $father_surname, $father_fname, $father_mname, $father_education, 
+    $father_employment, $father_contact, $mother_surname, $mother_fname, 
+    $mother_mname, $mother_education, $mother_employment, $mother_contact,
+    $guardian_surname, $guardian_fname, $guardian_mname, $guardian_education, 
+    $guardian_employment, $guardian_contact, $is_beneficiary,
+    $father_education_textbox, $mother_education_textbox, $guardian_education_textbox)
     {
         try{
             // Student
@@ -26,7 +28,7 @@ class Enrollment extends \Dbh{
             if ($father_education === "Others") {
                 $father_education = $father_education_textbox;
             }
-            $sql = "INSERT INTO `fathers_table` (student_lrn, surname, first_name, middle_name, education, employment, contact_number, is_beneficiary)
+            $sql = "INSERT INTO `fathers_table` (student_lrn, father_surname, father_first_name, father_middle_name, father_education, father_employment, father_contact_number, is_beneficiary)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
 
             $stmt = $this->connection()->prepare($sql);
@@ -37,7 +39,7 @@ class Enrollment extends \Dbh{
             if ($mother_education === "Others") {
                 $mother_education = $mother_education_textbox;
             }
-            $sql = "INSERT INTO `mothers_table` (student_lrn, surname, first_name, middle_name, education, employment, contact_number, is_beneficiary)
+            $sql = "INSERT INTO `mothers_table` (student_lrn, surname, mother_first_name, mother_middle_name, mother_education, mother_employment, mother_contact_number, is_beneficiary)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
 
             $stmt = $this->connection()->prepare($sql);
@@ -48,7 +50,7 @@ class Enrollment extends \Dbh{
             if ($guardian_education === "Others") {
                 $guardian_education = $guardian_education_textbox;
             }
-            $sql = "INSERT INTO `guardian_table` (student_lrn, surname, first_name, middle_name, education, employment, contact_number, is_beneficiary)
+            $sql = "INSERT INTO `guardians_table` (student_lrn, surname, guardian_first_name, guardian_middle_name, guardian_education, guardian_employment, guardian_contact_number, is_beneficiary)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
 
             $stmt = $this->connection()->prepare($sql);

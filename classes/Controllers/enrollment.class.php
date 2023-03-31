@@ -13,7 +13,7 @@ class EnrollmentController extends \Models\Enrollment{
     $father_employment, $father_contact, $mother_surname, $mother_fname, 
     $mother_mname, $mother_education, $mother_employment, $mother_contact,
     $guardian_surname, $guardian_fname, $guardian_mname, $guardian_education, 
-    $guardian_employment, $guardian_contact, $is_beneficary,
+    $guardian_employment, $guardian_contact, $is_beneficiary,
     $father_education_textbox, $mother_education_textbox, $guardian_education_textbox
         ){
         $sy = $from_sy . " - " . $to_sy;
@@ -23,7 +23,7 @@ class EnrollmentController extends \Models\Enrollment{
         $father_employment, $father_contact, $mother_surname, $mother_fname, 
         $mother_mname, $mother_education, $mother_employment, $mother_contact,
         $guardian_surname, $guardian_fname, $guardian_mname, $guardian_education, 
-        $guardian_employment, $guardian_contact, $is_beneficary,
+        $guardian_employment, $guardian_contact, $is_beneficiary,
         $father_education_textbox, $mother_education_textbox, $guardian_education_textbox
     );
     }
@@ -34,7 +34,7 @@ class EnrollmentController extends \Models\Enrollment{
     $father_surname, $father_fname, $father_mname, $father_education, $father_employment, $father_contact, 
     $mother_surname, $mother_fname, $mother_mname, $mother_education, $mother_employment, $mother_contact,
     $guardian_surname, $guardian_fname, $guardian_mname, $guardian_education, $guardian_employment, $guardian_contact, 
-    $is_beneficary, $father_education_textbox, $mother_education_textbox, $guardian_education_textbox
+    $is_beneficiary, $father_education_textbox, $mother_education_textbox, $guardian_education_textbox
     )
     {
         $result = false;
@@ -46,7 +46,7 @@ class EnrollmentController extends \Models\Enrollment{
             $father_surname, $father_fname, $father_mname, $father_education, $father_employment, $father_contact, 
             $mother_surname, $mother_fname, $mother_mname, $mother_education, $mother_employment, $mother_contact,
             $guardian_surname, $guardian_fname, $guardian_mname, $guardian_education, $guardian_employment, $guardian_contact, 
-            $is_beneficary, $father_education_textbox, $mother_education_textbox, $guardian_education_textbox
+            $is_beneficiary, $father_education_textbox, $mother_education_textbox, $guardian_education_textbox
         ) !== false) 
         {
             $err_msg = "missing_inputs";
@@ -55,7 +55,7 @@ class EnrollmentController extends \Models\Enrollment{
             $father_surname, $father_fname, $father_mname, $father_education, $father_employment, $father_contact, 
             $mother_surname, $mother_fname, $mother_mname, $mother_education, $mother_employment, $mother_contact,
             $guardian_surname, $guardian_fname, $guardian_mname, $guardian_education, $guardian_employment, $guardian_contact, 
-            $is_beneficary, $father_education_textbox, $mother_education_textbox, $guardian_education_textbox
+            $is_beneficiary, $father_education_textbox, $mother_education_textbox, $guardian_education_textbox
         );
         }
 
@@ -70,7 +70,7 @@ class EnrollmentController extends \Models\Enrollment{
             $father_surname, $father_fname, $father_mname, $father_education, $father_employment, $father_contact, 
             $mother_surname, $mother_fname, $mother_mname, $mother_education, $mother_employment, $mother_contact,
             $guardian_surname, $guardian_fname, $guardian_mname, $guardian_education, $guardian_employment, $guardian_contact, 
-            $is_beneficary, $father_education_textbox, $mother_education_textbox, $guardian_education_textbox);
+            $is_beneficiary, $father_education_textbox, $mother_education_textbox, $guardian_education_textbox);
         }
 
         elseif ($this->invalidLRN($lrn) !== false) 
@@ -81,7 +81,7 @@ class EnrollmentController extends \Models\Enrollment{
             $father_surname, $father_fname, $father_mname, $father_education, $father_employment, $father_contact, 
             $mother_surname, $mother_fname, $mother_mname, $mother_education, $mother_employment, $mother_contact,
             $guardian_surname, $guardian_fname, $guardian_mname, $guardian_education, $guardian_employment, $guardian_contact, 
-            $is_beneficary, $father_education_textbox, $mother_education_textbox, $guardian_education_textbox);
+            $is_beneficiary, $father_education_textbox, $mother_education_textbox, $guardian_education_textbox);
         }
 
         elseif ($this->invalidSchoolYear($from_sy, $to_sy) !== false) 
@@ -92,7 +92,7 @@ class EnrollmentController extends \Models\Enrollment{
             $father_surname, $father_fname, $father_mname, $father_education, $father_employment, $father_contact, 
             $mother_surname, $mother_fname, $mother_mname, $mother_education, $mother_employment, $mother_contact,
             $guardian_surname, $guardian_fname, $guardian_mname, $guardian_education, $guardian_employment, $guardian_contact, 
-            $is_beneficary, $father_education_textbox, $mother_education_textbox, $guardian_education_textbox);
+            $is_beneficiary, $father_education_textbox, $mother_education_textbox, $guardian_education_textbox);
         }
 
         elseif ($this->invalidBirthDate($bdate) !== false) 
@@ -103,7 +103,7 @@ class EnrollmentController extends \Models\Enrollment{
             $father_surname, $father_fname, $father_mname, $father_education, $father_employment, $father_contact, 
             $mother_surname, $mother_fname, $mother_mname, $mother_education, $mother_employment, $mother_contact,
             $guardian_surname, $guardian_fname, $guardian_mname, $guardian_education, $guardian_employment, $guardian_contact, 
-            $is_beneficary, $father_education_textbox, $mother_education_textbox, $guardian_education_textbox);
+            $is_beneficiary, $father_education_textbox, $mother_education_textbox, $guardian_education_textbox);
         }
 
         elseif ($this->invalidEducation($father_education, $mother_education, $guardian_education, $father_education_textbox, $mother_education_textbox, $guardian_education_textbox)) 
@@ -114,7 +114,7 @@ class EnrollmentController extends \Models\Enrollment{
             $father_surname, $father_fname, $father_mname, $father_education, $father_employment, $father_contact, 
             $mother_surname, $mother_fname, $mother_mname, $mother_education, $mother_employment, $mother_contact,
             $guardian_surname, $guardian_fname, $guardian_mname, $guardian_education, $guardian_employment, $guardian_contact, 
-            $is_beneficary, $father_education_textbox, $mother_education_textbox, $guardian_education_textbox);
+            $is_beneficiary, $father_education_textbox, $mother_education_textbox, $guardian_education_textbox);
         }
 
         elseif ($this->invalidContactNumber($father_contact, $mother_contact, $guardian_contact) !== false) 
@@ -125,7 +125,7 @@ class EnrollmentController extends \Models\Enrollment{
             $father_surname, $father_fname, $father_mname, $father_education, $father_employment, $father_contact, 
             $mother_surname, $mother_fname, $mother_mname, $mother_education, $mother_employment, $mother_contact,
             $guardian_surname, $guardian_fname, $guardian_mname, $guardian_education, $guardian_employment, $guardian_contact, 
-            $is_beneficary, $father_education_textbox, $mother_education_textbox, $guardian_education_textbox);
+            $is_beneficiary, $father_education_textbox, $mother_education_textbox, $guardian_education_textbox);
         }
 
         else{
@@ -177,11 +177,11 @@ class EnrollmentController extends \Models\Enrollment{
     $mother_surname, $mother_fname, $mother_mname,
     $guardian_surname, $guardian_fname, $guardian_mname){
         $result = false;
-        if (!preg_match("/^[a-zA-Z]*$/", $sname) || !preg_match("/^[a-zA-Z]*$/", $fname) || 
-        !preg_match("/^[a-zA-Z]*$/", $mname) || !preg_match("/^[a-zA-Z]*$/", $extname) || 
-        !preg_match("/^[a-zA-Z]*$/", $father_surname) || !preg_match("/^[a-zA-Z]*$/", $father_fname) || !preg_match("/^[a-zA-Z]*$/", $father_mname) ||
-        !preg_match("/^[a-zA-Z]*$/", $mother_surname) || !preg_match("/^[a-zA-Z]*$/", $mother_fname) || !preg_match("/^[a-zA-Z]*$/", $mother_mname) ||
-        !preg_match("/^[a-zA-Z]*$/", $guardian_surname) || !preg_match("/^[a-zA-Z]*$/", $guardian_fname) || !preg_match("/^[a-zA-Z]*$/", $guardian_mname)) {
+        if (!preg_match("/^[a-zA-Z\s]*$/", $sname) || !preg_match("/^[a-zA-Z\s]*$/", $fname) || 
+        !preg_match("/^[a-zA-Z\s]*$/", $mname) || !preg_match("/^[a-zA-Z\s]*$/", $extname) || 
+        !preg_match("/^[a-zA-Z\s]*$/", $father_surname) || !preg_match("/^[a-zA-Z\s]*$/", $father_fname) || !preg_match("/^[a-zA-Z\s]*$/", $father_mname) ||
+        !preg_match("/^[a-zA-Z\s]*$/", $mother_surname) || !preg_match("/^[a-zA-Z\s]*$/", $mother_fname) || !preg_match("/^[a-zA-Z\s]*$/", $mother_mname) ||
+        !preg_match("/^[a-zA-Z\s]*$/", $guardian_surname) || !preg_match("/^[a-zA-Z\s]*$/", $guardian_fname) || !preg_match("/^[a-zA-Z\s]*$/", $guardian_mname)) {
             $result = true;
         }
         return $result;
@@ -261,7 +261,7 @@ class EnrollmentController extends \Models\Enrollment{
     $father_surname, $father_fname, $father_mname, $father_education, $father_employment, $father_contact, 
     $mother_surname, $mother_fname, $mother_mname, $mother_education, $mother_employment, $mother_contact,
     $guardian_surname, $guardian_fname, $guardian_mname, $guardian_education, $guardian_employment, $guardian_contact, 
-    $is_beneficary, $father_education_textbox, $mother_education_textbox, $guardian_education_textbox)
+    $is_beneficiary, $father_education_textbox, $mother_education_textbox, $guardian_education_textbox)
     {
         header("Location: ../enrollment.php?err={$err_msg}&surname={$sname}&fname={$fname}&mname={$mname}&extname={$extname}&lrn={$lrn}&from_sy={$from_sy}&to_sy={$to_sy}&grade_lvl={$grade_lvl}&bdate={$bdate}&gender={$gender}&religion={$religion}&house_street={$house_street}&subd={$subdivision}&barangay={$barangay}&city={$city}&province={$province}&region={$region}&father_surname={$father_surname}&father_fname={$father_fname}&father_fname={$father_fname}&father_mname={$father_mname}&father_education={$father_education}&father_contact={$father_contact}&mother_surname={$mother_surname}&mother_fname={$mother_fname}&mother_mname={$mother_mname}&mother_education={$mother_education}&mother_employment={$mother_employment}&mother_contact={$mother_contact}&guardian_surname={$guardian_surname}&guardian_fname={$guardian_fname}&guardian_mname={$guardian_mname}&guardian_education={$guardian_education}&guardian_employment={$guardian_employment}&guardian_contact={$guardian_contact}&father_education_textbox={$father_education_textbox}&mother_education_textbox={$mother_education_textbox}&guardian_education_textbox={$guardian_education_textbox}");
         die();

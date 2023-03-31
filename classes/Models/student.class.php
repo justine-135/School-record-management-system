@@ -56,7 +56,12 @@ class Student extends \Dbh{
 
     protected function singleIndex($id){
         try{
-            $sql = "SELECT * FROM `students_table` WHERE `id` = '$id';";
+            $sql = "SELECT * FROM students_table, fathers_table, mothers_table, guardians_table
+            WHERE students_table.lrn = fathers_table.student_lrn
+            AND students_table.lrn = mothers_table.student_lrn
+            AND students_table.lrn = guardians_table.student_lrn
+            AND students_table.id = $id;
+            ";
             $stmt = $this->connection()->prepare($sql);
             $stmt->execute();
     

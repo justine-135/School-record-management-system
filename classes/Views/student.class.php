@@ -18,7 +18,7 @@ class StudentView extends \Models\Student{
               <th scope="col">Grade Level</th>
               <th scope="col">Section</th>
               <th scope="col">Adviser</th>
-              <th scope="col">Application Type</th>
+              <th scope="col">Type</th>
               <th scope="col">Action</th>
           </tr>
           </thead>
@@ -32,7 +32,7 @@ class StudentView extends \Models\Student{
                     <td><?= strtoupper($row['surname']) . ', ' . strtoupper($row['first_name']) . ' ' . strtoupper($row['middle_name'])  ?></td>
                     <td><?= $row['enrolled_at'] ?></td>
                     <td><?= $row['gender'] ?></td>
-                    <td>4</td>
+                    <td><?= $row['grade_level'] ?></td>
                     <td>Rose</td>
                     <td>Daryl</td>
                     <td>Old</td>
@@ -50,14 +50,10 @@ class StudentView extends \Models\Student{
                         </a>
                         
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <!-- <form action="/sabanges/includes/student_view.inc.php" method="get" enctype="multipart/form-data"> -->
-                                <input type="hidden" name="id" id="id" value="<?= $row['id'] ?>" >
-                                <!-- <input type="text" name="view" id="id" value="student_information" >
-                                <li><input class="dropdown-item" type="submit" value="Informations" name="informations"></li> -->
-                                <li><a class="dropdown-item" href=<?= './student_informations.php?id=' . $row['id'];?>>Informations</a></li>
-                                <li><a class="dropdown-item" href="#">Grades</a></li>
-                                <li><a class="dropdown-item" href="#">Delete</a></li>
-                            <!-- </form> -->
+                            <input type="hidden" name="id" id="id" value="<?= $row['id'] ?>" >
+                            <li><a class="dropdown-item" href=<?= './student_informations.php?id=' . $row['id'];?>>Informations</a></li>
+                            <li><a class="dropdown-item" href="#">Grades</a></li>
+                            <li><a class="dropdown-item" href="#">Delete</a></li>
                         </ul>
                     </div>
                     </td>
@@ -94,7 +90,7 @@ class StudentInformationView extends \Models\Student{
                 <div class="row ">
                     <div class="d-flex align-items-center justify-content-between py-3 px-3 border-bottom">
                         <h5>Information</h5>
-                        <a href="">
+                        <a href="../sabanges/enrollment.php">
                         <?php include_once $_SERVER['DOCUMENT_ROOT'].'/sabanges/partials/edit_icon.php'; ?>
                         </a>
                     </div>
@@ -104,9 +100,11 @@ class StudentInformationView extends \Models\Student{
                             <img class="profile-round" src="./images/profile.png" alt="">
                         </div>
                         <div class="ms-3 py-1 w-50">
-                            <h3 class="text-end">UPANO, JUSTINE RAY CABANG</h3>
-                            <span class="d-block text-end">2919293929192</span>
-                            <span class="d-block text-end">Grade 4 - Rose</span>
+                        <?php foreach($result as $row){ ?>
+                            <h3 class="text-end"><?= strtoupper($row['surname']) . ", " . strtoupper($row['first_name']) . " " . strtoupper($row['middle_name']) ?></h3>
+                            <span class="d-block text-end"> <?= strtoupper($row['lrn']) ?></span>
+                            <span class="d-block text-end">Grade level - <?= $row['grade_level'] ?></span>
+                        <?php } ?>
                         </div>
                     </div>
                     <div class="">
@@ -144,20 +142,29 @@ class StudentInformationView extends \Models\Student{
                             </div>
                             <div class="py-2 px-3">
                                 <div class="d-flex align-items-center justify-content-between">
+                                    <span class="fw-bold">Birth date :</span>
+                                    <div>
+                                        <span class="bday"><?= strtoupper($row['birth_date']) ?></span>
+                                        <span class="age-calc fw-light">(16)</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="py-2 px-3">
+                                <div class="d-flex align-items-center justify-content-between">
                                     <span class="fw-bold">Mother's name :</span>
-                                    <span>Justine Upano</span>
+                                    <span><?= strtoupper($row['mother_surname']) . ", " . strtoupper($row['mother_first_name']) . " " . strtoupper($row['mother_middle_name']) ?></span>
                                 </div>
                             </div>
                             <div class="py-2 px-3">
                                 <div class="d-flex align-items-center justify-content-between">
                                     <span class="fw-bold">Father's name :</span>
-                                    <span>Justine Upano</span>
+                                    <span><?= strtoupper($row['father_surname']) . ", " . strtoupper($row['father_first_name']) . " " . strtoupper($row['father_middle_name']) ?></span>
                                 </div>
                             </div>
                             <div class="py-2 px-3">
                                 <div class="d-flex align-items-center justify-content-between">
                                     <span class="fw-bold">Guardian's name :</span>
-                                    <span>Justine Upano</span>
+                                    <span><?= strtoupper($row['guardian_surname']) . ", " . strtoupper($row['guardian_first_name']) . " " . strtoupper($row['guardian_middle_name']) ?></span>
                                 </div>
                             </div>
                             <div class="py-2 px-3">
