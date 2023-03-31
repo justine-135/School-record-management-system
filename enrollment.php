@@ -9,15 +9,26 @@
 if (isset($_GET['enrolled'])) {
   ?>
 <div class="alert alert-success d-flex align-items-center alert-dismissible fade show" role="alert">
-  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="me-2 bi bi-check-circle-fill" viewBox="0 0 16 16">
-    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
-  </svg>
+    <?php require './partials/success_icon.php' ?>
   <div>
     Successfully enrolled a learner.
   </div>
   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 <?php
+}
+
+if (isset($_GET['err'])) {
+?>
+<div class="alert alert-danger d-flex align-items-center alert-dismissible fade show" role="alert">
+<?php require './partials/danger_icon.php' ?>
+  <div>
+    Learner not enrolled.
+  </div>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+<?php
+  
 }
 
 ?>
@@ -284,7 +295,7 @@ if (isset($_GET['enrolled'])) {
             <div class="form-check mb-3">
               <input type="radio" class="form-check-input other-education-radio education-radio" id="f-others" name="f-highest-education" value="Others"  <?= isset($_GET['father_education']) ? ($_GET['father_education'] === "Others") ? "checked" : "" : ""  ?> required>
               <label class="form-check-label" for="f-others">Others</label>
-              <input type="<?= $_GET['father_education'] === "Others" ? "text" : "hidden" ?>" class="form-control other-education-textbox" id="f-other" name="f-others-textbox" placeholder="Please specify" value="<?= $_GET['father_education_textbox'] ?>" <?= $_GET['father_education'] === "Others" ? "" : "disabled" ?>>
+              <input type="<?= isset($_GET['father_education']) ? $_GET['father_education'] === "Others" ? "text" : "hidden" : "hidden" ?>" class="form-control other-education-textbox" id="f-other" name="f-others-textbox" placeholder="Please specify" value="<?= isset($_GET['father_education_textbox']) ? $_GET['father_education_textbox'] : "" ?>" <?= isset($_GET['father_education']) ? $_GET['father_education'] === "Others" ? "" : "disabled" : "disabled" ?>>
             </div>
           </div>
           <div class="col-md-4 ">
@@ -316,7 +327,7 @@ if (isset($_GET['enrolled'])) {
             <div class="form-check mb-3">
             <input type="radio" class="form-check-input other-education-radio education-radio" id="m-others" name="m-highest-education" value="Others"  <?= isset($_GET['mother_education']) ? ($_GET['mother_education'] === "Others") ? "checked" : "" : ""  ?> required>
               <label class="form-check-label" for="m-others">Others</label>
-              <input type="<?= $_GET['mother_education'] === "Others" ? "text" : "hidden" ?>" class="form-control other-education-textbox" id="m-other" name="m-others-textbox" placeholder="Please specify" value="<?= $_GET['mother_education_textbox'] ?>" <?= $_GET['mother_education'] === "Others" ? "" : "disabled" ?>>
+              <input type="<?= isset($_GET['mother_education']) ? $_GET['mother_education'] === "Others" ? "text" : "hidden" : "hidden" ?>" class="form-control other-education-textbox" id="m-other" name="m-others-textbox" placeholder="Please specify" value="<?= isset($_GET['mother_education_textbox']) ? $_GET['mother_education_textbox'] : "" ?>" <?= isset($_GET['mother_education']) ? $_GET['mother_education'] === "Others" ? "" : "disabled" : "disabled" ?>>
             </div>
           </div>
           <div class="col-md-4">
@@ -348,7 +359,7 @@ if (isset($_GET['enrolled'])) {
             <div class="form-check mb-3">
               <input type="radio" class="form-check-input other-education-radio education-radio" id="g-others" name="g-highest-education" value="Others"  <?= isset($_GET['guardian_education']) ? ($_GET['guardian_education'] === "Others") ? "checked" : "" : ""  ?> required>
               <label class="form-check-label" for="g-others">Others</label>
-              <input type="<?= $_GET['guardian_education'] === "Others" ? "text" : "hidden" ?>" class="form-control other-education-textbox" id="g-other" name="g-others-textbox" placeholder="Please specify" value="<?= $_GET['guardian_education_textbox'] ?>" <?= $_GET['guardian_education'] === "Others" ? "" : "disabled" ?>>
+              <input type="<?= isset($_GET['guardian_education']) ? $_GET['guardian_education'] === "Others" ? "text" : "hidden" : "hidden" ?>" class="form-control other-education-textbox" id="g-other" name="g-others-textbox" placeholder="Please specify" value="<?= isset($_GET['guardian_education_textbox']) ? $_GET['guardian_education_textbox'] : "" ?>" <?= isset($_GET['guardian_education']) ? $_GET['guardian_education'] === "Others" ? "" : "disabled" : "disabled" ?>>
             </div>
           </div>
         </div>
