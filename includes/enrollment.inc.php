@@ -30,7 +30,7 @@ if (isset($_POST["enroll"])) {
     $father_fname = $_POST['f-fname'];
     $father_mname = $_POST['f-mname'];
     $father_education = $_POST['f-highest-education'];
-    $father_relation = "Father";
+    $father_education_textbox = null;
 
     isset($_POST['f-others-textbox']) ? $father_education_textbox = $_POST['f-others-textbox'] : "";
 
@@ -43,6 +43,7 @@ if (isset($_POST["enroll"])) {
     $mother_fname = $_POST['m-fname'];
     $mother_mname = $_POST['m-mname'];
     $mother_education = $_POST['m-highest-education'];
+    $mother_education_textbox = null;
 
     isset($_POST['m-others-textbox']) ? $mother_education_textbox = $_POST['m-others-textbox'] : "";
 
@@ -55,12 +56,20 @@ if (isset($_POST["enroll"])) {
     $guardian_fname = $_POST['g-fname'];
     $guardian_mname = $_POST['g-mname'];
     $guardian_education = $_POST['g-highest-education'];
+    $guardian_education_textbox = null;
 
     isset($_POST['g-others-textbox']) ? $guardian_education_textbox = $_POST['g-others-textbox'] : "";
 
     $guardian_relation = "Guardian";
     $guardian_employment = $_POST['g-employment-status'];
     $guardian_contact = $_POST['g-contact-number'];
+
+    var_dump($father_education);
+    var_dump($mother_education);
+    var_dump($guardian_education);
+    var_dump($father_education_textbox);
+    var_dump($mother_education_textbox);
+    var_dump($guardian_education_textbox);
 
     // Check inputs
     $enrollment_check_obj = new EnrollmentController();
@@ -70,7 +79,7 @@ if (isset($_POST["enroll"])) {
     $father_surname, $father_fname, $father_mname, $father_education, $father_employment, $father_contact, 
     $mother_surname, $mother_fname, $mother_mname, $mother_education, $mother_employment, $mother_contact,
     $guardian_surname, $guardian_fname, $guardian_mname, $guardian_education, $guardian_employment, $guardian_contact, 
-    $is_beneficary);
+    $is_beneficary, $father_education_textbox, $mother_education_textbox, $guardian_education_textbox);
 
 
     if ($enrollment_validation_result !== false) {
