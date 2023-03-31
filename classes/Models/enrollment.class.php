@@ -10,7 +10,8 @@ class Enrollment extends \Dbh{
     $father_surname, $father_fname, $father_mname, $father_education, $father_employment, $father_contact, 
     $mother_surname, $mother_fname, $mother_mname, $mother_education, $mother_employment, $mother_contact,
     $guardian_surname, $guardian_fname, $guardian_mname, $guardian_education, $guardian_employment, $guardian_contact, 
-    $is_beneficary){
+    $is_beneficary, $father_education_textbox, $mother_education_textbox, $guardian_education_textbox)
+    {
         try{
             // Student
             $sql = "INSERT INTO students_table (surname, first_name, middle_name, ext, lrn, sy,
@@ -22,6 +23,9 @@ class Enrollment extends \Dbh{
             $stmt = null;
 
             // Father
+            if ($father_education === "Others") {
+                $father_education = $father_education_textbox;
+            }
             $sql = "INSERT INTO `fathers_table` (student_lrn, surname, first_name, middle_name, education, employment, contact_number, is_beneficiary)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
 
@@ -30,6 +34,9 @@ class Enrollment extends \Dbh{
             $stmt = null;
 
             // Mother
+            if ($mother_education === "Others") {
+                $mother_education = $mother_education_textbox;
+            }
             $sql = "INSERT INTO `mothers_table` (student_lrn, surname, first_name, middle_name, education, employment, contact_number, is_beneficiary)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
 
@@ -38,7 +45,10 @@ class Enrollment extends \Dbh{
             $stmt = null;
 
             // Guardian
-            $sql = "INSERT INTO `fathers_table` (student_lrn, surname, first_name, middle_name, education, employment, contact_number, is_beneficiary)
+            if ($guardian_education === "Others") {
+                $guardian_education = $guardian_education_textbox;
+            }
+            $sql = "INSERT INTO `guardian_table` (student_lrn, surname, first_name, middle_name, education, employment, contact_number, is_beneficiary)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
 
             $stmt = $this->connection()->prepare($sql);

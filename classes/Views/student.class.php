@@ -51,7 +51,7 @@ class StudentView extends \Models\Student{
                         
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                             <!-- <form action="/sabanges/includes/student_view.inc.php" method="get" enctype="multipart/form-data"> -->
-                                <input type="text" name="id" id="id" value="<?= $row['id'] ?>" >
+                                <input type="hidden" name="id" id="id" value="<?= $row['id'] ?>" >
                                 <!-- <input type="text" name="view" id="id" value="student_information" >
                                 <li><input class="dropdown-item" type="submit" value="Informations" name="informations"></li> -->
                                 <li><a class="dropdown-item" href=<?= './student_informations.php?id=' . $row['id'];?>>Informations</a></li>
