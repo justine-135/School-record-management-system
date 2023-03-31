@@ -17,18 +17,17 @@ educ_radios.forEach((element) => {
       other_education_textbox.type = "hidden";
       other_education_textbox.disabled = true;
     }
-    console.log(educ_radios);
   });
 });
 
 // Fill 'School year' textbox with current year
-// const from_sy_textbox = document.querySelector(".from-sy-textbox");
-// const to_sy_textbox = document.querySelector(".to-sy-textbox");
+const from_sy_textbox = document.querySelector(".from-sy-textbox");
+const to_sy_textbox = document.querySelector(".to-sy-textbox");
 
-// let date = new Date();
+let date = new Date();
 
-// from_sy_textbox.min = date.getFullYear();
+from_sy_textbox.min = date.getFullYear();
 // from_sy_textbox.value = date.getFullYear();
 
-// to_sy_textbox.min = date.getFullYear();
+to_sy_textbox.min = date.getFullYear();
 // to_sy_textbox.value = date.getFullYear() + 1;
