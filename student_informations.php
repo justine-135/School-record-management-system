@@ -7,3 +7,4 @@
 <?php include "partials/nav.php"; ?>
 
 <?php include "includes/student_view.inc.php"; ?>
+<script src="js/student_profile.js"></script>
