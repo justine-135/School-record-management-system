@@ -4,76 +4,87 @@ namespace Views;
 include $_SERVER['DOCUMENT_ROOT'].'/sabanges/classes/Models/student.class.php';
 
 class StudentView extends \Models\Student{
-    public function initIndex(){
-        $results = $this->index();
+    public function initIndex($query){
+        $results = $this->index($query);
         ?>
-        <table class="table table-hover student-table mb-5">
-        <thead>
-          <tr>
-              <th scope="col">#</th>
-              <th scope="col">LRN</th>
-              <th scope="col">Student name</th>
-              <th scope="col">Enrolled at</th>
-              <th scope="col">Gender</th>
-              <th scope="col">Grade Level</th>
-              <th scope="col">Section</th>
-              <th scope="col">Adviser</th>
-              <th scope="col">Type</th>
-              <th scope="col">Action</th>
-          </tr>
-          </thead>
-          <tbody>
-            <?php
-                foreach ($results as $row) {
-            ?>
-                <tr>
-                    <th scope="row"><?= $row['id'] ?></th>
-                    <td><?= $row['lrn'] ?></td>
-                    <td><?= strtoupper($row['surname']) . ', ' . strtoupper($row['first_name']) . ' ' . strtoupper($row['middle_name'])  ?></td>
-                    <td><?= $row['enrolled_at'] ?></td>
-                    <td><?= $row['gender'] ?></td>
-                    <td><?= $row['grade_level'] ?></td>
-                    <td>Rose</td>
-                    <td>Daryl</td>
-                    <td>Old</td>
-                    <td>
-                    <div class="dropdown ml-auto">
-                        <a
-                        class="btn dropdown-toggle btn-primary"
-                        href="#"
-                        role="button"
-                        id="dropdownMenuLink"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                        >
-                        View
-                        </a>
-                        
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            <input type="hidden" name="id" id="id" value="<?= $row['id'] ?>" >
-                            <li><a class="dropdown-item" href=<?= './student_informations.php?id=' . $row['id'];?>>Informations</a></li>
-                            <li><a class="dropdown-item" href="#">Grades</a></li>
-                            <li><a class="dropdown-item" href="#">Delete</a></li>
-                        </ul>
-                    </div>
-                    </td>
-                </tr>
-            <?php 
-                }
-            ?>
-          </tbody>
-          <tfoot>
-          <th scope="col">#</th>
-          <th scope="col">Student name</th>
-          <th scope="col">Enrolled at</th>
-          <th scope="col">Grade level</th>
-          <th scope="col">Section</th>
-          <th scope="col">Adviser</th>
-          <th scope="col">LRN</th>
-          <th scope="col">Application type</th>
-          <th scope="col">Action</th>
-          </tfoot>
-        </table>
+        <h4 class="">Masterlist</h4>
+        <div class="border mt-3">
+            <div>
+            <div class="d-flex justify-content-between align-items-center pt-3 px-3 border-bottom">
+                <h5>Enrolled</h5>
+                <form class="input-group mb-3 w-25 search-form" method="get" enctype="multipart/form-data">
+                    <input type="text" class="form-control search-input" placeholder="Enter here" name="query" />
+                    <input type="hidden" class="form-control" placeholder="Enter here" name="view" value="masterlist" />
+                    <button
+                    class="btn btn-primary search-btn"
+                    id="button-addon2"
+                    type="submit"
+                    >
+                    Search
+                    </button>
+                </form> 
+            </div>
+            </div>
+            <div class="table-responsive masterlist-table">
+                <table class="table table-hover mb-0 student-table">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">LRN</th>
+                        <th scope="col">Student name</th>
+                        <th scope="col">Enrolled at</th>
+                        <th scope="col">Gender</th>
+                        <th scope="col">Grade Level</th>
+                        <th scope="col">Section</th>
+                        <th scope="col">Adviser</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                        foreach ($results as $row) {
+                    ?>
+                        <tr>
+                            <th scope="row"><?= $row['id'] ?></th>
+                            <td><?= $row['lrn'] ?></td>
+                            <td><?= strtoupper($row['surname']) . ', ' . strtoupper($row['first_name']) . ' ' . strtoupper($row['middle_name'])  ?></td>
+                            <td><?= $row['enrolled_at'] ?></td>
+                            <td><?= $row['gender'] ?></td>
+                            <td><?= $row['grade_level'] ?></td>
+                            <td>Rose</td>
+                            <td>Daryl</td>
+                            <td>Old</td>
+                            <td>
+                            <div class="dropdown ml-auto">
+                                <a
+                                class="btn dropdown-toggle btn-primary"
+                                href="#"
+                                role="button"
+                                id="dropdownMenuLink"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false"
+                                >
+                                View
+                                </a>
+                                
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <input class="student-id" type="hidden" name="id" id="id" value="<?= $row['id'] ?>" >
+                                    <!-- <li><input type="submit" class="dropdown-item information-links" name="information" value="Information"></li> -->
+                                    <li><a class="dropdown-item" href="../sabanges/student_informations.php?id=<?= $row['id']?>">Informations</a></li>
+                                    <li><a class="dropdown-item" href="#">Grades</a></li>
+                                </ul>
+                            </div>
+                            </td>
+                        </tr>
+                    <?php 
+                        }
+                    ?>
+                </tbody>
+            </table>
+            </div>
+        </div>
+        
         <?php
             
     }
@@ -82,8 +93,8 @@ class StudentView extends \Models\Student{
 class StudentInformationView extends \Models\Student{
     public function initSingleIndex($id){
         $result = $this->singleIndex($id);
+        // count($result) === 0 ? header("Location: ./student_informations.php?id={$id}&err=not_found") : "";
         ?>
-        <main class="container-fluid w-90 border mt-4 p-4 bg-white">
         <h4 class="">Profile</h4>
         <div class="row">
             <div class="border mt-3 col-md-6">
@@ -99,7 +110,7 @@ class StudentInformationView extends \Models\Student{
                             <input class="profile-input" type="file" name="" id="">
                             <img class="profile-round" src="./images/profile.png" alt="">
                         </div>
-                        <div class="ms-3 py-1 w-50">
+                        <div class="ms-3 py-1 w-75">
                         <?php foreach($result as $row){ ?>
                             <h3 class="text-end"><?= strtoupper($row['surname']) . ", " . strtoupper($row['first_name']) . " " . strtoupper($row['middle_name']) ?></h3>
                             <span class="d-block text-end"> <?= strtoupper($row['lrn']) ?></span>
@@ -186,17 +197,37 @@ class StudentInformationView extends \Models\Student{
                 </div>
             </div>
             <div class="border mt-3 col-md-6">
+            <?php foreach($result as $row){ ?>
                 <div class="row">
                     <div class="d-flex justify-content-between align-items-center py-3 px-3 border-bottom">
                         <h5>Subjects</h5>
                     </div>
-                    <div class="d-flex justify-content-between align-items-center py-3 px-3">
+                    <div class="d-flex justify-content-between align-items-center py-3 px-3 border-bottom">
                         <h5>Enrolled History</h5>
                     </div>
+                    <div class="w-100 py-2 px-3 border-bottom">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <span class="fw-bold">School year :</span>
+                            <span><?= $row['from_sy'] . " - " . $row['to_sy'] ?></span>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <span class="fw-bold">Grade level :</span>
+                            <span><?= $row['grade_level'] ?></span>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <span class="fw-bold">School :</span>
+                            <span><?= $row['school'] ?></span>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <span class="fw-bold">Status :</span>
+                            <span class="fw-bold text-success"><?= $row['status'] ?></span>
+                        </div>
+                    </div>
+                    
                 </div>
+            <?php } ?>
             </div>
         </div>
-        </main>
         <?php
     }
 }

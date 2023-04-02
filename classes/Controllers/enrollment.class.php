@@ -16,8 +16,7 @@ class EnrollmentController extends \Models\Enrollment{
     $guardian_employment, $guardian_contact, $is_beneficiary,
     $father_education_textbox, $mother_education_textbox, $guardian_education_textbox
         ){
-        $sy = $from_sy . " - " . $to_sy;
-        $this->create($sname, $fname, $mname, $extname, $lrn, $sy, $grade_lvl, $bdate, $gender, $religion, 
+        $this->create($sname, $fname, $mname, $extname, $lrn, $from_sy, $to_sy, $grade_lvl, $bdate, $gender, $religion, 
         $house_street, $subdivision, $barangay, $city, $province, $region,
         $father_surname, $father_fname, $father_mname, $father_education, 
         $father_employment, $father_contact, $mother_surname, $mother_fname, 
