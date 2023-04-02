@@ -57,7 +57,6 @@
       crossorigin="anonymous"
     ></script>
     
-
     <script src="js/form_validation.js"></script>
   </body>
 </html>
