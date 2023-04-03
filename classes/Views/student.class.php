@@ -7,83 +7,63 @@ class StudentView extends \Models\Student{
     public function initIndex($query){
         $results = $this->index($query);
         ?>
-        <h4 class="">Masterlist</h4>
-        <div class="border mt-3">
-            <div>
-            <div class="d-flex justify-content-between align-items-center pt-3 px-3 border-bottom">
-                <h5>Enrolled</h5>
-                <form class="input-group mb-3 w-25 search-form" method="get" enctype="multipart/form-data">
-                    <input type="text" class="form-control search-input" placeholder="Enter here" name="query" />
-                    <input type="hidden" class="form-control" placeholder="Enter here" name="view" value="masterlist" />
-                    <button
-                    class="btn btn-primary search-btn"
-                    id="button-addon2"
-                    type="submit"
-                    >
-                    Search
-                    </button>
-                </form> 
-            </div>
-            </div>
-            <div class="table-responsive masterlist-table">
-                <table class="table table-hover mb-0 student-table">
-                    <thead>
+        <table class="table table-hover mb-0 student-table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">LRN</th>
+                    <th scope="col">Student name</th>
+                    <th scope="col">Enrolled at</th>
+                    <th scope="col">Gender</th>
+                    <th scope="col">Grade Level</th>
+                    <th scope="col">Section</th>
+                    <th scope="col">Adviser</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php
+                    foreach ($results as $row) {
+                ?>
                     <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">LRN</th>
-                        <th scope="col">Student name</th>
-                        <th scope="col">Enrolled at</th>
-                        <th scope="col">Gender</th>
-                        <th scope="col">Grade Level</th>
-                        <th scope="col">Section</th>
-                        <th scope="col">Adviser</th>
-                        <th scope="col">Type</th>
-                        <th scope="col">Action</th>
+                        <th scope="row"><?= $row['id'] ?></th>
+                        <td><?= $row['lrn'] ?></td>
+                        <td><?= strtoupper($row['surname']) . ', ' . strtoupper($row['first_name']) . ' ' . strtoupper($row['middle_name'])  ?></td>
+                        <td><?= $row['enrolled_at'] ?></td>
+                        <td><?= $row['gender'] ?></td>
+                        <td><?= $row['grade_level'] ?></td>
+                        <td>Rose</td>
+                        <td>Daryl</td>
+                        <td>Old</td>
+                        <td>
+                        <div class="dropdown ml-auto">
+                            <a
+                            class="btn dropdown-toggle btn-primary"
+                            href="#"
+                            role="button"
+                            id="dropdownMenuLink"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                            >
+                            View
+                            </a>
+                            
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <input class="student-id" type="hidden" name="id" id="id" value="<?= $row['id'] ?>" >
+                                <!-- <li><input type="submit" class="dropdown-item information-links" name="information" value="Information"></li> -->
+                                <li><a class="dropdown-item" href="../sabanges/student_informations.php?id=<?= $row['id']?>">Informations</a></li>
+                                <li><a class="dropdown-item" href="#">Grades</a></li>
+                            </ul>
+                        </div>
+                        </td>
                     </tr>
-                    </thead>
-                    <tbody>
-                    <?php
-                        foreach ($results as $row) {
-                    ?>
-                        <tr>
-                            <th scope="row"><?= $row['id'] ?></th>
-                            <td><?= $row['lrn'] ?></td>
-                            <td><?= strtoupper($row['surname']) . ', ' . strtoupper($row['first_name']) . ' ' . strtoupper($row['middle_name'])  ?></td>
-                            <td><?= $row['enrolled_at'] ?></td>
-                            <td><?= $row['gender'] ?></td>
-                            <td><?= $row['grade_level'] ?></td>
-                            <td>Rose</td>
-                            <td>Daryl</td>
-                            <td>Old</td>
-                            <td>
-                            <div class="dropdown ml-auto">
-                                <a
-                                class="btn dropdown-toggle btn-primary"
-                                href="#"
-                                role="button"
-                                id="dropdownMenuLink"
-                                data-bs-toggle="dropdown"
-                                aria-expanded="false"
-                                >
-                                View
-                                </a>
-                                
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                    <input class="student-id" type="hidden" name="id" id="id" value="<?= $row['id'] ?>" >
-                                    <!-- <li><input type="submit" class="dropdown-item information-links" name="information" value="Information"></li> -->
-                                    <li><a class="dropdown-item" href="../sabanges/student_informations.php?id=<?= $row['id']?>">Informations</a></li>
-                                    <li><a class="dropdown-item" href="#">Grades</a></li>
-                                </ul>
-                            </div>
-                            </td>
-                        </tr>
-                    <?php 
-                        }
-                    ?>
-                </tbody>
-            </table>
-            </div>
-        </div>
+                <?php 
+                    }
+                ?>
+            </tbody>
+        </table>
+
         
         <?php
             
@@ -120,7 +100,7 @@ class StudentInformationView extends \Models\Student{
                     </div>
                     <div class="">
                         <?php foreach($result as $row){ ?>
-                        <div class="w-100">
+                        <div class="w-100 text-end">
                             <div class="py-2 px-3">
                                 <div class="d-flex align-items-center justify-content-between">
                                     <span class="fw-bold">LRN :</span>
