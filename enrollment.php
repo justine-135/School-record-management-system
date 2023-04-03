@@ -60,20 +60,8 @@ if (isset($_GET['err'])) {
           </div>
           <div class="col-md-4">
             <label for="grade-level" class="form-label">Grade Level</label>
-            <select class="form-select" id="grade-level" aria-label="Default select example" name="grade-lvl">
-              <option value="Kindergarten" <?= isset($_GET['grade_lvl']) ? $_GET['grade_lvl'] === "Kindergarten" ? "selected" : "" : ""?>>Kindergarten</option>
-              <option value="1" <?= isset($_GET['grade_lvl']) ? $_GET['grade_lvl'] === "1" ? "selected" : "" : ""?>>Grade 1</option>
-              <option value="2" <?= isset($_GET['grade_lvl']) ? $_GET['grade_lvl'] === "2" ? "selected" : "" : ""?>>Grade 2</option>
-              <option value="3" <?= isset($_GET['grade_lvl']) ? $_GET['grade_lvl'] === "3" ? "selected" : "" : ""?>>Grade 3</option>
-              <option value="4" <?= isset($_GET['grade_lvl']) ? $_GET['grade_lvl'] === "4" ? "selected" : "" : ""?>>Grade 4</option>
-              <option value="5" <?= isset($_GET['grade_lvl']) ? $_GET['grade_lvl'] === "5" ? "selected" : "" : ""?>>Grade 5</option>
-              <option value="6" <?= isset($_GET['grade_lvl']) ? $_GET['grade_lvl'] === "6" ? "selected" : "" : ""?>>Grade 6</option>
-              <option value="7" <?= isset($_GET['grade_lvl']) ? $_GET['grade_lvl'] === "7" ? "selected" : "" : ""?>>Grade 7</option>
-              <option value="8" <?= isset($_GET['grade_lvl']) ? $_GET['grade_lvl'] === "8" ? "selected" : "" : ""?>>Grade 8</option>
-              <option value="9" <?= isset($_GET['grade_lvl']) ? $_GET['grade_lvl'] === "9" ? "selected" : "" : ""?>>Grade 9</option>
-              <option value="10" <?= isset($_GET['grade_lvl']) ? $_GET['grade_lvl'] === "10" ? "selected" : "" : ""?>>Grade 10</option>
-              <option value="11" <?= isset($_GET['grade_lvl']) ? $_GET['grade_lvl'] === "11" ? "selected" : "" : ""?>>Grade 11</option>
-              <option value="12" <?= isset($_GET['grade_lvl']) ? $_GET['grade_lvl'] === "12" ? "selected" : "" : ""?>>Grade 12</option>
+            <select class="form-select grade-select" id="grade-level" aria-label="Default select example" name="grade-lvl">
+              
             </select>
           </div>
         </div>
