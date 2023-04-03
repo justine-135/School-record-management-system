@@ -20,7 +20,7 @@
 
   <nav class="navbar navbar-expand-lg navbar-white bg-white d-flex border-bottom">
     <div class="container-fluid d-flex">
-      <a class="navbar-brand me-auto" href="index.php">
+      <a class="navbar-brand me-auto text-dark" href="index.php">
           <img src="images/logo.jpg" height="50px" width="50px" alt="" />
           Sabang Elementary School
       </a>
