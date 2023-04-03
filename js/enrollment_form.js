@@ -31,3 +31,18 @@ from_sy_textbox.min = date.getFullYear();
 
 to_sy_textbox.min = date.getFullYear();
 // to_sy_textbox.value = date.getFullYear() + 1;
+
+const loadGradeSelect = () => {
+  var xmlhttp = new XMLHttpRequest();
+  xmlhttp.onreadystatechange = function () {
+    if (this.readyState == 4) {
+      // Show HTML
+      const gradeSelect = document.querySelector(".grade-select");
+      gradeSelect.innerHTML = this.responseText;
+    }
+  };
+  xmlhttp.open("GET", "./includes/operations.inc.php?grade_level_select", true);
+  xmlhttp.send();
+};
+
+loadGradeSelect();
