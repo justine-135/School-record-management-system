@@ -60,8 +60,8 @@ if (isset($_GET['err'])) {
           </div>
           <div class="col-md-4">
             <label for="grade-level" class="form-label">Grade Level</label>
+            <input type="hidden" name="grade-lvl-input" value="<?= isset($_GET['grade_lvl']) ? $_GET['grade_lvl'] : "" ?>"  id="">
             <select class="form-select grade-select" id="grade-level" aria-label="Default select example" name="grade-lvl">
-              
             </select>
           </div>
         </div>
