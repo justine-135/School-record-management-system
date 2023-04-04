@@ -20,9 +20,9 @@ function initCreateSubjects($subject, $grade){
     $obj->initCreate($subject, $grade);
 }
 
-function initIndexSelect(){
+function initIndexSelect($grade_lvl_params){
     $obj = new GradeLevelsView();
-    $obj->initIndexSelect();
+    $obj->initIndexSelect($grade_lvl_params);
 }
 
 function initIndexSections(){
@@ -48,8 +48,10 @@ if (isset($_POST['subjects-submit'])) {
     initCreateSubjects($subjects, $grade);
 }
 
+
 if (isset($_GET['grade_level_select'])) {
-    initIndexSelect();
+    $grade_lvl_params = $_GET['grade_level_select'];
+    initIndexSelect($grade_lvl_params);
 }
 
 if (isset($_GET['grade_level_table'])) {
