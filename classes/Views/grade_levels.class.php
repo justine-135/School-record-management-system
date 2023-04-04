@@ -2,11 +2,12 @@
 namespace Views;
 
 class GradeLevelsView extends \Models\GradeLevels{
-    public function initIndexSelect(){
+    public function initIndexSelect($grade_lvl_params){
         $results = $this->indexSelect();
         foreach ($results as $row) {
+            echo $grade_lvl_params;
             ?>
-        <option value="<?= $row['grade'] ?>"><?= $row['grade'] ?></option>
+        <option value="<?= $row['grade'] ?>" <?= isset($grade_lvl_params) ? $grade_lvl_params == $row['grade'] ? 'selected' : "" : "" ?>><?= $row['grade'] ?></option>
             <?php
         }
     }

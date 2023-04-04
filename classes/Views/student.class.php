@@ -12,13 +12,10 @@ class StudentView extends \Models\Student{
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">LRN</th>
-                    <th scope="col">Student name</th>
+                    <th scope="col">Student</th>
                     <th scope="col">Enrolled at</th>
                     <th scope="col">Gender</th>
                     <th scope="col">Grade Level</th>
-                    <th scope="col">Section</th>
-                    <th scope="col">Adviser</th>
-                    <th scope="col">Type</th>
                     <th scope="col">Action</th>
                 </tr>
                 </thead>
@@ -33,9 +30,6 @@ class StudentView extends \Models\Student{
                         <td><?= $row['enrolled_at'] ?></td>
                         <td><?= $row['gender'] ?></td>
                         <td><?= $row['grade_level'] ?></td>
-                        <td>Rose</td>
-                        <td>Daryl</td>
-                        <td>Old</td>
                         <td>
                         <div class="dropdown ml-auto">
                             <a
