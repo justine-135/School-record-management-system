@@ -1,16 +1,3 @@
-const loadGradeLevelsSelect = () => {
-  var xmlhttp = new XMLHttpRequest();
-  xmlhttp.onreadystatechange = function () {
-    if (this.readyState == 4) {
-      // Show HTML
-      const gradeLevelSelect = document.querySelector(".grade-level-select");
-      gradeLevelSelect.innerHTML = this.responseText;
-    }
-  };
-  xmlhttp.open("GET", "./includes/operations.inc.php?grade_level_select", true);
-  xmlhttp.send();
-};
-
 const loadGradeLevels = () => {
   var xmlhttp = new XMLHttpRequest();
   xmlhttp.onreadystatechange = function () {
@@ -37,6 +24,5 @@ const loadSections = () => {
   xmlhttp.send();
 };
 
-loadGradeLevelsSelect();
 loadGradeLevels();
 loadSections();
