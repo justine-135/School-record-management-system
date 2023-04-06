@@ -8,7 +8,7 @@ class Subjects extends \Dbh{
     protected function create($subject, $grade){
         try {
             $date = date("Y-m-d");
-            $sql = "INSERT INTO `subjects_table` (updated_at, `subject`, grade_level)
+            $sql = "INSERT INTO `operations_subjects_table` (updated_at, `subject`, grade_level)
             VALUES (?, ?, ?);";
 
             $stmt = $this->connection()->prepare($sql);
@@ -21,7 +21,7 @@ class Subjects extends \Dbh{
 
     protected function index(){
         try {
-            $sql = "SELECT * FROM `subjects_table`;";
+            $sql = "SELECT * FROM `operations_subjects_table`;";
             $stmt = $this->connection()->prepare($sql);
             $stmt->execute();
     
