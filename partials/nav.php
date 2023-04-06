@@ -9,6 +9,9 @@
     <a class="nav-link <?= $header === "/enrollment" ? "active" : "" ?>" href="enrollment.php">Enrollment</a>
   </li>
   <li class="nav-item">
+    <a class="nav-link <?= $header === "/grades" ? "active" : "" ?>" href="grades.php">Grades</a>
+  </li>
+  <li class="nav-item">
     <a class="nav-link <?= $header === "/teachers" ? "active" : "" ?>" href="teachers.php">Teachers</a>
   </li>
   <li class="nav-item">
