@@ -20,7 +20,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="exampleInputPassword1" class="form-label">Section</label>
-                    <input type="text" class="form-control" id="section" name="section">
+                    <input type="text" class="form-control" id="section" name="section" placeholder="Enter section name here ...">
                     <div id="emailHelp" class="form-text">Add section to this grade level.</div>
                 </div>
             </div>
