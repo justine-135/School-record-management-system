@@ -47,3 +47,11 @@ body {
 .err-msg {
   color: red;
 }
+
+.table {
+  font-size: 0.875rem;
+}
+
+.w-49 {
+  width: 49%;
+}
