@@ -61,9 +61,9 @@ class Enrollment extends \Dbh{
 
     protected function studentExist($lrn){
         try{
-            $sql = "SELECT * FROM students_table WHERE lrn = '$lrn';";
+            $sql = "SELECT * FROM students_table WHERE lrn = ?;";
             $stmt = $this->connection()->prepare($sql);
-            $stmt->execute();
+            $stmt->execute([$lrn]);
     
             $results = $stmt->fetchAll();
             return $results;
