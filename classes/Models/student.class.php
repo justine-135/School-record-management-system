@@ -51,9 +51,9 @@ class Student extends \Dbh{
 
     protected function studentExist($lrn){
         try{
-            $sql = "SELECT * FROM students_table WHERE lrn = '$lrn';";
+            $sql = "SELECT * FROM students_table WHERE lrn = ?";
             $stmt = $this->connection()->prepare($sql);
-            $stmt->execute();
+            $stmt->execute([$lrn]);
     
             $results = $stmt->fetchAll();
             return $results;
@@ -66,31 +66,43 @@ class Student extends \Dbh{
 
     protected function singleIndex($id){
         try{
-            $sql = "SELECT * FROM `students_table`, `fathers_table`, `mothers_table`, `guardians_table`, 
-            `enrollment_history_table`
+            $sql = "SELECT * FROM `students_table`, `fathers_table`, `mothers_table`, `guardians_table`
             WHERE students_table.lrn = fathers_table.student_lrn
             AND students_table.lrn = mothers_table.student_lrn
             AND students_table.lrn = guardians_table.student_lrn
-            AND students_table.lrn = enrollment_history_table.student_lrn
-            AND students_table.id = $id;
+            AND students_table.student_id = ?;
             ";
    
-            // $sql = "SELECT `surname`, `first_name`, `middle_name`, `ext`, `lrn`, `grade_level`, `from_sy`, `to_sy`, `birth_date`, `gender`, `religion`, `house_street`,
-            // `subdivision`, `barangay`, `city`, `provice`, `region`, `student_lrn`, 
-            // `father_first_name`, `father_surname`, `father_middle_name`,
-            // `mother_first_name`, `mother_surname`, `mother_middle_name`,
-            // `guardian_first_name`, `guardian_surname`, `guardian_middle_name`,
-            // `subject`, `grade_level`, `grade` 
-            // FROM `students_table`, `fathers_table`, `mothers_table`, `guardians_table`, 
-            // `enrollment_history_table`, `operations_subjects_table`
-            // WHERE students_table.lrn = fathers_table.student_lrn
-            // AND students_table.lrn = mothers_table.student_lrn
-            // AND students_table.lrn = guardians_table.student_lrn
-            // AND students_table.lrn = enrollment_history_table.student_lrn
-            // AND enrollment_history_table.grade = operations_subjects_table.grade_level
-            // AND students_table.id = $id;
-            // ";
+            $stmt = $this->connection()->prepare($sql);
+            $stmt->execute([$id]);
+    
+            $results = $stmt->fetchAll();
+            return $results;
+        }
+        catch(PDOException $e) {
+            echo "Error: " . $e->getMessage();
+        }
+        $conn = null;
+    }
 
+    protected function subjectIndex($grade_lvl){
+        try{
+            $sql = "SELECT * FROM `operations_subjects_table` WHERE `grade_level` = ?";
+            $stmt = $this->connection()->prepare($sql);
+            $stmt->execute([$grade_lvl]);
+    
+            $results = $stmt->fetchAll();
+            return $results;
+        }
+        catch(PDOException $e) {
+            echo "Error: " . $e->getMessage();
+        }
+        $conn = null;
+    }
+
+    protected function enrollmentHistory($lrn){
+        try{
+            $sql = "SELECT * FROM `enrollment_history_table` WHERE `student_lrn` = '$lrn'";
             $stmt = $this->connection()->prepare($sql);
             $stmt->execute();
     
@@ -103,11 +115,11 @@ class Student extends \Dbh{
         $conn = null;
     }
 
-    protected function subjectIndex($grade){
+    protected function getGradeLevelsOptions($lrn, $grade_lvl){
         try{
-            $sql = "SELECT * FROM `operations_subjects_table` WHERE `grade_level` = '$grade'";
+            $sql = "SELECT * FROM `enrollment_history_table` WHERE `student_lrn` = ? AND `grade_level` = ?";
             $stmt = $this->connection()->prepare($sql);
-            $stmt->execute();
+            $stmt->execute([$lrn, $grade_lvl]);
     
             $results = $stmt->fetchAll();
             return $results;
