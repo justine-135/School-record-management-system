@@ -15,6 +15,11 @@ function singleIndex($id){
     $obj->initSingleIndex($id);    
 }
 
+function initAddGradeTable($grade_lvl){
+    $obj = new StudentInformationView();
+    $obj->addGradesTable($grade_lvl); 
+}
+
 // Requests
 if (isset($_GET['query'])) {
     $query = $_GET['query']; 
@@ -25,4 +30,9 @@ if (isset($_GET['query'])) {
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
     singleIndex($id);
+}
+
+if (isset($_GET['grade_level'])) {
+    $grade_lvl = $_GET['grade_level'];
+    initAddGradeTable($grade_lvl);
 }
