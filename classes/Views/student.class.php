@@ -271,7 +271,7 @@ class StudentInformationView extends \Models\Student{
             </div>
             <div class="container border mt-3 col-md-4">
                 <div class="row">
-                    <div class="d-flex align-items-center justify-content-between py-3 px-3 border-bottom border-top">
+                    <div class="d-flex align-items-center justify-content-between py-3 px-3 border-bottom">
                         <h5>Enrolled History</h5>
                         <?php include $_SERVER['DOCUMENT_ROOT'].'/sabanges/partials/enrollment_modal.php'; ?>
                         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#enrollment-modal">
@@ -312,9 +312,46 @@ class StudentInformationView extends \Models\Student{
             </div>
         </div>
         <?php include './partials/add_grades_modal.php'; ?>
+        
+        <div class="border mt-3 col-md" id="grades-section">
+        <?php
+        if (isset($_GET['added'])) {
+            ?>
+            <div class="alert alert-success d-flex align-items-center alert-dismissible fade show" role="alert">
+                <?php require './partials/success_icon.php' ?>
+            <div>
+                Grades added successfully
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <?php
+            }
+        ?>
+        <?php
+        if (isset($_GET['err'])) {
+        ?>
+        <div class="alert alert-danger d-flex align-items-center alert-dismissible fade show" role="alert">
+        <?php require './partials/danger_icon.php' ?>
+            <div>
+                Grades not added.
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <?php
+        }
+        ?>
+        <div class="d-flex align-items-center justify-content-between py-3 px-3">
+            <h5>Grades</h5>          
+            <a class="btn btn-primary" data-bs-toggle="modal" href="#exampleModalToggle" role="button">
+                Grade learner
+                <?php include $_SERVER['DOCUMENT_ROOT'].'/sabanges/partials/add_icon.php' ?>
+            </a>     
+        </div>
         <div class="row grades-section" id="<?= $result2[0]['student_lrn'] ?>">
             <input type="text" name="grade-lvl" value="<?= $result2[0]['lrn'] ?>" id="">
+            </div>
         </div>
+
 
         <?php
     }
