@@ -1,8 +1,10 @@
 <?php
 
 require '../classes/Controllers/enrollment.class.php';
+require '../classes/Controllers/enrollment_history.class.php';
 
 use Controllers\EnrollmentController;
+use Controllers\EnrollmentHistoryController;
 
 if (isset($_POST["enroll"])) {
 
@@ -92,6 +94,17 @@ if (isset($_POST["enroll"])) {
         
         header("Location: ../enrollment.php?enrolled");
     }
+}
+elseif (isset($_POST['add-enrollment-history'])) {
+    $lrn = $_POST['lrn'];
+    $from_sy = $_POST['from-sy'];
+    $to_sy = $_POST['to-sy'];
+    $grade_lvl = $_POST['grade-lvl'];
+    $old_grade_lvl = $_POST['old-grade-lvl'];
+    $status = $_POST['status'];
+
+    $enrollment_history_check_obj = new EnrollmentHistoryController();
+    $enrollment_history_validation_result = $enrollment_history_check_obj->checkValidationHistory($lrn, $from_sy, $to_sy, $old_grade_lvl, $grade_lvl, $status);
 }
 else{
     header("location: ../index.php");
