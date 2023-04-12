@@ -96,6 +96,7 @@ if (isset($_POST["enroll"])) {
     }
 }
 elseif (isset($_POST['add-enrollment-history'])) {
+    $id = $_POST['id'];
     $lrn = $_POST['lrn'];
     $from_sy = $_POST['from-sy'];
     $to_sy = $_POST['to-sy'];
@@ -104,7 +105,7 @@ elseif (isset($_POST['add-enrollment-history'])) {
     $status = $_POST['status'];
 
     $enrollment_history_check_obj = new EnrollmentHistoryController();
-    $enrollment_history_validation_result = $enrollment_history_check_obj->checkValidationHistory($lrn, $from_sy, $to_sy, $old_grade_lvl, $grade_lvl, $status);
+    $enrollment_history_validation_result = $enrollment_history_check_obj->checkValidationHistory($id, $lrn, $from_sy, $to_sy, $old_grade_lvl, $grade_lvl, $status);
 }
 else{
     header("location: ../index.php");
