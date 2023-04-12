@@ -55,3 +55,14 @@ body {
 .w-49 {
   width: 49%;
 }
+
+.bg-login {
+  height: 100vh;
+  background: url("../images/bg_sabanges.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.login-form {
+  height: 100vh;
+}
