@@ -4,36 +4,8 @@
 
 <?php include "partials/nav.php"; ?>
 
-<?php 
+<?php include './partials/alert.php'; ?>
 
-if (isset($_GET['enrolled'])) {
-  ?>
-<div class="alert alert-success d-flex align-items-center alert-dismissible fade show" role="alert">
-    <?php require './partials/success_icon.php' ?>
-  <div>
-    Successfully enrolled a learner.
-  </div>
-  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-<?php
-}
-
-if (isset($_GET['err'])) {
-?>
-<div class="alert alert-danger d-flex align-items-center alert-dismissible fade show" role="alert">
-<?php require './partials/danger_icon.php' ?>
-  <div>
-    Learner not enrolled.
-  </div>
-  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-<?php
-  
-}
-
-?>
-
-<!-- <form class="container-fluid w-90 border mt-4 p-4 bg-white mb-3 needs-validation" action="./includes/enrollment.inc.php" method="post" enctype="multipart/form-data" novalidate> -->
 <form class="container-fluid w-90 border mt-4 p-4 bg-white mb-3" action="./includes/enrollment.inc.php" method="post" enctype="multipart/form-data">
     <h4 class="">Enroll a Learner</h4>
     <div class="border mt-3">
