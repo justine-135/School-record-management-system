@@ -7,16 +7,20 @@ include $_SERVER['DOCUMENT_ROOT'].'/sabanges/classes/Models/grades.class.php';
 class GradesController extends \Models\Grades{
     public function initCreate($id, $lrn, $grade_lvl, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter){
         if ($this->initGradesExists($lrn, $grade_lvl, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter) !== false) {
-            header("Location: ../student_informations.php?id=" . $id . "&err=grade_exist#grades-section");
+            header("Location: ../student_informations.php?id=" . $id . "&grades&error&exist");
             die();
         }
         elseif ($this->emptyInputs($lrn, $grade_lvl, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter) !== false) {
-            header("Location: ../student_informations.php?id=" . $id . "&err=empty_input#grades-section");
+            header("Location: ../student_informations.php?id=" . $id . "&grades&error&empty");
+            die();
+        }
+        elseif ($this->initStudentEnrolled($lrn, $grade_lvl) !== false) {
+            header("Location: ../student_informations.php?id=" . $id . "&grades&error&unenrolled");
             die();
         }
         else{
             $this->create($lrn, $grade_lvl, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter);
-            header("Location: ../student_informations.php?id=" . $id . "&added#grades-section");
+            header("Location: ../student_informations.php?id=" . $id . "&grades&submitted");
             die();
         }
     }
@@ -36,6 +40,15 @@ class GradesController extends \Models\Grades{
                 $result = true;
                 break;
             }
+        }
+        return $result;
+    }
+
+    protected function initStudentEnrolled($lrn, $grade_lvl){
+        $result = false;
+        var_dump(count($this->studentEnrolled($lrn, $grade_lvl)));
+        if (count($this->studentEnrolled($lrn, $grade_lvl)) === 0) {
+            $result = true;
         }
         return $result;
     }

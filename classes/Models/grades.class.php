@@ -6,12 +6,16 @@ include_once $_SERVER['DOCUMENT_ROOT'].'/sabanges/classes/Database/dbh.class.php
 
 class Grades extends \Dbh{
     protected function index($lrn, $grade_lvl){
-        $sql = "SELECT * FROM `student_grades_table` WHERE `student_lrn` = ? AND `grade_level` = ?;";
-        $stmt = $this->connection()->prepare($sql);
-        $stmt->execute([$lrn, $grade_lvl]);
-
-        $results = $stmt->fetchAll();
-        return $results;
+        try {
+            $sql = "SELECT * FROM `student_grades_table` WHERE `student_lrn` = ? AND `grade_level` = ?;";
+            $stmt = $this->connection()->prepare($sql);
+            $stmt->execute([$lrn, $grade_lvl]);
+    
+            $results = $stmt->fetchAll();
+            return $results;
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+        }
     }
 
     protected function create($lrn, $grade_lvl, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter){
@@ -53,5 +57,19 @@ class Grades extends \Dbh{
             echo "Error: " . $e->getMessage();
         }
         $conn = null;
+    }
+
+    protected function studentEnrolled($lrn, $grade_lvl){
+        try {
+            $sql = "SELECT `student_lrn`, `grade` FROM `enrollment_history_table` WHERE `student_lrn` = ? AND `grade` = ?;";
+            $stmt = $this->connection()->prepare($sql);
+            $stmt->execute([$lrn, $grade_lvl]);
+    
+            $results = $stmt->fetchAll();
+            return $results;
+
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+        }
     }
 }

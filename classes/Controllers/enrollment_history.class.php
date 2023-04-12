@@ -7,19 +7,26 @@ use DateTime;
 include $_SERVER['DOCUMENT_ROOT'].'/sabanges/classes/Models/enrollment_history.class.php';
 
 class EnrollmentHistoryController extends \Models\EnrollmentHistory{
-    public function checkValidationHistory($lrn, $from_sy, $to_sy, $old_grade_lvl, $grade_lvl, $status){
-        if ($this->initEnrollmentHistoryExists($lrn, $from_sy, $to_sy, $grade_lvl, $status) !== false) {
-            echo "Exists";
+    public function checkValidationHistory($id, $lrn, $from_sy, $to_sy, $old_grade_lvl, $grade_lvl, $status){
+        if ($this->emptyInputs($lrn, $from_sy, $to_sy, $grade_lvl, $status) !== false) {
+            header("Location: ../student_informations.php?id=" . $id . "&history&error&empty");
+            die();
+        }
+        elseif ($this->initEnrollmentHistoryExists($lrn, $from_sy, $to_sy, $grade_lvl, $status) !== false) {
+            header("Location: ../student_informations.php?id=" . $id . "&history&error&exist");
+            die();
         }
         elseif ($this->invalidSchoolYear($from_sy, $to_sy) !== false) {
-            echo "invalid sy";
+            header("Location: ../student_informations.php?id=" . $id . "&history&error&sy");
+            die();
         }
         elseif ($this->invalidGradeLevel($old_grade_lvl, $grade_lvl) !== false) {
-            echo "invadli";
+            header("Location: ../student_informations.php?id=" . $id . "&history&error&level");
+            die();
         }
         else{
-            // $this->create($lrn, $from_sy, $to_sy, $grade_lvl, $status);
-            echo "create now";
+            $this->create($lrn, $from_sy, $to_sy, $grade_lvl, $status);
+            header("Location: ../student_informations.php?id=" . $id . "&history&submitted");
             die();
         }
     }
@@ -28,6 +35,14 @@ class EnrollmentHistoryController extends \Models\EnrollmentHistory{
         $result = false;
         $exists = $this->enrollmentHistoryExists($lrn, $from_sy, $to_sy, $grade_lvl, $status);
         if (count($exists) > 0) {
+            $result = true;
+        }
+        return $result;
+    }
+
+    protected function emptyInputs($lrn, $from_sy, $to_sy, $grade_lvl, $status){
+        $result = false;
+        if (empty($lrn) || empty($from_sy) || empty($to_sy) || empty($grade_lvl) || empty($status)) {
             $result = true;
         }
         return $result;
