@@ -8,22 +8,24 @@
       </div>
       <div class="modal-body">
         <?php foreach ($result as $row) {
+          $id = $row['id'];
           $lrn = $row['lrn'];
           $grade_lvl = $row['grade_level'];
         } ?>
         <div class="mb-3">
           <label for="lrn-input" class="form-label">LRN</label>
-          <input type="text" class="form-control" name="lrn" id="lrn-input" value="<?= $lrn ?>" placeholder="name@example.com" hidden>
-          <input type="text" class="form-control" name="lrn-display" id="lrn-input" value="<?= $lrn ?>" placeholder="name@example.com" disabled>
+          <input type="text" class="form-control" name="lrn" id="lrn-input" value="<?= $lrn ?>" hidden>
+          <input type="text" class="form-control" name="lrn-display" id="lrn-input" value="<?= $lrn ?>" disabled>
+          <input type="text" class="form-control" name="id" id="id" value="<?= $id ?>" hidden>
         </div>
         <div class="row mb-3">
           <div class="col">
             <label for="from-sy-input" class="form-label">From sy</label>
-            <input type="text" class="form-control" id="from-sy-input" name="from-sy" placeholder="name@example.com">
+            <input type="text" class="form-control" id="from-sy-input" name="from-sy" placeholder="Enter start of school year">
           </div>
           <div class="col">
             <label for="to-sy-input" class="form-label">To sy</label>
-            <input type="text" class="form-control" id="to-sy-input" name="to-sy" placeholder="name@example.com">
+            <input type="text" class="form-control" id="to-sy-input" name="to-sy" placeholder="Enter end of school year">
           </div>
         </div>
         <div class="mb-3">
