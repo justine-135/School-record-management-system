@@ -15,9 +15,9 @@ function initCreateGrade($grade, $section){
     $obj->initCreate($grade, $section);
 }
 
-function initCreateSubjects($subject, $grade){
+function initCreateSubjects($subject, $grade, $quarter){
     $obj = new SubjectsController();
-    $obj->initCreate($subject, $grade);
+    $obj->checkValidationSubject($subject, $grade, $quarter);
 }
 
 function initIndexSelect($grade_lvl_params){
@@ -45,7 +45,8 @@ if (isset($_POST['grade-level-submit'])) {
 if (isset($_POST['subjects-submit'])) {
     $grade = $_POST['grade-lvl'];
     $subjects = $_POST['subjects'];
-    initCreateSubjects($subjects, $grade);
+    $quarter = $_POST['quarter'];
+    initCreateSubjects($subjects, $grade, $quarter);
 }
 
 
