@@ -20,17 +20,17 @@
                 <div class="col-md-4 p-5 bg-light login-form">
                     <div class="bg-white border">
                         <h3 class="border-bottom p-3">Teacher/Admin Login</h3>
-                        <form class="p-3" action="">
+                        <form class="p-3" action="./includes/teachers.inc.php" method="post" enctype="multipart/form-data">
                             <div class="mb-3">
                                 <label for="username-email" class="form-label fw-semibold">Username</label>
-                                <input type="text" class="form-control" id="username-email" placeholder="Enter username or email ...">
+                                <input type="text" class="form-control" name="username" id="username-email" placeholder="Enter username or email ...">
                             </div>
                             <div class="mb-3">
                                 <label for="password" class="form-label fw-semibold">Password</label>
-                                <input type="password" class="form-control" id="password" placeholder="Enter password ...">
+                                <input type="password" class="form-control" name="password" id="password" placeholder="Enter password ...">
                             </div>
                             <div class="mb-3">
-                                <input type="submit" class="form-control btn btn-primary" id="password" value="Login">
+                                <input type="submit" class="form-control btn btn-primary" name="login" id="password" value="Login">
                             </div>
                         </form>
                     </div>
