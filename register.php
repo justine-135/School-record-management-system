@@ -5,34 +5,27 @@
 <?php $h4="Teachers"; ?>
 
 <?php include "partials/nav.php"; ?>
+<?php include './partials/alert.php'; ?>
 
 <form class="container-fluid w-90 border mt-4 p-4 bg-white mb-3" action="./includes/teachers.inc.php" method="post" enctype="multipart/form-data">
     <h4 class="">Registeration form</h4>
     <div class="border mt-3">
       <div>
         <h5 class="border-bottom p-3">Teacher information</h5>
+        <div id="emailHelp" class="form-text ps-3">*All text fields cannot contain special characters. e.g.(!,@,#, etc..)</div>
+
         <div class="row g-3 p-3">
           <div class="col-md-4">
-            <label for="tin" class="form-label">TIN</label>
-            <input type="text" class="form-control" id="tin" placeholder="Enter TIN number" name="tin" value="<?= isset($_GET['tin']) ? $_GET['tin'] : "" ?>" required>
+            <label for="surname" class="form-label">Surname</label>
+            <input type="text" class="form-control" id="surname" placeholder="Enter surname" name="sname" value="<?= isset($_GET['surname']) ? $_GET['surname'] : "" ?>" required>
           </div>
           <div class="col-md-4">
-            <label for="gsisbp" class="form-label">Gsisbp number</label>
-            <input type="number" class="form-control gsisbp-textbox" id="gsisbp" placeholder="Enter Gsisbp number" name="gsisbp" value="<?= isset($_GET['gsisbp']) ? $_GET['gsisbp'] : "" ?>" required>
-          </div>
-        </div>
-        <div class="row g-3 p-3">
-          <div class="col-md-4">
-            <label for="validationCustom01" class="form-label">Surname</label>
-            <input type="text" class="form-control" id="validationCustom01" placeholder="Enter surname" name="sname" value="<?= isset($_GET['surname']) ? $_GET['surname'] : "" ?>" required>
+            <label for="fname" class="form-label">First name</label>
+            <input type="text" class="form-control" id="fname" placeholder="Enter first name" name="fname" value="<?= isset($_GET['fname']) ? $_GET['fname'] : "" ?>" required>
           </div>
           <div class="col-md-4">
-            <label for="validationCustom02" class="form-label">First name</label>
-            <input type="text" class="form-control" id="validationCustom02" placeholder="Enter first name" name="fname" value="<?= isset($_GET['fname']) ? $_GET['fname'] : "" ?>" required>
-          </div>
-          <div class="col-md-4">
-            <label for="validationCustom02" class="form-label">Middle name</label>
-            <input type="text" class="form-control" id="validationCustom02" placeholder="Enter middle name" name="mname" value="<?= isset($_GET['mname']) ? $_GET['mname'] : "" ?>" required>         
+            <label for="mname" class="form-label">Middle name</label>
+            <input type="text" class="form-control" id="mname" placeholder="Enter middle name" name="mname" value="<?= isset($_GET['mname']) ? $_GET['mname'] : "" ?>" required>         
           </div>
         </div>
 
@@ -75,12 +68,19 @@
 
         <div class="row g-3 p-3">
           <div class="col-md-4">
-            <label for="validationCustom02" class="form-label">Religion</label>
-            <input type="text" class="form-control" id="validationCustom02" name="religion" placeholder="Enter religion" value="<?= isset($_GET['religion']) ? $_GET['religion'] : "" ?>" required>
+            <label for="contact" class="form-label">Contact number</label>
+            <input type="text" class="form-control" id="contact" name="contact" placeholder="Enter contact number" value="<?= isset($_GET['contact']) ? $_GET['contact'] : "" ?>" required>
+            <div id="emailHelp" class="form-text ps-3">*Format e.g., (09XXXXXXXXX)</div>
+          </div>
+          <div class="col-md-4">
+            <label for="religion" class="form-label">Religion</label>
+            <input type="text" class="form-control" id="religion" name="religion" placeholder="Enter religion" value="<?= isset($_GET['religion']) ? $_GET['religion'] : "" ?>" required>
           </div>
         </div>
 
         <h5 class="border-bottom border-top p-3">Address</h5>
+        <div id="emailHelp" class="form-text ps-3">*All text fields cannot contain special characters. e.g.(!,@,#, etc..)</div>
+
         <div class="row g-3 p-3">
           <div class="col-md-4">
             <label for="house-number-street" class="form-label">House Number & Street</label>
@@ -112,24 +112,28 @@
         </div>
 
         <h5 class="border-bottom border-top p-3">Account information</h5>
+        <div id="emailHelp" class="form-text ps-3">*All text fields cannot contain special characters. e.g.(!,@,#, etc..)</div>
         <div class="row g-3 p-3">
             <div class="col-md-4">
                 <label for="username" class="form-label">Username</label>
-                <input type="text" class="form-control" id="username" name="username" placeholder="Enter username" value="<?= isset($_GET['username']) ? $_GET['religion'] : "" ?>" required>
-            </div>
+                <input type="text" class="form-control" id="username" name="username" placeholder="Enter username" value="<?= isset($_GET['username']) ? $_GET['username'] : "" ?>" required>
+                <div id="emailHelp" class="form-text ps-3">*Minimum characters is eight (8).</div>
+              </div>
             <div class="col-md-4">
                 <label for="email" class="form-label">Email</label>
-                <input type="text" class="form-control" id="email" name="email" placeholder="Enter email" value="<?= isset($_GET['email']) ? $_GET['religion'] : "" ?>" required>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" value="<?= isset($_GET['email']) ? $_GET['email'] : "" ?>" required>
             </div>
             <div class="col-md-4">
-                <label for="file" class="form-label">Image</label>
-                <input type="file" class="form-control" id="file" name="file" placeholder="Enter religion" value="<?= isset($_GET['religion']) ? $_GET['religion'] : "" ?>" required>
-            </div>
+                <label for="file" class="form-label">Profile image</label>
+                <input type="file" class="form-control" id="file" name="file" accept="image/png, image/gif, image/jpeg" value="<?= isset($_GET['file']) ? $_GET['file'] : "" ?>" required>
+                <div id="emailHelp" class="form-text ps-3" >*Choose jpeg/jpg, and png only.</div>
+              </div>
         </div>
         <div class="row g-3 p-3">
             <div class="col-md-4">
                 <label for="username" class="form-label">Password</label>
                 <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" value="<?= isset($_GET['password']) ? $_GET['password'] : "" ?>" required>
+                <div id="emailHelp" class="form-text ps-3">*Minimum characters is eight (8).</div>
             </div>
             <div class="col-md-4">
                 <label for="confirm_password" class="form-label">Confirm password</label>
