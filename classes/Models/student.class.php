@@ -8,15 +8,15 @@ class Student extends \Dbh{
     protected function index($query){
         try{
             if (!empty($query)) {
-                $sql = "SELECT * FROM `students_table` WHERE ? in (lrn, surname, first_name, middle_name, grade_level,
-                enrolled_at, from_sy, to_sy, religion, gender, city, province) LIMIT 20";
+                $sql = "SELECT `student_id`, `lrn`, `surname`, `first_name`, `middle_name`, `enrolled_at`, `grade_level`, `gender` FROM `students_table` WHERE ? in (lrn, surname, first_name, middle_name, grade_level,
+                enrolled_at, from_sy, to_sy) ORDER BY `grade_level` ASC";
                 $stmt = $this->connection()->prepare($sql);
                 $stmt->execute([$query]);
         
                 $results = $stmt->fetchAll();
             }
             else{
-                $sql = "SELECT * FROM `students_table` LIMIT 20;";
+                $sql = "SELECT `student_id`, `lrn`, `surname`, `first_name`, `middle_name`, `enrolled_at`, `grade_level`, `gender` FROM `students_table`";
                 $stmt = $this->connection()->prepare($sql);
                 $stmt->execute();
         

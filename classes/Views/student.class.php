@@ -349,12 +349,14 @@ class StudentInformationView extends \Models\Student{
         <tbody>
             <?php foreach ($result as $row) {?>
             <tr>
-                <td><input type="text" name="subjects[]" id="" value="<?= $row['subject'] ?>" ></td>
-                <td><input type="text" name="first-quarter[]" id=""></td>
-                <td><input type="text" name="second-quarter[]" id=""></td>
-                <td><input type="text" name="third-quarter[]" id=""></td>
-                <td><input type="text" name="fourth-quarter[]" id=""></td>
-                <td><input type="text" name="" id="" disabled></td>
+                <td>
+                    <input class="form-control" type="text" name="subjects[]" id="" value="<?= $row['subject'] ?>" readonly>
+                </td>
+                <td><input class="form-control" type="text" name="first-quarter[]" id="" value=<?= $row['quarters'] <= 4 ? '' : '0' ?> <?= $row['quarters'] <= 4 ? '' : 'readonly' ?>></td>
+                <td><input class="form-control" type="text" name="second-quarter[]" id="" value=<?= $row['quarters'] <= 4 && $row['quarters'] >= 2 ? '' : '0' ?> <?= $row['quarters'] <= 4 && $row['quarters'] >= 2 ? '' : 'readonly' ?>></td>
+                <td><input class="form-control" type="text" name="third-quarter[]" id="" value=<?= $row['quarters'] >= 3 ? '' : '0' ?> <?= $row['quarters'] >= 3 ? '' : 'readonly' ?>></td>
+                <td><input class="form-control" type="text" name="fourth-quarter[]" id="" value=<?= $row['quarters'] == 4 ? '' : '0' ?> <?= $row['quarters'] == 4 ? '' : 'readonly' ?>></td>
+                <td><input class="form-control" type="text" name="" id="" disabled></td>
             </tr>
             <?php } ?>
         </tbody>

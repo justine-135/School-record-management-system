@@ -35,10 +35,18 @@ class GradesController extends \Models\Grades{
 
     protected function emptyInputs($lrn, $grade_lvl, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter){
         $result = false;
+        echo $lrn . "<br>";
+        echo $grade_lvl . "<br>";
+        echo 'count: ' . count($third_quarter) . "<br>";
         for ($i=0; $i < count($subjects); $i++) { 
             if (empty($lrn) || empty($grade_lvl) || empty($subjects[$i]) || empty($first_quarter[$i]) || empty($second_quarter[$i]) || empty($third_quarter[$i]) || empty($fourth_quarter[$i])) {
                 $result = true;
                 break;
+                echo $subjects[$i] . "<br>";
+                echo $first_quarter[$i] . "<br>";
+                echo $second_quarter[$i] . "<br>";
+                echo $third_quarter[$i] . "<br>";
+                echo $fourth_quarter[$i] . "<br>";
             }
         }
         return $result;
@@ -46,7 +54,6 @@ class GradesController extends \Models\Grades{
 
     protected function initStudentEnrolled($lrn, $grade_lvl){
         $result = false;
-        var_dump(count($this->studentEnrolled($lrn, $grade_lvl)));
         if (count($this->studentEnrolled($lrn, $grade_lvl)) === 0) {
             $result = true;
         }

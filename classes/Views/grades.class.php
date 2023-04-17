@@ -63,12 +63,12 @@ class GradesView extends \Models\Grades{
                             <tbody>
                                 <?php foreach ($result as $row) { ?>
                                 <tr>
-                                    <td><?= $row['subject'] ?></td>
-                                    <td><input type="text" name="" id="" value="<?= $row['first_quarter'] ?>" disabled></td>
-                                    <td><input type="text" name="" id="" value="<?= $row['second_quarter'] ?>" disabled></td>
-                                    <td><input type="text" name="" id="" value="<?= $row['third_quarter'] ?>" disabled></td>
-                                    <td><input type="text" name="" id="" value="<?= $row['fourth_quarter'] ?>" disabled></td>
-                                    <td><input type="text" name="" id="" disabled></td>
+                                    <td><input class="form-control" type="text" name="" id="" value="<?= $row['subject'] ?>" disabled></td>
+                                    <td><input class="form-control" type="text" name="" id="" value="<?= $row['first_quarter'] ?>" disabled></td>
+                                    <td><input class="form-control" type="text" name="" id="" value="<?= $row['second_quarter'] ?>" disabled></td>
+                                    <td><input class="form-control" type="text" name="" id="" value="<?= $row['third_quarter'] ?>" disabled></td>
+                                    <td><input class="form-control" type="text" name="" id="" value="<?= $row['fourth_quarter'] ?>" disabled></td>
+                                    <td><input class="form-control" type="text" name="" id="" disabled></td>
                                 </tr>   
                                 <?php } ?>
                             </tbody>
