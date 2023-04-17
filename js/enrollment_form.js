@@ -32,23 +32,23 @@ from_sy_textbox.min = date.getFullYear();
 to_sy_textbox.min = date.getFullYear();
 // to_sy_textbox.value = date.getFullYear() + 1;
 
-const gradeSelect = document.querySelector(".grade-select");
-const loadGradeSelect = () => {
-  let gradeLvl;
-  var xmlhttp = new XMLHttpRequest();
-  xmlhttp.onreadystatechange = function () {
-    if (this.readyState == 4) {
-      // Show HTML
-      gradeSelect.innerHTML = this.responseText;
-    }
-  };
-  gradeLvl = gradeSelect.previousElementSibling.value;
-  xmlhttp.open(
-    "GET",
-    "./includes/operations.inc.php?grade_level_select=" + gradeLvl,
-    true
-  );
-  xmlhttp.send();
-};
+// const gradeSelect = document.querySelector(".grade-select");
+// const loadGradeSelect = () => {
+//   let gradeLvl;
+//   var xmlhttp = new XMLHttpRequest();
+//   xmlhttp.onreadystatechange = function () {
+//     if (this.readyState == 4) {
+//       // Show HTML
+//       gradeSelect.innerHTML = this.responseText;
+//     }
+//   };
+//   gradeLvl = gradeSelect.previousElementSibling.value;
+//   xmlhttp.open(
+//     "GET",
+//     "./includes/operations.inc.php?grade_level_select=" + gradeLvl,
+//     true
+//   );
+//   xmlhttp.send();
+// };
 
-loadGradeSelect();
+// loadGradeSelect();

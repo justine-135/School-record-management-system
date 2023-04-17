@@ -18,6 +18,8 @@ const loadSections = () => {
       // Show HTML
       const sectionsTable = document.querySelector(".sections-table");
       sectionsTable.innerHTML = this.responseText;
+
+      console.log(sectionsTable);
     }
   };
   xmlhttp.open("GET", "./includes/operations.inc.php?sections_table", true);
@@ -26,3 +28,18 @@ const loadSections = () => {
 
 loadGradeLevels();
 loadSections();
+
+const quarterSelect = document.querySelector(".quarters-select");
+quarterSelect.style.display = "none";
+
+const gradeLevelSelectSubject = document.querySelector(
+  ".grade-level-select-subject"
+);
+gradeLevelSelectSubject.addEventListener("change", (e) => {
+  let value = e.target.value;
+  if (value !== "Kindergarten") {
+    quarterSelect.style.display = "block";
+  } else {
+    quarterSelect.style.display = "none";
+  }
+});
