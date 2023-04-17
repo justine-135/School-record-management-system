@@ -15,9 +15,6 @@
           <div class="col-md-4">
             <label for="lrn" class="form-label">LRN</label>
             <input type="text" class="form-control" id="lrn" placeholder="Enter learner reference number" name="lrn" value="<?= isset($_GET['lrn']) ? $_GET['lrn'] : "" ?>" required>
-            <div class="mt-1 err-msg err-msg">
-              Invalid LRN.
-            </div>
           </div>
           <div class="col-md-4">
             <label for="from-sy" class="form-label">School Year</label>
@@ -26,14 +23,18 @@
               -
               <input type="number" class="form-control w-50 ms-1 to-sy-textbox" id="to-sy" placeholder="To year" name="to-sy" value="<?= isset($_GET['to_sy']) ? $_GET['to_sy'] : "" ?>" required>
             </div>
-            <div class="mt-1 err-msg err-msg">
-              Invalid School Year.
-            </div>
           </div>
           <div class="col-md-4">
             <label for="grade-level" class="form-label">Grade Level</label>
             <input type="hidden" name="grade-lvl-input" value="<?= isset($_GET['grade_lvl']) ? $_GET['grade_lvl'] : "" ?>"  id="">
             <select class="form-select grade-select" id="grade-level" aria-label="Default select example" name="grade-lvl">
+              <option value="Kindergarten" <?= isset($_GET['grade_lvl']) ? $_GET['grade_lvl'] == "Kindergerten" ? 'selected' : "" : "" ?>>Kindergarten</option>
+              <option value="1" <?= isset($_GET['grade_lvl']) ? $_GET['grade_lvl'] == "1" ? 'selected' : "" : "" ?>>1</option>
+              <option value="2" <?= isset($_GET['grade_lvl']) ? $_GET['grade_lvl'] == "2" ? 'selected' : "" : "" ?>>2</option>
+              <option value="3" <?= isset($_GET['grade_lvl']) ? $_GET['grade_lvl'] == "3" ? 'selected' : "" : "" ?>>3</option>
+              <option value="4" <?= isset($_GET['grade_lvl']) ? $_GET['grade_lvl'] == "4" ? 'selected' : "" : "" ?>>4</option>
+              <option value="5" <?= isset($_GET['grade_lvl']) ? $_GET['grade_lvl'] == "5" ? 'selected' : "" : "" ?>>5</option>
+              <option value="6" <?= isset($_GET['grade_lvl']) ? $_GET['grade_lvl'] == "6" ? 'selected' : "" : "" ?>>6</option>
             </select>
           </div>
         </div>
@@ -41,23 +42,14 @@
           <div class="col-md-4">
             <label for="validationCustom01" class="form-label">Surname</label>
             <input type="text" class="form-control" id="validationCustom01" placeholder="Enter surname" name="sname" value="<?= isset($_GET['surname']) ? $_GET['surname'] : "" ?>" required>
-            <div class="mt-1 err-msg err-msg">
-              Invalid Name.
-            </div>
           </div>
           <div class="col-md-4">
             <label for="validationCustom02" class="form-label">First name</label>
             <input type="text" class="form-control" id="validationCustom02" placeholder="Enter first name" name="fname" value="<?= isset($_GET['fname']) ? $_GET['fname'] : "" ?>" required>
-            <div class="mt-1 err-msg err-msg">
-              Invalid Name.
-            </div>
           </div>
           <div class="col-md-4">
             <label for="validationCustom02" class="form-label">Middle name</label>
-            <input type="text" class="form-control" id="validationCustom02" placeholder="Enter middle name" name="mname" value="<?= isset($_GET['mname']) ? $_GET['mname'] : "" ?>" required>
-            <div class="mt-1 err-msg err-msg">
-              Invalid Name.
-            </div>          
+            <input type="text" class="form-control" id="validationCustom02" placeholder="Enter middle name" name="mname" value="<?= isset($_GET['mname']) ? $_GET['mname'] : "" ?>" required>          
           </div>
         </div>
 
@@ -82,9 +74,6 @@
           <div class="col-md-4">
             <label for="bdate" class="form-label">Birthdate</label>
             <input type="date" class="form-control w-50" id="bdate" name="birth-date" value="<?= isset($_GET['bdate']) ? $_GET['bdate'] : "" ?>" required>
-            <div class="mt-1 err-msg err-msg">
-              Invalid Birth Date.
-            </div>
           </div>
           <div class="col-md-4">
             <span>Gender</span>
@@ -105,9 +94,6 @@
           <div class="col-md-4">
             <label for="validationCustom02" class="form-label">Religion</label>
             <input type="text" class="form-control" id="validationCustom02" name="religion" placeholder="Enter religion" value="<?= isset($_GET['religion']) ? $_GET['religion'] : "" ?>" required>
-            <div class="mt-1 err-msg err-msg">
-              Invalid LRN.
-            </div>
           </div>
         </div>
 
@@ -116,23 +102,14 @@
           <div class="col-md-4">
             <label for="house-number-street" class="form-label">House Number & Street</label>
             <input type="text" class="form-control" id="house-number-street" placeholder="Enter house number & street" name="house-number-street" value="<?= isset($_GET['house_street']) ? $_GET['house_street'] : "" ?>" required>
-            <div class="mt-1 err-msg err-msg">
-              Invalid LRN.
-            </div>
           </div>
           <div class="col-md-4">
             <label for="subdv-village-zone" class="form-label">Subdivision/Village/Zone</label>
             <input type="text" class="form-control" id="subdv-village-zone" placeholder="Enter subdivision/village/zone" name="subdv-village-zone" value="<?= isset($_GET['subd']) ? $_GET['subd'] : "" ?>" required>
-            <div class="mt-1 err-msg err-msg">
-              Invalid LRN.
-            </div>
           </div>
           <div class="col-md-4">
             <label for="barangay" class="form-label">Barangay</label>
             <input type="text" class="form-control" id="barangay" placeholder="Enter barangay" name="barangay" value="<?= isset($_GET['barangay']) ? $_GET['barangay'] : "" ?>" required>
-            <div class="mt-1 err-msg err-msg">
-              Invalid LRN.
-            </div>
           </div>
         </div>
 
@@ -140,23 +117,14 @@
           <div class="col-md-4">
             <label for="city-municipality" class="form-label">City/Municipality</label>
             <input type="text" class="form-control" id="city-municipality" placeholder="Enter city/municipality" name="city-municipality" value="<?= isset($_GET['city']) ? $_GET['city'] : "" ?>" required>
-            <div class="mt-1 err-msg err-msg">
-              Invalid LRN.
-            </div>
           </div>
           <div class="col-md-4">
             <label for="province" class="form-label">Province</label>
             <input type="text" class="form-control" id="province" placeholder="Enter province" name="province" value="<?= isset($_GET['province']) ? $_GET['province'] : "" ?>" required>
-            <div class="mt-1 err-msg err-msg">
-              Invalid LRN.
-            </div>
           </div>
           <div class="col-md-4">
             <label for="region" class="form-label">Region</label>
             <input type="text" class="form-control" id="region" placeholder="Enter region" name="region" value="<?= isset($_GET['region']) ? $_GET['region'] : "" ?>" required>
-            <div class="mt-1 err-msg err-msg">
-              Invalid LRN.
-            </div>
           </div>
         </div>
       </div>
@@ -169,19 +137,10 @@
             <div class="d-flex flex-column">
               <span for="f-surname" class="form-label">Surname</span>
               <input type="text" class="form-control mb-2" id="f-surname" placeholder="Enter surname" name="f-surname" value="<?= isset($_GET['father_surname']) ? $_GET['father_surname'] : "" ?>" required>
-              <div class="mt-1 mb-3 err-msg err-msg">
-                Invalid LRN.
-              </div>
               <span for="f-fname" class="form-label">First name</span>
               <input type="text" class="form-control mb-2" id="f-fname" placeholder="Enter surname" name="f-fname" value="<?= isset($_GET['father_fname']) ? $_GET['father_fname'] : "" ?>" required>
-              <div class="mt-1 mb-3 err-msg err-msg">
-                Invalid LRN.
-              </div>
               <span for="f-mname" class="form-label">Middle name</span>
               <input type="text" class="form-control" id="f-mname" placeholder="Enter surname" name="f-mname" value="<?= isset($_GET['father_mname']) ? $_GET['father_mname'] : "" ?>" required>
-              <div class="mt-1 mb-3 err-msg err-msg">
-                Invalid LRN.
-              </div>
             </div>
           </div>
           <div class="col-md-4 ">
@@ -189,19 +148,10 @@
             <div class="d-flex flex-column">
               <span for="m-surname" class="form-label">Surname</span>
               <input type="text" class="form-control mb-2" id="m-surname" placeholder="Enter surname" name="m-surname" value="<?= isset($_GET['mother_surname']) ? $_GET['mother_surname'] : "" ?>" required>
-              <div class="mt-1 mb-3 err-msg err-msg">
-                Invalid LRN.
-              </div>
               <span for="m-fname" class="form-label">First name</span>
               <input type="text" class="form-control mb-2" id="m-fname" placeholder="Enter surname" name="m-fname" value="<?= isset($_GET['mother_fname']) ? $_GET['mother_fname'] : "" ?>" required>
-              <div class="mt-1 mb-3 err-msg err-msg">
-                Invalid LRN.
-              </div>
               <span for="m-mname" class="form-label">Middle name</span>
               <input type="text" class="form-control" id="m-mname" placeholder="Enter surname" name="m-mname" value="<?= isset($_GET['mother_mname']) ? $_GET['mother_mname'] : "" ?>" required>
-              <div class="mt-1 mb-3 err-msg err-msg">
-                Invalid LRN.
-              </div>
             </div>
           </div>
           <div class="col-md-4 ">
@@ -209,19 +159,10 @@
             <div class="d-flex flex-column">
               <span for="g-surname" class="form-label">Surname</span>
               <input type="text" class="form-control mb-2" id="g-surname" placeholder="Enter surname" name="g-surname" value="<?= isset($_GET['guardian_surname']) ? $_GET['guardian_surname'] : "" ?>" required>
-              <div class="mt-1 mb-3 err-msg err-msg">
-                Invalid LRN.
-              </div>
               <span for="g-fname" class="form-label">First name</span>
               <input type="text" class="form-control mb-2" id="g-fname" placeholder="Enter first name" name="g-fname" value="<?= isset($_GET['guardian_fname']) ? $_GET['guardian_fname'] : "" ?>" required>
-              <div class="mt-1 mb-3 err-msg err-msg">
-                Invalid LRN.
-              </div>
               <span for="g-mname" class="form-label">Middle name</span>
-              <input type="text" class="form-control" id="g-mname" placeholder="Enter middle name" name="g-mname" value="<?= isset($_GET['guardian_mname']) ? $_GET['guardian_mname'] : "" ?>" required>
-              <div class="mt-1 mb-3 err-msg err-msg">
-                Invalid LRN.
-              </div>            
+              <input type="text" class="form-control" id="g-mname" placeholder="Enter middle name" name="g-mname" value="<?= isset($_GET['guardian_mname']) ? $_GET['guardian_mname'] : "" ?>" required>            
             </div>
           </div>
         </div>
@@ -400,23 +341,14 @@
           <div class="col-md-4 ">
             <span class="d-block mb-2">Cellphone/Telephone Number</span>
               <input type="text" class="form-control" id="f-contact" name="f-contact-number" placeholder="Enter contact e.g., 09123456789" value="<?= isset($_GET['father_contact']) ? $_GET['father_contact'] : "" ?>" required>
-              <div class="mt-1 mb-3 err-msg err-msg">
-                Invalid LRN.
-              </div>
           </div>
           <div class="col-md-4 ">
             <span class="d-block mb-2">Cellphone/Telephone Number</span>
               <input type="text" class="form-control" id="m-contact" name="m-contact-number" placeholder="Enter contact e.g., 09123456789" value="<?= isset($_GET['mother_contact']) ? $_GET['mother_contact'] : "" ?>" required>
-              <div class="mt-1 mb-3 err-msg err-msg">
-                Invalid LRN.
-              </div>
           </div>
           <div class="col-md-4 ">
             <span class="d-block mb-2">Cellphone/Telephone Number</span>
               <input type="text" class="form-control" id="g-contact" name="g-contact-number" placeholder="Enter contact e.g., 09123456789" value="<?= isset($_GET['guardian_contact']) ? $_GET['guardian_contact'] : "" ?>" required>
-              <div class="mt-1 mb-3 err-msg err-msg">
-                Invalid LRN.
-              </div>
           </div>
         </div>
         <div class="row g-3 p-3">
