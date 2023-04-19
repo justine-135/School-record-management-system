@@ -1,41 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<?php include "partials/header.php"; ?>
 
-        <!-- Bootstrap CSS -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-        <link rel="stylesheet" href="./styles/style.css" />
-        <link rel="shortcut icon" href="./images/logo.jpg" type="image/x-icon">
-        <title>Sabang Elementary School</title>
-    </head>
-    <body>
-        <main>
-            <div class="row bg-light">
-                <div class="col-md-8 p-0 bg-login">
-                    <h1 class="m-2">Sabang Elementary School</h1>
-                </div>
-                <div class="col-md-4 p-5 bg-light login-form">
-                    <div class="bg-white border">
-                        <h3 class="border-bottom p-3">Teacher/Admin Login</h3>
-                        <form class="p-3" action="./includes/teachers.inc.php" method="post" enctype="multipart/form-data">
-                            <div class="mb-3">
-                                <label for="username-email" class="form-label fw-semibold">Username</label>
-                                <input type="text" class="form-control" name="username" id="username-email" placeholder="Enter username or email ...">
-                            </div>
-                            <div class="mb-3">
-                                <label for="password" class="form-label fw-semibold">Password</label>
-                                <input type="password" class="form-control" name="password" id="password" placeholder="Enter password ...">
-                            </div>
-                            <div class="mb-3">
-                                <input type="submit" class="form-control btn btn-primary" name="login" id="password" value="Login">
-                            </div>
-                        </form>
-                    </div>
-                </div>
+<?php 
+if (!empty($_SESSION['username']) && !empty($_SESSION['account_id'])) {
+  header("Location: ./index.php");
+}
+?>
+
+<div class="d-flex align-items-center justify-content-center">
+    <div class="bg-white border mt-4 w-25">
+        <h4 class="border-bottom p-3">Login</h4>
+        <form class="" action="./includes/teachers.inc.php" method="post" enctype="multipart/form-data">
+            <div class="mb-3 px-3">
+                <label for="username-email" class="form-label fw-semibold">Username</label>
+                <input type="text" class="form-control" name="username" id="username-email" placeholder="Enter username or email ...">
+                <div id="emailHelp" class="form-text">*Default username is: (lastname12345).</div>
+
             </div>
-        </main>  
-    </body>
-</html>
+            <div class="mb-3 px-3">
+                <label for="password" class="form-label fw-semibold">Password</label>
+                <input type="password" class="form-control" name="password" id="password" placeholder="Enter password ...">
+                <div id="emailHelp" class="form-text">*Default password is date of birth.</div>
+            </div>
+            <hr>
+            <div class="mb-3 px-3">
+                <input type="submit" class="form-control btn btn-primary" name="login" id="password" value="Login">
+            </div>
+            <div class="mb-3 px-3 text-center">
+                <a href="change_password.php">Change password</a>
+            </div>
+        </form>
+    </div>
+</div>
