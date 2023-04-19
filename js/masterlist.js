@@ -1,4 +1,4 @@
-const loadMasterList = (query) => {
+const loadMasterList = (query, statusValue) => {
   var xmlhttp = new XMLHttpRequest();
   xmlhttp.onreadystatechange = function () {
     if (this.readyState == 4) {
@@ -36,28 +36,45 @@ const loadMasterList = (query) => {
       });
     }
   };
-  if (query === undefined) {
-    xmlhttp.open("GET", "./includes/student.inc.php?query=", true);
-    xmlhttp.send();
-  } else {
-    xmlhttp.open("GET", "./includes/student.inc.php?query=" + query, true);
-    xmlhttp.send();
-  }
-};
 
-loadMasterList();
+  xmlhttp.open(
+    "GET",
+    "./includes/student.inc.php?query=" + query + "&status=" + statusValue,
+    true
+  );
+  xmlhttp.send();
+};
 
 const searchInput = document.querySelector(".search-input");
 const searchBtn = document.querySelector(".search-btn");
 const searchForm = document.querySelector(".search-form");
+
 let query;
+query = searchInput.value;
+
+const statusSelect = document.querySelector(".status-select");
+
+let statusValue;
+statusValue = statusSelect.value;
 
 // Search query
 searchForm.addEventListener("submit", (e) => {
   e.preventDefault();
 });
 
+searchInput.addEventListener("keyup", (e) => {
+  query = e.target.value;
+  loadMasterList(query, statusValue);
+});
+
 searchBtn.addEventListener("click", () => {
   query = searchInput.value;
-  loadMasterList(query);
+  loadMasterList(query, statusValue);
 });
+
+statusSelect.addEventListener("change", () => {
+  statusValue = statusSelect.value;
+  loadMasterList(query, statusValue);
+});
+
+loadMasterList(query, statusValue);
