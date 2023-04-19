@@ -16,6 +16,17 @@
 
         <div class="row g-3 p-3">
           <div class="col-md-4">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" value="<?= isset($_GET['email']) ? $_GET['email'] : "" ?>" required>
+          </div>
+          <div class="col-md-4">
+            <label for="file" class="form-label">Profile image</label>
+            <input type="file" class="form-control" id="file" name="file" accept="image/png, image/gif, image/jpeg" value="<?= isset($_GET['file']) ? $_GET['file'] : "" ?>" required>
+            <div id="emailHelp" class="form-text ps-3" >*Choose jpeg/jpg, and png only.</div>
+          </div>
+        </div>
+        <div class="row g-3 p-3">
+          <div class="col-md-4">
             <label for="surname" class="form-label">Surname</label>
             <input type="text" class="form-control" id="surname" placeholder="Enter surname" name="sname" value="<?= isset($_GET['surname']) ? $_GET['surname'] : "" ?>" required>
           </div>
@@ -111,34 +122,202 @@
           </div>
         </div>
 
-        <h5 class="border-bottom border-top p-3">Account information</h5>
+        <!-- <h5 class="border-bottom border-top p-3">Account information</h5>
         <div id="emailHelp" class="form-text ps-3">*All text fields cannot contain special characters. e.g.(!,@,#, etc..)</div>
         <div class="row g-3 p-3">
-            <div class="col-md-4">
-                <label for="username" class="form-label">Username</label>
-                <input type="text" class="form-control" id="username" name="username" placeholder="Enter username" value="<?= isset($_GET['username']) ? $_GET['username'] : "" ?>" required>
-                <div id="emailHelp" class="form-text ps-3">*Minimum characters is eight (8).</div>
-              </div>
-            <div class="col-md-4">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" value="<?= isset($_GET['email']) ? $_GET['email'] : "" ?>" required>
+          <div class="col-md-4">
+              <label for="username" class="form-label">Username</label>
+              <input type="text" class="form-control" id="username" name="username" placeholder="Enter username" value="<?= isset($_GET['username']) ? $_GET['username'] : "" ?>" required>
+              <div id="emailHelp" class="form-text ps-3">*Minimum characters is eight (8).</div>
             </div>
-            <div class="col-md-4">
-                <label for="file" class="form-label">Profile image</label>
-                <input type="file" class="form-control" id="file" name="file" accept="image/png, image/gif, image/jpeg" value="<?= isset($_GET['file']) ? $_GET['file'] : "" ?>" required>
-                <div id="emailHelp" class="form-text ps-3" >*Choose jpeg/jpg, and png only.</div>
-              </div>
+          <div class="col-md-4">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" value="<?= isset($_GET['email']) ? $_GET['email'] : "" ?>" required>
+          </div>
+          <div class="col-md-4">
+            <label for="file" class="form-label">Profile image</label>
+            <input type="file" class="form-control" id="file" name="file" accept="image/png, image/gif, image/jpeg" value="<?= isset($_GET['file']) ? $_GET['file'] : "" ?>" required>
+            <div id="emailHelp" class="form-text ps-3" >*Choose jpeg/jpg, and png only.</div>
+          </div>
         </div>
         <div class="row g-3 p-3">
-            <div class="col-md-4">
-                <label for="username" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" value="<?= isset($_GET['password']) ? $_GET['password'] : "" ?>" required>
-                <div id="emailHelp" class="form-text ps-3">*Minimum characters is eight (8).</div>
+          <div class="col-md-4">
+            <label for="username" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" value="<?= isset($_GET['password']) ? $_GET['password'] : "" ?>" required>
+            <div id="emailHelp" class="form-text ps-3">*Minimum characters is eight (8).</div>
+          </div>
+          <div class="col-md-4">
+            <label for="confirm_password" class="form-label">Confirm password</label>
+            <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Enter password" value="<?= isset($_GET['confirm_password']) ? $_GET['confirm_password'] : "" ?>" required>
+          </div>
+        </div> -->
+        <h5 class="border-bottom border-top p-3">Advisory</h5>
+        <div class="row g-1 p-3">
+          <div class="col-md-4 pe-5">
+            <div id="emailHelp" class="form-text ps-3">*Add advisory classes to the user. Skip if not applicable.</div>
+          </div>
+          <div class="col-md-4">
+            <div class="d-flex align-items-end justify-content-between w-100">
+              <div class="w-50">
+                  <label class="form-check-label fw-semibold" for="grade-level">Grade level</label>
+                  <select select class="form-select grade-select" id="grade-level" aria-label="Default select example" name="grade-lvl">
+                    <option value="Kindergarten">Kindergarten</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                  </select>
+              </div>
+              <div>
+                <label class="form-check-label fw-semibold" for="section">Section</label>
+                <select class="form-select section-select" id="section" aria-label="Default select example"></select>
+              </div>
+              <button type="button" class="btn btn-primary add-advisory">Add</button>
             </div>
-            <div class="col-md-4">
-                <label for="confirm_password" class="form-label">Confirm password</label>
-                <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Enter password" value="<?= isset($_GET['confirm_password']) ? $_GET['confirm_password'] : "" ?>" required>
+          </div>
+          <div class="col-md-4"></div>
+        </div>
+        <div class="row">
+          <div class="col-md-4"></div>
+          <div class="col-md-4">
+            <h6>List of advisory</h6>
+            <table class="table border advisory-table">
+              <thead>
+                <tr>
+                  <th>Grade level</th>
+                  <th>Section</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody class="advisory-table-tbody">
+                
+              </tbody>
+            </table>
+          </div>
+          <div class="col-md-4"></div>
+        </div>
+        <h5 class="border-bottom border-top p-3">Permission</h5>
+        <div id="emailHelp" class="form-text ps-3">*Add page permissions to the user.</div>
+        <div class="row g-3 p-3">
+          <div class="col-md-4">
+            <h6>Masterlist</h6>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="masterlist-view" value="1" id="masterlist-view" <?= isset($_GET['permission_1']) ? 'checked' : '' ?>>
+              <label class="form-check-label" for="masterlist-view">
+                View
+              </label>
             </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="masterlist-promotion-retention" value="1" id="masterlist-promotion-retention" <?= isset($_GET['permission_2']) ? 'checked' : '' ?>>
+              <label class="form-check-label" for="masterlist-promotion-retention">
+                Promotion and Retention
+              </label>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <h6>Student information</h6>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="student-view" value="1" id="student-view" <?= isset($_GET['permission_3']) ? 'checked' : '' ?>>
+              <label class="form-check-label" for="student-view">
+                View
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="student-edit" value="1" id="student-edit" <?= isset($_GET['permission_4']) ? 'checked' : '' ?>>
+              <label class="form-check-label" for="student-edit">
+                Edit information
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="student-history" value="1" id="student-history" <?= isset($_GET['permission_5']) ? 'checked' : '' ?>>
+              <label class="form-check-label" for="student-history">
+                Add Enrollment History
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="student-grades" value="1" id="student-grades" <?= isset($_GET['permission_6']) ? 'checked' : '' ?>>
+              <label class="form-check-label" for="student-grades">
+                Add Grades
+              </label>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <h6>Enrollment</h6>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="enrollment-view" value="1" id="enrollment-view" <?= isset($_GET['permission_7']) ? 'checked' : '' ?>>
+              <label class="form-check-label" for="enrollment-view">
+                View
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="enrollment-add" value="1" id="enrollment-add" <?= isset($_GET['permission_8']) ? 'checked' : '' ?>>
+              <label class="form-check-label" for="enrollment-add">
+                Enroll Student
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-5 p-3">
+          <div class="col-md-4">
+            <h6>Teachers</h6>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="teachers-view" value="1" id="teachers-view" <?= isset($_GET['permission_9']) ? 'checked' : '' ?>>
+              <label class="form-check-label" for="teachers-view">
+                View
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="teachers-add" value="1" id="teachers-add" <?= isset($_GET['permission_10']) ? 'checked' : '' ?>>
+              <label class="form-check-label" for="teachers-add">
+                Add User
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="teachers-edit" value="1" id="teachers-edit" <?= isset($_GET['permission_11']) ? 'checked' : '' ?>>
+              <label class="form-check-label" for="teachers-edit">
+                Edit Information
+              </label>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <h6>Teacher information</h6>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="teacher-view" value="1" id="teacher-view" <?= isset($_GET['permission_12']) ? 'checked' : '' ?>>
+              <label class="form-check-label" for="teacher-view">
+                View
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="teacher-edit" value="1" id="teacher-edit" <?= isset($_GET['permission_13']) ? 'checked' : '' ?>>
+              <label class="form-check-label" for="teacher-edit">
+                Edit information
+              </label>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <h6>Operations</h6>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="operations-view" value="1" id="operations-view" <?= isset($_GET['permission_14']) ? 'checked' : '' ?>>
+              <label class="form-check-label" for="operations-view">
+                View
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="operations-add" value="1" id="operations-add"  <?= isset($_GET['permission_15']) ? 'checked' : '' ?>>
+              <label class="form-check-label" for="operations-add">
+                Add Subjects and Sections
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="operations-edit" value="1" id="operations-edit" <?= isset($_GET['permission_16']) ? 'checked' : '' ?>>
+              <label class="form-check-label" for="operations-edit">
+                Edit Information
+              </label>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -148,3 +327,5 @@
     </div>
 
 </form>
+<?php require $_SERVER['DOCUMENT_ROOT'].'/sabanges/partials/footer.php'; ?>
+<script src="js/registration.js"></script>
