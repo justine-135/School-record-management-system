@@ -4,6 +4,12 @@
 
 <?php include "partials/nav.php"; ?>
 
+<?php
+if (empty($_SESSION['username']) && empty($_SESSION['account_id'])) {
+  header("Location: ./login.php");
+}
+?>
+
 <main class="container-fluid w-90 border mt-4 p-4 bg-white operations">
     <h4 class="">Operations</h4>
     <!-- Modal -->
@@ -50,5 +56,6 @@
         </div>
         </div>
 </main>
+<?php require $_SERVER['DOCUMENT_ROOT'].'/sabanges/partials/footer.php'; ?>
 
 <script src="js/operations.js"></script>
