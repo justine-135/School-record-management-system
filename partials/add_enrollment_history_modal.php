@@ -30,7 +30,7 @@
         </div>
         <div class="mb-3">
           <label for="grade-lvl-select" class="form-label">Grade level</label>
-            <select class="form-select " id="grade-level-select" aria-label="Default select example" name="grade-lvl">
+            <select class="form-select grade-select" id="grade-level-select" aria-label="Default select example" name="grade-lvl">
               <option value="Kindergarten" selected>Kindergarten</option>
               <option value="1">Grade 1</option>
               <option value="2">Grade 2</option>
@@ -39,6 +39,11 @@
               <option value="5">Grade 5</option>
               <option value="6">Grade 6</option>
             </select>
+            <input type="text" name="old-grade-lvl" id="old-grade-lvl" value="<?= $grade_lvl ?>" hidden>
+        </div>
+        <div class="mb-3">
+          <label for="section-select" class="form-label">Section</label>
+            <select class="form-select section-select" id="section-select" aria-label="Default select example" name="section"></select>
             <input type="text" name="old-grade-lvl" id="old-grade-lvl" value="<?= $grade_lvl ?>" hidden>
         </div>
         <div class="mb-3">

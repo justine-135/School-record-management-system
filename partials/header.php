@@ -1,3 +1,5 @@
+<?php session_start() ?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -13,13 +15,13 @@
   </head>
   <body>
 
-  <nav class="navbar navbar-expand-lg navbar-white bg-white d-flex border-bottom">
+  <nav class="navbar navbar-expand-lg navbar-white bg-white d-flex w-100">
     <div class="container-fluid d-flex">
       <a class="navbar-brand me-auto text-dark" href="index.php">
           <img src="images/logo.jpg" height="50px" width="50px" alt="" />
           Sabang Elementary School
       </a>
-      
+      <?= $_SESSION['email']; ?>
       <div class="dropdown">
           <a
           class="btn dropdown-toggle"
@@ -36,11 +38,17 @@
               width="35px"
               alt=""
           />
-          User account
+          <?= empty($_SESSION['username']) || empty($_SESSION['account_id']) ? 'Please login' : $_SESSION['username'] ?>
           </a>
 
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-              <li><a class="dropdown-item" href="#">Logout</a></li>
+            <form action="./includes/teachers.inc.php" method="post" enctype="multipart/form-data">
+              <?php if (empty($_SESSION['username']) || empty($_SESSION['account_id'])) { ?>
+              <li><a class="dropdown-item" href="index.php">Login</a></li>
+              <?php } else { ?>
+              <li><button type="submit" class="dropdown-item" name="logout">Logout</button></li>
+              <?php } ?>
+            </form>
           </ul>
       </div>
     </div>
