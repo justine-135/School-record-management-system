@@ -10,7 +10,8 @@ class Truncate extends \Dbh{
         TRUNCATE `fathers_table`;
         TRUNCATE `mothers_table`;
         TRUNCATE `guardians_table`;
-        TRUNCATE `enrollment_history_table`;";
+        TRUNCATE `enrollment_history_table`;
+        TRUNCATE `student_grades_table`;";
 
         $stmt = $this->connection()->prepare($sql);
         $stmt->execute();

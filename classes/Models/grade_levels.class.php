@@ -19,11 +19,11 @@ class GradeLevels extends \Dbh{
         }
     }
 
-    protected function indexSelect(){
+    protected function indexSelect($section_params){
         try {
-            $sql = "SELECT DISTINCT grade FROM `grade_levels_table` ORDER BY grade ASC;";
+            $sql = "SELECT DISTINCT grade, section FROM `grade_levels_table` WHERE grade = ? ORDER BY grade ASC;";
             $stmt = $this->connection()->prepare($sql);
-            $stmt->execute();
+            $stmt->execute([$section_params]);
     
             $results = $stmt->fetchAll();
             return $results;

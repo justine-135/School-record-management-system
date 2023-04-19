@@ -7,7 +7,7 @@ use DateTime;
 include $_SERVER['DOCUMENT_ROOT'].'/sabanges/classes/Models/enrollment.class.php';
 
 class EnrollmentController extends \Models\Enrollment{
-    public function initCreate($sname, $fname, $mname, $extname, $lrn, $from_sy, $to_sy, $grade_lvl, $bdate, $gender, $religion, 
+    public function initCreate($sname, $fname, $mname, $extname, $lrn, $from_sy, $to_sy, $grade_lvl, $section, $file, $bdate, $gender, $religion, 
     $house_street, $subdivision, $barangay, $city, $province, $region,
     $father_surname, $father_fname, $father_mname, $father_education, 
     $father_employment, $father_contact, $mother_surname, $mother_fname, 
@@ -16,7 +16,7 @@ class EnrollmentController extends \Models\Enrollment{
     $guardian_employment, $guardian_contact, $is_beneficiary,
     $father_education_textbox, $mother_education_textbox, $guardian_education_textbox
         ){
-        $this->create($sname, $fname, $mname, $extname, $lrn, $from_sy, $to_sy, $grade_lvl, $bdate, $gender, $religion, 
+        $this->create($sname, $fname, $mname, $extname, $lrn, $from_sy, $to_sy, $grade_lvl, $section, $file, $bdate, $gender, $religion, 
         $house_street, $subdivision, $barangay, $city, $province, $region,
         $father_surname, $father_fname, $father_mname, $father_education, 
         $father_employment, $father_contact, $mother_surname, $mother_fname, 
@@ -28,7 +28,7 @@ class EnrollmentController extends \Models\Enrollment{
     }
 
     public function checkValidation(
-    $sname, $fname, $mname, $extname, $lrn, $from_sy, $to_sy, $grade_lvl, $bdate, $gender, $religion, 
+    $sname, $fname, $mname, $extname, $lrn, $from_sy, $to_sy, $grade_lvl, $section, $file, $bdate, $gender, $religion, 
     $house_street, $subdivision, $barangay, $city, $province, $region,
     $father_surname, $father_fname, $father_mname, $father_education, $father_employment, $father_contact, 
     $mother_surname, $mother_fname, $mother_mname, $mother_education, $mother_employment, $mother_contact,
@@ -40,7 +40,7 @@ class EnrollmentController extends \Models\Enrollment{
         $err_msg =null;
 
         if ($this->emptyInputs(
-            $sname, $fname, $mname, $extname, $lrn, $from_sy, $to_sy, $grade_lvl, $bdate, $gender, $religion, 
+            $sname, $fname, $mname, $extname, $lrn, $from_sy, $to_sy, $grade_lvl, $section, $bdate, $gender, $religion, 
             $house_street, $subdivision, $barangay, $city, $province, $region,
             $father_surname, $father_fname, $father_mname, $father_education, $father_employment, $father_contact, 
             $mother_surname, $mother_fname, $mother_mname, $mother_education, $mother_employment, $mother_contact,
@@ -49,7 +49,7 @@ class EnrollmentController extends \Models\Enrollment{
         ) !== false) 
         {
             $err_msg = "missing_inputs";
-            $this->rejectData($err_msg, $sname, $fname, $mname, $extname, $lrn, $from_sy, $to_sy, $grade_lvl, $bdate, $gender, $religion, 
+            $this->rejectData($err_msg, $sname, $fname, $mname, $extname, $lrn, $from_sy, $to_sy, $grade_lvl, $section, $bdate, $gender, $religion, 
             $house_street, $subdivision, $barangay, $city, $province, $region,
             $father_surname, $father_fname, $father_mname, $father_education, $father_employment, $father_contact, 
             $mother_surname, $mother_fname, $mother_mname, $mother_education, $mother_employment, $mother_contact,
@@ -64,7 +64,7 @@ class EnrollmentController extends \Models\Enrollment{
             $guardian_surname, $guardian_fname, $guardian_mname) !== false) 
         {
             $err_msg = "invalid_name";
-            $this->rejectData($err_msg, $sname, $fname, $mname, $extname, $lrn, $from_sy, $to_sy, $grade_lvl, $bdate, $gender, $religion, 
+            $this->rejectData($err_msg, $sname, $fname, $mname, $extname, $lrn, $from_sy, $to_sy, $grade_lvl, $section, $bdate, $gender, $religion, 
             $house_street, $subdivision, $barangay, $city, $province, $region,
             $father_surname, $father_fname, $father_mname, $father_education, $father_employment, $father_contact, 
             $mother_surname, $mother_fname, $mother_mname, $mother_education, $mother_employment, $mother_contact,
@@ -75,7 +75,7 @@ class EnrollmentController extends \Models\Enrollment{
         elseif ($this->invalidLRN($lrn) !== false) 
         {
             $err_msg = "invalid_lrn";
-            $this->rejectData($err_msg, $sname, $fname, $mname, $extname, $lrn, $from_sy, $to_sy, $grade_lvl, $bdate, $gender, $religion, 
+            $this->rejectData($err_msg, $sname, $fname, $mname, $extname, $lrn, $from_sy, $to_sy, $grade_lvl, $section, $bdate, $gender, $religion, 
             $house_street, $subdivision, $barangay, $city, $province, $region,
             $father_surname, $father_fname, $father_mname, $father_education, $father_employment, $father_contact, 
             $mother_surname, $mother_fname, $mother_mname, $mother_education, $mother_employment, $mother_contact,
@@ -86,7 +86,7 @@ class EnrollmentController extends \Models\Enrollment{
         elseif ($this->invalidSchoolYear($from_sy, $to_sy) !== false) 
         {
             $err_msg = "invalid_sy";
-            $this->rejectData($err_msg, $sname, $fname, $mname, $extname, $lrn, $from_sy, $to_sy, $grade_lvl, $bdate, $gender, $religion, 
+            $this->rejectData($err_msg, $sname, $fname, $mname, $extname, $lrn, $from_sy, $to_sy, $grade_lvl, $section, $bdate, $gender, $religion, 
             $house_street, $subdivision, $barangay, $city, $province, $region,
             $father_surname, $father_fname, $father_mname, $father_education, $father_employment, $father_contact, 
             $mother_surname, $mother_fname, $mother_mname, $mother_education, $mother_employment, $mother_contact,
@@ -94,10 +94,13 @@ class EnrollmentController extends \Models\Enrollment{
             $is_beneficiary, $father_education_textbox, $mother_education_textbox, $guardian_education_textbox);
         }
 
+        elseif ($this->invalidFile($file) !== false) {
+            # code...
+        }
         elseif ($this->invalidBirthDate($bdate) !== false) 
         {
             $err_msg = "invalid_bdate";
-            $this->rejectData($err_msg, $sname, $fname, $mname, $extname, $lrn, $from_sy, $to_sy, $grade_lvl, $bdate, $gender, $religion, 
+            $this->rejectData($err_msg, $sname, $fname, $mname, $extname, $lrn, $from_sy, $to_sy, $grade_lvl, $section, $bdate, $gender, $religion, 
             $house_street, $subdivision, $barangay, $city, $province, $region,
             $father_surname, $father_fname, $father_mname, $father_education, $father_employment, $father_contact, 
             $mother_surname, $mother_fname, $mother_mname, $mother_education, $mother_employment, $mother_contact,
@@ -108,7 +111,7 @@ class EnrollmentController extends \Models\Enrollment{
         elseif ($this->invalidEducation($father_education, $mother_education, $guardian_education, $father_education_textbox, $mother_education_textbox, $guardian_education_textbox)) 
         {
             $err_msg = "invalid_education";
-            $this->rejectData($err_msg, $sname, $fname, $mname, $extname, $lrn, $from_sy, $to_sy, $grade_lvl, $bdate, $gender, $religion, 
+            $this->rejectData($err_msg, $sname, $fname, $mname, $extname, $lrn, $from_sy, $to_sy, $grade_lvl, $section, $bdate, $gender, $religion, 
             $house_street, $subdivision, $barangay, $city, $province, $region,
             $father_surname, $father_fname, $father_mname, $father_education, $father_employment, $father_contact, 
             $mother_surname, $mother_fname, $mother_mname, $mother_education, $mother_employment, $mother_contact,
@@ -119,7 +122,7 @@ class EnrollmentController extends \Models\Enrollment{
         elseif ($this->invalidContactNumber($father_contact, $mother_contact, $guardian_contact) !== false) 
         {
             $err_msg = "invalid_contact";
-            $this->rejectData($err_msg, $sname, $fname, $mname, $extname, $lrn, $from_sy, $to_sy, $grade_lvl, $bdate, $gender, $religion, 
+            $this->rejectData($err_msg, $sname, $fname, $mname, $extname, $lrn, $from_sy, $to_sy, $grade_lvl, $section, $bdate, $gender, $religion, 
             $house_street, $subdivision, $barangay, $city, $province, $region,
             $father_surname, $father_fname, $father_mname, $father_education, $father_employment, $father_contact, 
             $mother_surname, $mother_fname, $mother_mname, $mother_education, $mother_employment, $mother_contact,
@@ -132,7 +135,7 @@ class EnrollmentController extends \Models\Enrollment{
         }
     }
 
-    protected function emptyInputs($sname, $fname, $mname, $extname, $lrn, $from_sy, $to_sy, $grade_lvl, $bdate, 
+    protected function emptyInputs($sname, $fname, $mname, $extname, $lrn, $from_sy, $to_sy, $grade_lvl, $section, $bdate, 
         $gender, $religion, $house_street, $subdivision, $barangay, $city, $province, $region,
         $father_surname, $father_fname, $father_mname, $father_contact, $father_education,
         $mother_surname, $mother_fname, $mother_mname, $mother_contact, $mother_education,
@@ -220,6 +223,56 @@ class EnrollmentController extends \Models\Enrollment{
         return $result;
     }
 
+    protected function invalidFile($file){
+        $result = false;
+        $fileinfo = $file["tmp_name"];
+        $width = $fileinfo[0];
+        $height = $fileinfo[1];
+        $allowed_image_extension = array(
+            "png",
+            "jpg",
+            "jpeg"
+        );
+        
+        // Get image file extension
+        $file_extension = pathinfo($file["name"], PATHINFO_EXTENSION);
+        
+        // Validate file input to check if is not empty
+        if (! file_exists($file["tmp_name"])) {
+            $result = true;
+        }    // Validate file input to check if is with valid extension
+        else if (! in_array($file_extension, $allowed_image_extension)) {
+            $result = true;
+
+        }    // Validate image file size
+        else if (($file["size"] > 2000000)) {
+            $result = true;
+
+        }    // Validate image file dimension
+        // else if ($width > "300" || $height > "200") {
+        //     $response = array(
+        //         "type" => "error",
+        //         "message" => "Image dimension should be within 300X200"
+        //     );
+        // } 
+        // else {
+        //     echo "upload";
+        //     // $target = "image/" . basename($file["name"]);
+        //     // if (move_uploaded_file($file["tmp_name"], $target)) {
+        //     //     $response = array(
+        //     //         "type" => "success",
+        //     //         "message" => "Image uploaded successfully."
+        //     //     );
+        //     // } else {
+        //     //     $response = array(
+        //     //         "type" => "error",
+        //     //         "message" => "Problem in uploading image files."
+        //     //     );
+        //     // }
+        // }
+        return $result;
+    }
+
     protected function invalidEducation($father_education, $guardian_education, $mother_education,
     $father_education_textbox, $mother_education_textbox, $guardian_education_textbox){
         $result = false;
@@ -255,14 +308,14 @@ class EnrollmentController extends \Models\Enrollment{
         return $result;
     }
 
-    protected function rejectData($err_msg, $sname, $fname, $mname, $extname, $lrn, $from_sy, $to_sy, $grade_lvl, $bdate, $gender, $religion, 
+    protected function rejectData($err_msg, $sname, $fname, $mname, $extname, $lrn, $from_sy, $to_sy, $grade_lvl, $section, $bdate, $gender, $religion, 
     $house_street, $subdivision, $barangay, $city, $province, $region,
     $father_surname, $father_fname, $father_mname, $father_education, $father_employment, $father_contact, 
     $mother_surname, $mother_fname, $mother_mname, $mother_education, $mother_employment, $mother_contact,
     $guardian_surname, $guardian_fname, $guardian_mname, $guardian_education, $guardian_employment, $guardian_contact, 
     $is_beneficiary, $father_education_textbox, $mother_education_textbox, $guardian_education_textbox)
     {
-        header("Location: ../enrollment.php?err={$err_msg}&surname={$sname}&fname={$fname}&mname={$mname}&extname={$extname}&lrn={$lrn}&from_sy={$from_sy}&to_sy={$to_sy}&grade_lvl={$grade_lvl}&bdate={$bdate}&gender={$gender}&religion={$religion}&house_street={$house_street}&subd={$subdivision}&barangay={$barangay}&city={$city}&province={$province}&region={$region}&father_surname={$father_surname}&father_fname={$father_fname}&father_fname={$father_fname}&father_mname={$father_mname}&father_education={$father_education}&father_contact={$father_contact}&mother_surname={$mother_surname}&mother_fname={$mother_fname}&mother_mname={$mother_mname}&mother_education={$mother_education}&mother_employment={$mother_employment}&mother_contact={$mother_contact}&guardian_surname={$guardian_surname}&guardian_fname={$guardian_fname}&guardian_mname={$guardian_mname}&guardian_education={$guardian_education}&guardian_employment={$guardian_employment}&guardian_contact={$guardian_contact}&father_education_textbox={$father_education_textbox}&mother_education_textbox={$mother_education_textbox}&guardian_education_textbox={$guardian_education_textbox}");
+        header("Location: ../enrollment.php?err={$err_msg}&surname={$sname}&fname={$fname}&mname={$mname}&extname={$extname}&lrn={$lrn}&from_sy={$from_sy}&to_sy={$to_sy}&grade_lvl={$grade_lvl}&section={$section}&bdate={$bdate}&gender={$gender}&religion={$religion}&house_street={$house_street}&subd={$subdivision}&barangay={$barangay}&city={$city}&province={$province}&region={$region}&father_surname={$father_surname}&father_fname={$father_fname}&father_fname={$father_fname}&father_mname={$father_mname}&father_education={$father_education}&father_contact={$father_contact}&mother_surname={$mother_surname}&mother_fname={$mother_fname}&mother_mname={$mother_mname}&mother_education={$mother_education}&mother_employment={$mother_employment}&mother_contact={$mother_contact}&guardian_surname={$guardian_surname}&guardian_fname={$guardian_fname}&guardian_mname={$guardian_mname}&guardian_education={$guardian_education}&guardian_employment={$guardian_employment}&guardian_contact={$guardian_contact}&father_education_textbox={$father_education_textbox}&mother_education_textbox={$mother_education_textbox}&guardian_education_textbox={$guardian_education_textbox}");
         die();
     }
 }

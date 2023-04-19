@@ -7,7 +7,7 @@ use DateTime;
 include $_SERVER['DOCUMENT_ROOT'].'/sabanges/classes/Models/enrollment_history.class.php';
 
 class EnrollmentHistoryController extends \Models\EnrollmentHistory{
-    public function checkValidationHistory($id, $lrn, $from_sy, $to_sy, $old_grade_lvl, $grade_lvl, $status){
+    public function checkValidationHistory($id, $lrn, $from_sy, $to_sy, $old_grade_lvl, $grade_lvl, $section, $status){
         if ($this->emptyInputs($lrn, $from_sy, $to_sy, $grade_lvl, $status) !== false) {
             header("Location: ../student_informations.php?id=" . $id . "&history&error&empty");
             die();
@@ -25,7 +25,7 @@ class EnrollmentHistoryController extends \Models\EnrollmentHistory{
             die();
         }
         else{
-            $this->create($lrn, $from_sy, $to_sy, $grade_lvl, $status);
+            $this->create($lrn, $from_sy, $to_sy, $grade_lvl, $section, $status);
             header("Location: ../student_informations.php?id=" . $id . "&history&submitted");
             die();
         }

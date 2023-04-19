@@ -49,8 +49,8 @@ class TeachersView extends \Models\Teachers{
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                 <input class="student-id" type="hidden" name="id" id="id" value="<?= $row['teacher_id'] ?>" >
                                 <!-- <li><input type="submit" class="dropdown-item information-links" name="information" value="Information"></li> -->
-                                <li><a class="dropdown-item" href="../sabanges/teacher_informations.php?id=<?= $row['teacher_id']?>">Informations</a></li>
-                                <li><a class="dropdown-item" href="../sabanges/teacher_informations.php?id=<?= $row['teacher_id']?>#grades-section">Grades</a></li>
+                                <li><a class="dropdown-item" href="../sabanges/account_informations.php?id=<?= $row['teacher_id']?>">Informations</a></li>
+                                <li><a class="dropdown-item" href="../sabanges/account_informations.php?id=<?= $row['teacher_id']?>#grades-section">Grades</a></li>
                             </ul>
                         </div>
                     </td>
@@ -68,7 +68,7 @@ class TeacherInformationView extends \Models\Teachers{
         ?>
         <h4 class="">Profile</h4>
         <div class="row d-flex flex-column align-items-center">
-            <div class="border mt-3 col-md-8">
+            <div class="border mt-3 col-md">
                 <div class="row ">
                     <div class="d-flex align-items-center justify-content-between py-3 px-3 border-bottom">
                         <h5>Information</h5>

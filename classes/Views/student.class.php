@@ -4,8 +4,8 @@ namespace Views;
 include $_SERVER['DOCUMENT_ROOT'].'/sabanges/classes/Models/student.class.php';
 
 class StudentView extends \Models\Student{
-    public function initIndex($query){
-        $results = $this->index($query);
+    public function initIndex($query, $status){
+        $results = $this->index($query, $status);
         ?>
         <table class="table table-hover mb-0 border-top student-table">
             <thead>
@@ -23,6 +23,8 @@ class StudentView extends \Models\Student{
                     <th scope="col">Enrolled at</th>
                     <th scope="col">Gender</th>
                     <th scope="col">Grade Level</th>
+                    <th scope="col">Section</th>
+                    <th scope="col">Status</th>
                     <th scope="col">Action</th>
                 </tr>
                 </thead>
@@ -37,7 +39,7 @@ class StudentView extends \Models\Student{
                                 <?= $row['student_id'] ?>
                                 </span>
                                 <div class="form-check">
-                                    <input class="form-check-input masterlist-chkbox" type="checkbox" name="chkbox-student[]" value="<?= $row['student_id'] ?>,<?= $row['lrn'] ?>,<?= $row['grade_level'] ?>" id="flexCheckDefault">
+                                    <input class="form-check-input masterlist-chkbox" type="checkbox" name="chkbox-student[]" value="<?= $row['student_id'] ?>,<?= $row['student_lrn'] ?>,<?= $row['grade_level'] ?>" id="flexCheckDefault">
                                 </div>
                             </div>
                         </td>
@@ -46,6 +48,8 @@ class StudentView extends \Models\Student{
                         <td><?= $row['enrolled_at'] ?></td>
                         <td><?= $row['gender'] ?></td>
                         <td><?= $row['grade_level'] ?></td>
+                        <td><?= $row['section'] ?></td>
+                        <td><?= $row['status'] ?></td>
                         <td>
                             <div class="dropdown ml-auto">
                                 <a
@@ -84,11 +88,11 @@ class StudentInformationView extends \Models\Student{
     public function initSingleIndex($id){
         $result = $this->singleIndex($id);
         foreach ($result as $row) {
-            $result2 = $this->enrollmentHistory($row['lrn']);
+            $result2 = $this->enrollmentHistory($row['student_lrn']);
         }
         $grade_levels = array();
         foreach ($result2 as $row2) {
-            array_push($grade_levels, $row2['grade']);
+            array_push($grade_levels, $row2['grade_level']);
         }
         // count($result) === 0 ? header("Location: ./student_informations.php?id={$id}&err=not_found") : "";
         ?>
@@ -103,9 +107,10 @@ class StudentInformationView extends \Models\Student{
                         </a>
                     </div>
                     <div class="d-flex align-items-center justify-content-between py-3 px-3">
-                        <div class="profile-div">
-                            <input class="profile-input" type="file" name="" id="">
-                            <img class="profile-round" src="./images/profile.png" alt="">
+                        <div>
+                        <?php foreach($result as $row){ ?>
+                            <img class="rounded-circle" width=200px height=200px src=data:image;base64,<?= $row['image'] ?>>
+                        <?php } ?>
                         </div>
                         <div class="ms-3 py-1 w-75">
                         <?php foreach($result as $row){ ?>
@@ -286,7 +291,7 @@ class StudentInformationView extends \Models\Student{
                         </div>
                         <div class="d-flex align-items-center justify-content-between">
                             <span class="fw-semibold">Grade level :</span>
-                            <span><?= $row2['grade'] ?></span>
+                            <span><?= $row2['grade_level'] ?></span>
                         </div>
                         <div class="d-flex align-items-center justify-content-between">
                             <span class="fw-semibold">School :</span>
@@ -352,10 +357,10 @@ class StudentInformationView extends \Models\Student{
                 <td>
                     <input class="form-control" type="text" name="subjects[]" id="" value="<?= $row['subject'] ?>" readonly>
                 </td>
-                <td><input class="form-control" type="text" name="first-quarter[]" id="" value=<?= $row['quarters'] <= 4 ? '' : '0' ?> <?= $row['quarters'] <= 4 ? '' : 'readonly' ?>></td>
-                <td><input class="form-control" type="text" name="second-quarter[]" id="" value=<?= $row['quarters'] <= 4 && $row['quarters'] >= 2 ? '' : '0' ?> <?= $row['quarters'] <= 4 && $row['quarters'] >= 2 ? '' : 'readonly' ?>></td>
-                <td><input class="form-control" type="text" name="third-quarter[]" id="" value=<?= $row['quarters'] >= 3 ? '' : '0' ?> <?= $row['quarters'] >= 3 ? '' : 'readonly' ?>></td>
-                <td><input class="form-control" type="text" name="fourth-quarter[]" id="" value=<?= $row['quarters'] == 4 ? '' : '0' ?> <?= $row['quarters'] == 4 ? '' : 'readonly' ?>></td>
+                <td><input class="form-control" type="text" name="first-quarter[]" id="" value=<?= $row['quarters'] <= 4 ? '' : "Disabled" ?> <?= $row['quarters'] <= 4 ? '' : 'readonly' ?>></td>
+                <td><input class="form-control" type="text" name="second-quarter[]" id="" value=<?= $row['quarters'] <= 4 && $row['quarters'] >= 2 ? '' : "Disabled" ?> <?= $row['quarters'] <= 4 && $row['quarters'] >= 2 ? '' : 'readonly' ?>></td>
+                <td><input class="form-control" type="text" name="third-quarter[]" id="" value=<?= $row['quarters'] >= 3 ? '' : "Disabled" ?> <?= $row['quarters'] >= 3 ? '' : 'readonly' ?>></td>
+                <td><input class="form-control" type="text" name="fourth-quarter[]" id="" value=<?= $row['quarters'] == 4 ? '' : "Disabled" ?> <?= $row['quarters'] == 4 ? '' : 'readonly' ?>></td>
                 <td><input class="form-control" type="text" name="" id="" disabled></td>
             </tr>
             <?php } ?>

@@ -5,11 +5,11 @@ namespace Models;
 include_once $_SERVER['DOCUMENT_ROOT'].'/sabanges/classes/Database/dbh.class.php';
 
 class Grades extends \Dbh{
-    protected function index($lrn, $grade_lvl){
+    protected function index($lrn, $grade_level){
         try {
             $sql = "SELECT * FROM `student_grades_table` WHERE `student_lrn` = ? AND `grade_level` = ?;";
             $stmt = $this->connection()->prepare($sql);
-            $stmt->execute([$lrn, $grade_lvl]);
+            $stmt->execute([$lrn, $grade_level]);
     
             $results = $stmt->fetchAll();
             return $results;
@@ -18,16 +18,16 @@ class Grades extends \Dbh{
         }
     }
 
-    protected function create($lrn, $grade_lvl, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter){
+    protected function create($lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter){
         try {
             $sql = "INSERT INTO `student_grades_table` 
-            (`student_lrn`, `grade_level`, `subject`, `first_quarter`, `second_quarter`, `third_quarter`, `fourth_quarter`)
-            VALUES (?, ?, ?, ?, ?, ?, ?);";
+            (`student_lrn`, `grade_level`, `subject`, `section`, `first_quarter`, `second_quarter`, `third_quarter`, `fourth_quarter`)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
 
             $stmt = $this->connection()->prepare($sql);
 
             for ($i=0; $i < count($subjects); $i++) { 
-                $stmt->execute([$lrn, $grade_lvl, $subjects[$i], $first_quarter[$i], $second_quarter[$i], $third_quarter[$i], $fourth_quarter[$i]]);
+                $stmt->execute([$lrn, $grade_level, $section, $subjects[$i], $first_quarter[$i], $second_quarter[$i], $third_quarter[$i], $fourth_quarter[$i]]);
             }
 
         } catch(PDOException $e) {
@@ -35,7 +35,7 @@ class Grades extends \Dbh{
         }
     }
 
-    protected function gradesExists($lrn, $grade_lvl, $subjects){
+    protected function gradesExists($lrn, $grade_level, $subjects){
         try{
             // var_dump($subjects);
             // $sql = "SELECT * FROM `student_grades_table` WHERE `student_lrn` = ? AND `grade_level` = ? AND `subjects` = ? `first_quarter` = ? AND `second_quarter` = ? AND `third_quarter` = ? AND `fourth_quarter` = ?";
@@ -43,7 +43,7 @@ class Grades extends \Dbh{
             $stmt = $this->connection()->prepare($sql);
 
             for ($i=0; $i < count($subjects); $i++) { 
-                $stmt->execute([$lrn, $grade_lvl, $subjects[$i]]);
+                $stmt->execute([$lrn, $grade_level, $subjects[$i]]);
                 $results = $stmt->fetchAll();
                 if (count($results) > 0) {
                     break;
@@ -59,11 +59,11 @@ class Grades extends \Dbh{
         $conn = null;
     }
 
-    protected function studentEnrolled($lrn, $grade_lvl){
+    protected function studentEnrolled($lrn, $grade_level){
         try {
-            $sql = "SELECT `student_lrn`, `grade` FROM `enrollment_history_table` WHERE `student_lrn` = ? AND `grade` = ?;";
+            $sql = "SELECT `student_lrn`, `grade_level` FROM `enrollment_history_table` WHERE `student_lrn` = ? AND `grade_level` = ?;";
             $stmt = $this->connection()->prepare($sql);
-            $stmt->execute([$lrn, $grade_lvl]);
+            $stmt->execute([$lrn, $grade_level]);
     
             $results = $stmt->fetchAll();
             return $results;
@@ -71,5 +71,19 @@ class Grades extends \Dbh{
         } catch (PDOException $e) {
             echo "Error: " . $e->getMessage();
         }
+    }
+
+    protected function validateUser($email, $grade_level, $section){
+        try {
+            $sql = "SELECT `teacher`, `grade_level`, `section` FROM `teachers_advisory_table` WHERE `teacher` = ? AND `grade_level` = ? AND `section` = ?;";
+            $stmt = $this->connection()->prepare($sql);
+            $stmt->execute([$email, $grade_level, $section]);
+    
+            $results = $stmt->fetchAll();
+            return $results;
+
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+        } 
     }
 }

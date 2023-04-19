@@ -5,20 +5,32 @@ namespace Models;
 include_once $_SERVER['DOCUMENT_ROOT'].'/sabanges/classes/Database/dbh.class.php';
 
 class Student extends \Dbh{
-    protected function index($query){
+    protected function index($query, $status){
         try{
+            echo "quaery: " . $query;
+            echo "status: " . $status;
+
             if (!empty($query)) {
-                $sql = "SELECT `student_id`, `lrn`, `surname`, `first_name`, `middle_name`, `enrolled_at`, `grade_level`, `gender` FROM `students_table` WHERE ? in (lrn, surname, first_name, middle_name, grade_level,
-                enrolled_at, from_sy, to_sy) ORDER BY `grade_level` ASC";
+                $sql = "SELECT students_table.student_id, students_table.lrn, students_table.surname, students_table.first_name, students_table.middle_name, enrollment_history_table.enrolled_at, enrollment_history_table.grade_level, enrollment_history_table.section,  students_table.gender, enrollment_history_table.student_lrn, enrollment_history_table.status 
+                FROM `students_table`, `enrollment_history_table`
+                WHERE ? in (students_table.student_id, students_table.lrn, students_table.surname, students_table.first_name, students_table.middle_name, enrollment_history_table.enrolled_at, enrollment_history_table.grade_level, enrollment_history_table.section, students_table.gender, enrollment_history_table.student_lrn, enrollment_history_table.status)
+                AND enrollment_history_table.student_lrn = students_table.lrn
+                AND enrollment_history_table.status = ?
+                -- ORDER BY `grade_level` ASC
+                ";
                 $stmt = $this->connection()->prepare($sql);
-                $stmt->execute([$query]);
+                $stmt->execute([$query, $status]);
         
                 $results = $stmt->fetchAll();
             }
             else{
-                $sql = "SELECT `student_id`, `lrn`, `surname`, `first_name`, `middle_name`, `enrolled_at`, `grade_level`, `gender` FROM `students_table`";
+                $sql = "SELECT students_table.student_id, students_table.lrn, students_table.surname, students_table.first_name, students_table.middle_name, enrollment_history_table.enrolled_at, enrollment_history_table.grade_level, enrollment_history_table.section, students_table.gender, enrollment_history_table.student_lrn, enrollment_history_table.status 
+                FROM `students_table`, `enrollment_history_table`
+                WHERE students_table.lrn = enrollment_history_table.student_lrn
+                AND enrollment_history_table.status = ?
+                ";
                 $stmt = $this->connection()->prepare($sql);
-                $stmt->execute();
+                $stmt->execute([$status]);
         
                 $results = $stmt->fetchAll();
             }
@@ -66,10 +78,12 @@ class Student extends \Dbh{
 
     protected function singleIndex($id){
         try{
-            $sql = "SELECT * FROM `students_table`, `fathers_table`, `mothers_table`, `guardians_table`
+            $sql = "SELECT * FROM `students_table`, `fathers_table`, `mothers_table`, `guardians_table`, `enrollment_history_table`
             WHERE students_table.lrn = fathers_table.student_lrn
             AND students_table.lrn = mothers_table.student_lrn
             AND students_table.lrn = guardians_table.student_lrn
+            AND enrollment_history_table.student_lrn = students_table.lrn
+            AND enrollment_history_table.status = 'Active'
             AND students_table.student_id = ?;
             ";
    
