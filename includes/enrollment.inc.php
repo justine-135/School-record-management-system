@@ -17,6 +17,8 @@ if (isset($_POST["enroll"])) {
     $from_sy = $_POST['from-sy'];
     $to_sy = $_POST['to-sy'];
     $grade_lvl = $_POST['grade-lvl'];
+    $section = $_POST['section'];
+    $file = $_FILES['file'];
     $bdate = $_POST['birth-date'];
     $gender = $_POST['gender'];
     $religion = $_POST['religion'];
@@ -65,16 +67,18 @@ if (isset($_POST["enroll"])) {
     $guardian_relation = "Guardian";
     $guardian_employment = $_POST['g-employment-status'];
     $guardian_contact = $_POST['g-contact-number'];
-
+    
     // Check inputs
     $enrollment_check_obj = new EnrollmentController();
     $enrollment_validation_result = $enrollment_check_obj->checkValidation(
-    $sname, $fname, $mname, $extname, $lrn, $from_sy, $to_sy, $grade_lvl, $bdate, $gender, $religion, 
+    $sname, $fname, $mname, $extname, $lrn, $from_sy, $to_sy, $grade_lvl, $section, $file, $bdate, $gender, $religion, 
     $house_street, $subdivision, $barangay, $city, $province, $region,
     $father_surname, $father_fname, $father_mname, $father_education, $father_employment, $father_contact, 
     $mother_surname, $mother_fname, $mother_mname, $mother_education, $mother_employment, $mother_contact,
     $guardian_surname, $guardian_fname, $guardian_mname, $guardian_education, $guardian_employment, $guardian_contact, 
     $is_beneficiary, $father_education_textbox, $mother_education_textbox, $guardian_education_textbox);
+
+ 
 
     if ($enrollment_validation_result !== false) {
         header("Location: ../enrollment.php?error");
@@ -83,7 +87,7 @@ if (isset($_POST["enroll"])) {
     else{
         $create_student_obj = new EnrollmentController();
         $create_student_obj->initCreate($sname, $fname, $mname, $extname, 
-        $lrn, $from_sy, $to_sy, $grade_lvl, $bdate, $gender, $religion, 
+        $lrn, $from_sy, $to_sy, $grade_lvl, $section, $file, $bdate, $gender, $religion, 
         $house_street, $subdivision, $barangay, $city, $province, $region,
         $father_surname, $father_fname, $father_mname, $father_education, 
         $father_employment, $father_contact, $mother_surname, $mother_fname, 
@@ -101,11 +105,12 @@ elseif (isset($_POST['add-enrollment-history'])) {
     $from_sy = $_POST['from-sy'];
     $to_sy = $_POST['to-sy'];
     $grade_lvl = $_POST['grade-lvl'];
+    $section = $_POST['section'];
     $old_grade_lvl = $_POST['old-grade-lvl'];
     $status = $_POST['status'];
 
     $enrollment_history_check_obj = new EnrollmentHistoryController();
-    $enrollment_history_validation_result = $enrollment_history_check_obj->checkValidationHistory($id, $lrn, $from_sy, $to_sy, $old_grade_lvl, $grade_lvl, $status);
+    $enrollment_history_validation_result = $enrollment_history_check_obj->checkValidationHistory($id, $lrn, $from_sy, $to_sy, $old_grade_lvl, $grade_lvl, $section, $status);
 }
 else{
     header("location: ../index.php");

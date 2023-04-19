@@ -5,9 +5,9 @@ use Views\StudentView;
 use Views\StudentInformationView;
 
 // Functions
-function index($query){
+function index($query, $status){
     $obj = new StudentView();
-    $obj->initIndex($query);
+    $obj->initIndex($query, $status);
 }
 
 function singleIndex($id){
@@ -21,9 +21,10 @@ function initAddGradeTable($grade_lvl){
 }
 
 // Requests
-if (isset($_GET['query'])) {
+if (isset($_GET['query']) || isset($_GET['status'])) {
     $query = $_GET['query']; 
-    index($query);
+    $status = $_GET['status']; 
+    index($query, $status);
     die();
 }
 
