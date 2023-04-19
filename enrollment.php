@@ -6,24 +6,34 @@
 
 <?php include './partials/alert.php'; ?>
 
+<?php
+if (empty($_SESSION['username']) && empty($_SESSION['account_id'])) {
+  header("Location: ./login.php");
+}
+?>
+
 <form class="container-fluid w-90 border mt-4 p-4 bg-white mb-3" action="./includes/enrollment.inc.php" method="post" enctype="multipart/form-data">
     <h4 class="">Enroll a Learner</h4>
     <div class="border mt-3">
       <div>
-        <h5 class="border-bottom p-3">Student Information</h5>
+        <h5 class="border-bottom p-3">Enrollment information</h5>
         <div class="row g-3 p-3">
           <div class="col-md-4">
             <label for="lrn" class="form-label">LRN</label>
             <input type="text" class="form-control" id="lrn" placeholder="Enter learner reference number" name="lrn" value="<?= isset($_GET['lrn']) ? $_GET['lrn'] : "" ?>" required>
           </div>
           <div class="col-md-4">
-            <label for="from-sy" class="form-label">School Year</label>
-            <div class="d-flex align-items-center">
-              <input type="number" class="form-control w-50 me-1 from-sy-textbox" id="from-sy" placeholder="From year" name="from-sy" value="<?= isset($_GET['from_sy']) ? $_GET['from_sy'] : "" ?>" required>
-              -
-              <input type="number" class="form-control w-50 ms-1 to-sy-textbox" id="to-sy" placeholder="To year" name="to-sy" value="<?= isset($_GET['to_sy']) ? $_GET['to_sy'] : "" ?>" required>
-            </div>
+            <label for="from-sy" class="form-label">Start of school year</label>
+            <input type="number" class="form-control from-sy-textbox" id="from-sy" placeholder="Enter year" name="from-sy" value="<?= isset($_GET['from_sy']) ? $_GET['from_sy'] : "" ?>" required>
+              
           </div>
+          <div class="col-md-4">
+            <label for="to-sy" class="form-label">End of school Year</label>
+            <input type="number" class="form-control to-sy-textbox" id="to-sy" placeholder="Enter year" name="to-sy" value="<?= isset($_GET['to_sy']) ? $_GET['to_sy'] : "" ?>" required>
+          </div>
+          
+        </div>
+        <div class="row g-3 p-3">
           <div class="col-md-4">
             <label for="grade-level" class="form-label">Grade Level</label>
             <input type="hidden" name="grade-lvl-input" value="<?= isset($_GET['grade_lvl']) ? $_GET['grade_lvl'] : "" ?>"  id="">
@@ -37,7 +47,20 @@
               <option value="6" <?= isset($_GET['grade_lvl']) ? $_GET['grade_lvl'] == "6" ? 'selected' : "" : "" ?>>6</option>
             </select>
           </div>
+          <div class="col-md-4">
+            <label for="grade-level" class="form-label">Section</label>
+            <input type="hidden" name="grade-section-input" value="<?= isset($_GET['section']) ? $_GET['section'] : "" ?>"  id="">
+            <select class="form-select section-select" id="section" aria-label="Default select example" name="section">
+              <option value="None" selected>Choose</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label for="file" class="form-label">Upload student picture</label>
+            <input type="file" class="form-control" id="file" name="file" accept="image/png, image/gif, image/jpeg" value="<?= isset($_GET['file']) ? $_GET['file'] : "" ?>" required>
+            <div id="emailHelp" class="form-text ps-3" >*Choose jpeg/jpg, and png only.</div>
+          </div>
         </div>
+        <h5 class="border-top border-bottom p-3">Basic information</h5>
         <div class="row g-3 p-3">
           <div class="col-md-4">
             <label for="validationCustom01" class="form-label">Surname</label>
@@ -73,7 +96,7 @@
           </div>
           <div class="col-md-4">
             <label for="bdate" class="form-label">Birthdate</label>
-            <input type="date" class="form-control w-50" id="bdate" name="birth-date" value="<?= isset($_GET['bdate']) ? $_GET['bdate'] : "" ?>" required>
+            <input type="date" class="form-control" id="bdate" name="birth-date" value="<?= isset($_GET['bdate']) ? $_GET['bdate'] : "" ?>" required>
           </div>
           <div class="col-md-4">
             <span>Gender</span>
@@ -97,7 +120,7 @@
           </div>
         </div>
 
-        <h5 class="border-bottom border-top\  p-3">Address</h5>
+        <h5 class="border-bottom border-top  p-3">Address</h5>
         <div class="row g-3 p-3">
           <div class="col-md-4">
             <label for="house-number-street" class="form-label">House Number & Street</label>
