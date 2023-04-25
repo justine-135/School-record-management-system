@@ -6,21 +6,23 @@
 
 <?php include "partials/nav.php"; ?>
 
-<main class="container-fluid w-90 border mt-4 p-4 bg-white <?= $view ?>">
-    <h4 class=""><?= $h4 ?></h4>
-    <div class="border mt-3">
+<main class="container-fluid w-90 border mt-4 p-0 bg-white <?= $view ?>">
+    <div>
         <div>
-            <div>
-                <h5 class="border-bottom p-3 mb-0">Manage</h5>
-            </div>
+            <h5 class="border-bottom p-3 mb-0">Accounts</h5>
         </div>
-        <div class="p-2 d-flex align-items-center justify-content-between">
+    </div>
+    <div class="p-2 d-flex align-items-center justify-content-between">
 
-            <?php require $_SERVER['DOCUMENT_ROOT'].'/sabanges/partials/search_user.php'; ?>
-            <a type="submit" value="promote" name="promote" class="btn btn-primary" href="register.php">Add</a>
+        <?php require $_SERVER['DOCUMENT_ROOT'].'/sabanges/partials/nav_filter_accounts.php'; ?>
+        <a type="submit" value="promote" name="promote" class="btn btn-primary ms-2" href="register.php">Add</a>
 
-        </div>
-        <div class="table-responsive <?= $view ?>-table"></div>
+    </div>
+    <div class="table-responsive <?= $view ?>-table min-vh-100">
+    <?php
+        $accounts = true;
+        require $_SERVER['DOCUMENT_ROOT'].'/sabanges/includes/teachers.inc.php';
+    ?>
     </div>
 </main>
 <?php require $_SERVER['DOCUMENT_ROOT'].'/sabanges/partials/footer.php'; ?>
