@@ -35,6 +35,11 @@ function initIndexGradeLevels(){
     $obj->initIndex();
 }
 
+function initIndexSelectNav($section_params){
+    $obj = new GradeLevelsView();
+    $obj->sectionLink($section_params);
+}
+
 // Post requests
 if (isset($_POST['grade-level-submit'])) {
     $grade = $_POST['grade-lvl'];
@@ -61,4 +66,9 @@ if (isset($_GET['grade_level_table'])) {
 
 if (isset($_GET['sections_table'])) {
     initIndexSections();
+}
+
+if (isset($sections) || isset($_GET['level'])) {
+    $section_params = isset($_GET['level']) ? $_GET['level'] : '';
+    initIndexSelectNav($section_params);
 }

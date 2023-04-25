@@ -89,8 +89,17 @@ function initValidate($username, $password){
     $obj->initLogin($username, $password);
 }
 
-if (isset($_GET['index'])) {
+if (isset($accounts)) {
     index();
+}
+
+if (isset($_POST['search'])) {
+    $query = $_POST['query'];
+    $row = $_POST['row'];
+    $page_no = $_POST['page_no'];
+    $status = $_POST['status'];
+
+    header("Location: ../accounts.php?row={$row}&page_no={$page_no}&status={$status}&query={$query}");
 }
 
 if (isset($_GET['id'])) {
