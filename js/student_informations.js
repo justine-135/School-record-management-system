@@ -25,11 +25,7 @@ const calculateAge = (birthday) => {
 };
 ageSpan.innerHTML = "(" + calculateAge(bdaySpan.innerHTML) + ")";
 
-const selectGrade = document.querySelector(".add-grade-select");
-
-selectGrade.addEventListener("change", () => {
-  console.log(selectGrade.value);
-  let gradeLvl = selectGrade.value;
+const loadSubjects = (gradeLvl, lrn) => {
   var xmlhttp = new XMLHttpRequest();
   xmlhttp.onreadystatechange = function () {
     if (this.readyState == 4) {
@@ -39,15 +35,25 @@ selectGrade.addEventListener("change", () => {
   };
   xmlhttp.open(
     "GET",
-    "./includes/student.inc.php?grade_level=" + gradeLvl,
+    "./includes/student.inc.php?grade_level=" + gradeLvl + "&lrn=" + lrn,
     true
   );
   xmlhttp.send();
+};
+
+// Select grade level
+const selectGrade = document.querySelector(".add-grade-select");
+let gradeLvl = selectGrade.value;
+selectGrade.addEventListener("change", () => {
+  gradeLvl = selectGrade.value;
+  loadSubjects(gradeLvl, lrn);
 });
+
+loadSubjects(gradeLvl);
 
 const gradeSection = document.querySelector(".grades-section");
 let lrn = gradeSection.id;
-
+// Load grade section
 const loadGradeSection = () => {
   var xmlhttp = new XMLHttpRequest();
   xmlhttp.onreadystatechange = function () {
@@ -89,3 +95,9 @@ gradeSelect.addEventListener("change", () => {
 });
 
 loadSectionSelect(gradeValue);
+
+const finalGradeDisplay = document.querySelectorAll(".final-grade-display");
+console.log(finalGradeDisplay);
+// finalGradeDisplay.forEach((element) => {
+//   console.log(element);
+// });
