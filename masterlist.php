@@ -18,31 +18,23 @@ if (empty($_SESSION['username']) && empty($_SESSION['account_id'])) {
 }
 ?>
 
-<main class="container-fluid w-90 border mt-4 p-4 bg-white <?= $view ?>">
-  <h4 class=""><?= $h4 ?></h4>
-  <div class="border mt-3">
+  <main class="container-fluid w-90 border mt-4 p-0 bg-white <?= $view ?>">
     <div>
       <div>
         <h5 class="border-bottom p-3 mb-0">Enrolled</h5>
       </div>
-      <div class="p-2 d-flex align-items-center justify-content-between">
-
-        <?php require $_SERVER['DOCUMENT_ROOT'].'/sabanges/partials/search_student.php'; ?>
-
-        <?php require $_SERVER['DOCUMENT_ROOT'].'/sabanges/partials/filter_active_students.php'; ?>
-
-      </div>
     </div>
-    <form class="" action="./includes/promotion_retention.inc.php" method="post" enctype="multipart/form-data">
-      <div class=" ms-2 promotion-retention" role="group" aria-label="Basic mixed styles example">
-        <button type="submit" value="promote" name="promote" class="btn btn-primary">Promote</button>
-        <button type="submit" value="retian" name="retain" class="btn btn-danger">Retain</button>
+      <div class="p-2 d-flex align-items-center">
+        <?php require $_SERVER['DOCUMENT_ROOT'].'/sabanges/partials/nav_filter_student.php'; ?>
       </div>
-      <div class="table-responsive <?= $view ?>-table min-vh-100"></div>
-    </form>
-  </div>
+      <div class="table-responsive <?= $view ?>-table min-vh-100">
+        <?php
+        $masterlist = true;
+        require $_SERVER['DOCUMENT_ROOT'].'/sabanges/includes/student.inc.php';
+        ?>
+      </div>
+  </main>
 
-</main>
 
 
 <?php require $_SERVER['DOCUMENT_ROOT'].'/sabanges/partials/footer.php'; ?>
