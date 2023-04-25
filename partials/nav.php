@@ -8,7 +8,9 @@
   <li class="nav-item">
     <a class="nav-link <?= $header === "/enrollment" ? "active" : "" ?>" href="enrollment.php">Enrollment</a>
   </li>
-
+  <li class="nav-item">
+    <a class="nav-link <?= $header === "/promotion" ? "active" : "" ?>" href="promotion.php">Promotion and retention</a>
+  </li>
   <li class="nav-item">
     <a class="nav-link <?= $header === "/accounts" ? "active" : "" ?>" href="accounts.php">Accounts</a>
   </li>

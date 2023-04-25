@@ -21,7 +21,6 @@
           <img src="images/logo.jpg" height="50px" width="50px" alt="" />
           Sabang Elementary School
       </a>
-      <?= $_SESSION['email']; ?>
       <div class="dropdown">
           <a
           class="btn dropdown-toggle"
