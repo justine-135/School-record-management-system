@@ -12,9 +12,7 @@ if (empty($_SESSION['username']) && empty($_SESSION['account_id'])) {
 }
 ?>
 
-<form class="container-fluid w-90 border mt-4 p-4 bg-white mb-3" action="./includes/enrollment.inc.php" method="post" enctype="multipart/form-data">
-    <h4 class="">Enroll a Learner</h4>
-    <div class="border mt-3">
+    <form class="container-fluid w-90 border mt-4 p-0 bg-white mb-3" action="./includes/enrollment.inc.php" method="post" enctype="multipart/form-data">
       <div>
         <h5 class="border-bottom p-3">Enrollment information</h5>
         <div class="row g-3 p-3">
@@ -388,13 +386,12 @@ if (empty($_SESSION['username']) && empty($_SESSION['account_id'])) {
           </div>
         </div>
       </div>
-    </div>
+      <div class="d-flex align-items-center border-top p-2">
+        <input class="btn btn-primary ms-auto" type="submit" value="Enroll Learner" name="enroll">
+      </div>
+    </form>
 
-    <div class="d-flex">
-      <input class="btn btn-primary mt-2 ms-auto" type="submit" value="Enroll Learner" name="enroll">
-    </div>
 
-</form>
 
 <script src="js/form_validation.js"></script>
 <script src="js/enrollment_form.js"></script>
