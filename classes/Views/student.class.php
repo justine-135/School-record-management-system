@@ -4,9 +4,64 @@ namespace Views;
 include $_SERVER['DOCUMENT_ROOT'].'/sabanges/classes/Models/student.class.php';
 
 class StudentView extends \Models\Student{
-    public function initIndex($query, $status){
-        $results = $this->index($query, $status);
+    protected function validateRequest($rows, $offset, $page_no, $status, $query, $level, $section){
+        if (!preg_match("/^[0-9]*$/", $rows)) {
+            echo "<p class='ms-2'>Invalid parameters</p>";
+            die();
+        }
+        elseif (!preg_match("/^[0-9]*$/", $offset)) {
+            echo "<p class='ms-2'>Invalid parameters</p>";
+            die();
+        }
+        elseif (!preg_match("/^[0-9]*$/", $page_no)) {
+            echo "<p class='ms-2'>Invalid parameters</p>";
+            die();
+        }
+        elseif (!preg_match("/^[a-zA-Z]*$/", $status)) {
+            echo "<p class='ms-2'>Invalid parameters</p>";
+            die();
+        }
+        elseif (!preg_match("/^[a-zA-Z0-9\s]*$/", $query)) {
+            echo "<p class='ms-2'>Invalid parameters</p>";
+            die();
+        }
+        elseif (!preg_match("/^[a-zA-Z0-9]*$/", $level)) {
+            echo "<p class='ms-2'>Invalid parameters</p>";
+            die();
+        }
+        elseif (!preg_match("/^[a-zA-Z0-9\s]*$/", $rows)) {
+            echo "<p class='ms-2'>Invalid parameters</p>";
+            die();
+        }
+        else {
+            return;
+        }
+    }
+
+    public function initIndex(){
+        $rows = isset($_GET['row']) ? $_GET['row'] : '10';
+        $page_no = isset($_GET['page_no']) ? $_GET['page_no'] : '1';
+        $status = isset($_GET['status']) ? $_GET['status'] : 'active';
+        $query = isset($_GET['query']) ? $_GET['query'] : '';
+        $level = isset($_GET['level']) ? $_GET['level'] : "";
+        $section = isset($_GET['section']) ? $_GET['section'] : "";
+
+        $page_no = intval($page_no);
+        $total_records_per_page = $rows;
+        $offset = ($page_no - 1) * intval($total_records_per_page);
+        $previous_page = $page_no - 1;
+        $next_page = $page_no + 1;
+        $result_count = $this->studentCount();
+        $records = count($result_count);
+        $total_no_page = ceil($records / intval($total_records_per_page));
+
+        $this->validateRequest($rows, $offset, $page_no, $status, $query, $level, $section);
+
+        $results = $this->index($status, $offset, $total_records_per_page, $query, $level, $section);
+
+
         ?>
+
         <table class="table table-hover mb-0 border-top student-table">
             <thead>
                 <tr>
@@ -36,7 +91,7 @@ class StudentView extends \Models\Student{
                         <td>
                             <div class="d-flex">
                                 <span class="me-2">
-                                <?= $row['student_id'] ?>
+                                <?= $row['enrollment_id'] ?>
                                 </span>
                                 <div class="form-check">
                                     <input class="form-check-input masterlist-chkbox" type="checkbox" name="chkbox-student[]" value="<?= $row['student_id'] ?>,<?= $row['student_lrn'] ?>,<?= $row['grade_level'] ?>" id="flexCheckDefault">
@@ -49,7 +104,11 @@ class StudentView extends \Models\Student{
                         <td><?= $row['gender'] ?></td>
                         <td><?= $row['grade_level'] ?></td>
                         <td><?= $row['section'] ?></td>
-                        <td><?= $row['status'] ?></td>
+                        <td>
+                            <p class="<?= $row['status'] === "Active" ? "text-primary" : "text-success"?> text-center fw-semibold">
+                                <?= $row['status'] ?>
+                            </p>
+                        </td>
                         <td>
                             <div class="dropdown ml-auto">
                                 <a
@@ -65,7 +124,6 @@ class StudentView extends \Models\Student{
                                 
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                     <input class="student-id" type="hidden" name="id" id="id" value="<?= $row['student_id'] ?>" >
-                                    <!-- <li><input type="submit" class="dropdown-item information-links" name="information" value="Information"></li> -->
                                     <li><a class="dropdown-item" href="../sabanges/student_informations.php?id=<?= $row['student_id']?>">Informations</a></li>
                                     <li><a class="dropdown-item" href="../sabanges/student_informations.php?id=<?= $row['student_id']?>#grades-section">Grades</a></li>
                                 </ul>
@@ -77,7 +135,25 @@ class StudentView extends \Models\Student{
                 ?>
             </tbody>
         </table>
+        <nav class="m-2">
+            <ul class="pagination">
+                <li class="page-item">
+                    
+                    <a class="page-link previous-btn <?= $page_no <= 1 ? 'disabled' : '' ?>" href="?row=<?= $rows ?>&page_no=<?= $previous_page ?>&status=<?= $status ?>&level=<?= $level ?>&section=<?= $section ?>&query=<?= $query ?>">Previous</a>
+                </li>
+                <?php for ($i=0; $i < $total_no_page; $i++) { ?>
 
+                <li class="page-item">
+                    <a class="page-link page-number <?= $page_no !== $i + 1 ? '' : 'active'?>" href="?row=<?= $rows ?>&page_no=<?= $i + 1 ?>&status=<?= $status ?>&level=<?= $level ?>&section=<?= $section ?>&query=<?= $query ?>"><?= $i + 1?></a>
+                </li>
+               
+                <?php } ?>
+                <li class="page-item">
+                    <a class="page-link next-btn <?= $page_no >= $total_no_page ? 'disabled' : '' ?>" href="?row=<?= $rows ?>&page_no=<?= $next_page ?>status=<?= $status ?>&level=<?= $level ?>&section=<?= $section ?>&query=<?= $query ?>">Next</a>
+                </li>
+            </ul>
+            <span class="fw-semibold">Page <?= $page_no ?> out of <?= $total_no_page ?></span>
+        </nav>
         
         <?php
             
@@ -294,6 +370,10 @@ class StudentInformationView extends \Models\Student{
                             <span><?= $row2['grade_level'] ?></span>
                         </div>
                         <div class="d-flex align-items-center justify-content-between">
+                            <span class="fw-semibold">Section :</span>
+                            <span><?= $row2['section'] ?></span>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-between">
                             <span class="fw-semibold">School :</span>
                             <span><?= $row2['school'] ?></span>
                         </div>
@@ -338,34 +418,64 @@ class StudentInformationView extends \Models\Student{
         <?php
     }
 
-    public function addGradesTable($grade_lvl){
-        $result = $this->subjectIndex($grade_lvl);
+    public function addGradesTable($grade_level, $lrn){
+        $result = $this->subjectIndex($grade_level);
+        $result2 = $this->gradeSection($grade_level, $lrn);
+        if (count($result) <= 0) {
+            echo "<p class='p-2'>Add subject at <a href='../sabanges/operations.php'>operations</a> tab.</p>";
+        }
+        else{
         ?>
-        <thead>
-            <tr>
-                <th>Subject</th>
-                <th>1st quarter</th>
-                <th>2nd quarter</th>
-                <th>3rd quarter</th>
-                <th>4th quarter</th>
-                <th>Average</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($result as $row) {?>
-            <tr>
-                <td>
-                    <input class="form-control" type="text" name="subjects[]" id="" value="<?= $row['subject'] ?>" readonly>
-                </td>
-                <td><input class="form-control" type="text" name="first-quarter[]" id="" value=<?= $row['quarters'] <= 4 ? '' : "Disabled" ?> <?= $row['quarters'] <= 4 ? '' : 'readonly' ?>></td>
-                <td><input class="form-control" type="text" name="second-quarter[]" id="" value=<?= $row['quarters'] <= 4 && $row['quarters'] >= 2 ? '' : "Disabled" ?> <?= $row['quarters'] <= 4 && $row['quarters'] >= 2 ? '' : 'readonly' ?>></td>
-                <td><input class="form-control" type="text" name="third-quarter[]" id="" value=<?= $row['quarters'] >= 3 ? '' : "Disabled" ?> <?= $row['quarters'] >= 3 ? '' : 'readonly' ?>></td>
-                <td><input class="form-control" type="text" name="fourth-quarter[]" id="" value=<?= $row['quarters'] == 4 ? '' : "Disabled" ?> <?= $row['quarters'] == 4 ? '' : 'readonly' ?>></td>
-                <td><input class="form-control" type="text" name="" id="" disabled></td>
-            </tr>
+        <div class="d-flex p-2">
+            <?php if (count($result2) > 0) {
+             foreach ($result2 as $row) { ?>
+            <div class="me-2">
+              <label class="form-check-label" for="current-grade-lvl">Grade level</label>
+              <input class="form-control grade-level-grades" type="text" name="grade-level" value="<?= $row['grade_level'] ?>" id="current-grade-level" readonly>
+            </div>
+            <div>
+              <label class="form-check-label" for="section">Section</label>
+              <input class="form-control section-grades" type="text" name="section" value="<?= $row['section'] ?>" id="section" readonly>
+            </div>
+            <?php }} else { ?>
+            <div class="me-2">
+              <label class="form-check-label" for="current-grade-lvl">Grade level</label>
+              <input class="form-control grade-level-grades" type="text" name="" value="Not enrolled" id="current-grade-level" readonly>
+            </div>
+            <div>
+              <label class="form-check-label" for="section">Section</label>
+              <input class="form-control section-grades" type="text" name="section" value="Not enrolled" id="section" readonly>
+            </div>
             <?php } ?>
-        </tbody>
+        </div>
+        <table class="table table-borderless border-top table-hover">
+            <thead class="border-bottom">
+                <tr>
+                    <th>Subject</th>
+                    <th>1st quarter</th>
+                    <th>2nd quarter</th>
+                    <th>3rd quarter</th>
+                    <th>4th quarter</th>
+                    <th>Final</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($result as $row) {?>
+                <tr>
+                    <td>
+                        <input class="form-control" type="text" name="subjects[]" id="" value="<?= $row['subject'] ?>" readonly>
+                    </td>
+                    <td><input class="form-control" type="text" name="first-quarter[]" id="" value=<?= $row['quarters'] <= 4 ? '' : "Disabled" ?> <?= $row['quarters'] <= 4 ? '' : 'readonly' ?>></td>
+                    <td><input class="form-control" type="text" name="second-quarter[]" id="" value=<?= $row['quarters'] <= 4 && $row['quarters'] >= 2 ? '' : "Disabled" ?> <?= $row['quarters'] <= 4 && $row['quarters'] >= 2 ? '' : 'readonly' ?>></td>
+                    <td><input class="form-control" type="text" name="third-quarter[]" id="" value=<?= $row['quarters'] >= 3 ? '' : "Disabled" ?> <?= $row['quarters'] >= 3 ? '' : 'readonly' ?>></td>
+                    <td><input class="form-control" type="text" name="fourth-quarter[]" id="" value=<?= $row['quarters'] == 4 ? '' : "Disabled" ?> <?= $row['quarters'] == 4 ? '' : 'readonly' ?>></td>
+                    <td><input class="form-control" type="text" name="" id="" disabled></td>
+                </tr>
+                <?php } ?>
+            </tbody>
+        </table>
         <?php
+        }
     }
 
     public function initGradeLevelsOptions($lrn, $grade_lvl){

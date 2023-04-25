@@ -8,11 +8,11 @@ class Subjects extends \Dbh{
     protected function create($subject, $grade, $quarter){
         try {
             $date = date("Y-m-d");
-            $sql = "INSERT INTO `operations_subjects_table` (`updated_at`, `subject`, `grade_level`, `quarter`)
+            $sql = "INSERT INTO `operations_subjects_table` (`updated_at`, `subject`, `grade_level`, `quarters`)
             VALUES (?, ?, ?, ?);";
 
             $stmt = $this->connection()->prepare($sql);
-            $stmt->execute([$date, $subject, $grade]);
+            $stmt->execute([$date, $subject, $grade, $quarter]);
             $stmt = null;
         } catch(PDOException $e) {
             echo "Error: " . $e->getMessage();
@@ -47,4 +47,6 @@ class Subjects extends \Dbh{
         }
         $conn = null;
     }
+
+
 }

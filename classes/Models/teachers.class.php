@@ -66,13 +66,48 @@ class Teachers extends \Dbh{
         $conn = null;
     }
 
-    protected function index(){
+    protected function index($offset, $total_records_per_page, $status, $query){
         try{
-            $sql = "SELECT teachers_account_table.account_id, teachers_account_table.added_at, teachers_account_table.username, teachers_account_table.email, 
-            teachers_table.teacher_id, teachers_table.surname, teachers_table.first_name, teachers_table.middle_name, teachers_table.ext_name, teachers_table.gender, teachers_table.contact
-            FROM teachers_account_table, teachers_table
-            WHERE teachers_account_table.account_id = teachers_table.teacher_id";
+            $status = $status == 'active' ? 1 : 0;
 
+            if (!empty($query)) {
+                $sql = "SELECT teachers_account_table.account_id, teachers_account_table.added_at, teachers_account_table.username, teachers_account_table.email, 
+                teachers_table.teacher_id, teachers_table.surname, teachers_table.first_name, teachers_table.middle_name, teachers_table.ext_name, teachers_table.gender, teachers_table.contact
+                FROM teachers_account_table, teachers_table
+                WHERE ? in (teachers_account_table.account_id, teachers_account_table.added_at, teachers_account_table.username, teachers_account_table.email, 
+                teachers_table.teacher_id, teachers_table.surname, teachers_table.first_name, teachers_table.middle_name, teachers_table.ext_name, teachers_table.gender, teachers_table.contact)
+                AND teachers_account_table.account_id = teachers_table.teacher_id
+                AND teachers_account_table.status = ?
+                LIMIT $offset, $total_records_per_page";
+    
+                $stmt = $this->connection()->prepare($sql);
+                $stmt->execute([$query, $status]);
+            }
+            else{
+                $sql = "SELECT teachers_account_table.account_id, teachers_account_table.added_at, teachers_account_table.username, teachers_account_table.email, 
+                teachers_table.teacher_id, teachers_table.surname, teachers_table.first_name, teachers_table.middle_name, teachers_table.ext_name, teachers_table.gender, teachers_table.contact
+                FROM teachers_account_table, teachers_table
+                WHERE teachers_account_table.account_id = teachers_table.teacher_id
+                AND teachers_account_table.status = ?
+                LIMIT $offset, $total_records_per_page";
+    
+                $stmt = $this->connection()->prepare($sql);
+                $stmt->execute([$status]);
+            }
+
+    
+            $results = $stmt->fetchAll();
+            return $results;
+        }
+        catch(PDOException $e) {
+            echo "Error: " . $e->getMessage();
+        }
+        $conn = null;
+    }
+
+    protected function accountsCount(){
+        try{
+            $sql = "SELECT `account_id` FROM `teachers_account_table`";
             $stmt = $this->connection()->prepare($sql);
             $stmt->execute();
     

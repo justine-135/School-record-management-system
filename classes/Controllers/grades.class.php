@@ -7,15 +7,15 @@ include $_SERVER['DOCUMENT_ROOT'].'/sabanges/classes/Models/grades.class.php';
 class GradesController extends \Models\Grades{
     public function initCreate($id, $lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter){
         session_start();
-        if ($this->initValidateUser($_SESSION['email'], $grade_level, $section, )) {
-            # code...
+        // if ($this->initValidateUser($_SESSION['email'], $grade_level, $section, )) {
+        //     # code...
+        // }
+        if ($this->emptyInputs($lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter) !== false) {
+            header("Location: ../student_informations.php?id=" . $id . "&grades&error&empty");
+            die();
         }
         elseif ($this->initGradesExists($lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter) !== false) {
             header("Location: ../student_informations.php?id=" . $id . "&grades&error&exist");
-            die();
-        }
-        elseif ($this->emptyInputs($lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter) !== false) {
-            header("Location: ../student_informations.php?id=" . $id . "&grades&error&empty");
             die();
         }
         elseif ($this->initStudentEnrolled($lrn, $grade_level) !== false) {
@@ -42,19 +42,18 @@ class GradesController extends \Models\Grades{
         if (count($this->validateUser($email, $grade_level, $section)) > 0) {
             $result = true;
         }
-        var_dump($result);
-        die();
+        return $result;
     }
 
-    protected function initGradesExists($lrn, $grade_level, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter){
+    protected function initGradesExists($lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter){
         $result = false;
-        if (count($this->gradesExists($lrn, $grade_level, $subjects)) > 0) {
+        if (count($this->gradesExists($lrn, $grade_level, $section, $subjects)) > 0) {
             $result = true;
         }
         return $result;
     }
 
-    protected function emptyInputs($lrn, $grade_level, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter){
+    protected function emptyInputs($lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter){
         $result = false;
         for ($i=0; $i < count($subjects); $i++) { 
             if (empty($lrn) || empty($grade_level) || empty($subjects[$i]) || empty($first_quarter[$i]) || empty($second_quarter[$i]) || empty($third_quarter[$i]) || empty($fourth_quarter[$i])) {
@@ -69,7 +68,6 @@ class GradesController extends \Models\Grades{
         $result = true;
         for ($i=0; $i < count($subjects); $i++) { 
             if (is_numeric($first_quarter[$i]) || is_numeric($second_quarter[$i]) || is_numeric($third_quarter[$i]) || is_numeric($fourth_quarter[$i])) {
-                var_dump($first_quarter[$i]);
                 $result = false;
             }
             else{

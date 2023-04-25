@@ -21,7 +21,7 @@ class Grades extends \Dbh{
     protected function create($lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter){
         try {
             $sql = "INSERT INTO `student_grades_table` 
-            (`student_lrn`, `grade_level`, `subject`, `section`, `first_quarter`, `second_quarter`, `third_quarter`, `fourth_quarter`)
+            (`student_lrn`, `grade_level`, `section`, `subject`, `first_quarter`, `second_quarter`, `third_quarter`, `fourth_quarter`)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
 
             $stmt = $this->connection()->prepare($sql);
@@ -35,15 +35,15 @@ class Grades extends \Dbh{
         }
     }
 
-    protected function gradesExists($lrn, $grade_level, $subjects){
+    protected function gradesExists($lrn, $grade_level, $section, $subjects){
         try{
             // var_dump($subjects);
             // $sql = "SELECT * FROM `student_grades_table` WHERE `student_lrn` = ? AND `grade_level` = ? AND `subjects` = ? `first_quarter` = ? AND `second_quarter` = ? AND `third_quarter` = ? AND `fourth_quarter` = ?";
-            $sql = "SELECT * FROM `student_grades_table` WHERE `student_lrn` = ? AND `grade_level` = ? AND `subject` = ?";
+            $sql = "SELECT * FROM `student_grades_table` WHERE `student_lrn` = ? AND `grade_level` = ? AND `section` = ? AND `subject` = ?";
             $stmt = $this->connection()->prepare($sql);
 
             for ($i=0; $i < count($subjects); $i++) { 
-                $stmt->execute([$lrn, $grade_level, $subjects[$i]]);
+                $stmt->execute([$lrn, $grade_level, $section, $subjects[$i]]);
                 $results = $stmt->fetchAll();
                 if (count($results) > 0) {
                     break;

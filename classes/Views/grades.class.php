@@ -57,18 +57,39 @@ class GradesView extends \Models\Grades{
                                     <th>2nd quarter</th>
                                     <th>3rd quarter</th>
                                     <th>4th quarter</th>
-                                    <th>Average</th>
+                                    <th>Final</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($result as $row) { ?>
+                                <?php
+
+                                    foreach ($result as $row) { 
+                                        $final = 0;
+                                        $number_col = 4;
+
+                                        if ($row['first_quarter'] == 'Disabled') {
+                                            $number_col = $number_col - 1;
+                                        }
+                                        if ( $row['second_quarter'] == 'Disabled') {
+                                            $number_col = $number_col - 1;
+                                        }
+                                        if ($row['third_quarter'] == 'Disabled') {
+                                            $number_col = $number_col - 1;
+                                        }
+                                        if ($row['fourth_quarter'] == 'Disabled') {
+                                            $number_col = $number_col - 1;
+                                        }
+                                        $final = (intval($row['first_quarter']) + intval($row['second_quarter']) + intval($row['third_quarter']) + intval($row['fourth_quarter'])) / $number_col;
+                                        var_dump($number_col);
+
+                                ?>
                                 <tr>
                                     <td><input class="form-control" type="text" name="" id="" value="<?= $row['subject'] ?>" disabled></td>
                                     <td><input class="form-control" type="text" name="" id="" value="<?= $row['first_quarter'] ?>" disabled></td>
                                     <td><input class="form-control" type="text" name="" id="" value="<?= $row['second_quarter'] ?>" disabled></td>
                                     <td><input class="form-control" type="text" name="" id="" value="<?= $row['third_quarter'] ?>" disabled></td>
                                     <td><input class="form-control" type="text" name="" id="" value="<?= $row['fourth_quarter'] ?>" disabled></td>
-                                    <td><input class="form-control" type="text" name="" id="" disabled></td>
+                                    <td><input class="form-control final-grade-display" type="text" name="" id="" value="<?=$final?>" disabled></td>
                                 </tr>   
                                 <?php } ?>
                             </tbody>

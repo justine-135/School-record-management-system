@@ -21,7 +21,7 @@ class GradeLevels extends \Dbh{
 
     protected function indexSelect($section_params){
         try {
-            $sql = "SELECT DISTINCT grade, section FROM `grade_levels_table` WHERE grade = ? ORDER BY grade ASC;";
+            $sql = "SELECT DISTINCT grade, section FROM `grade_levels_table` WHERE grade = ? ORDER BY grade, section ASC;";
             $stmt = $this->connection()->prepare($sql);
             $stmt->execute([$section_params]);
     

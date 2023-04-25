@@ -3,9 +3,27 @@ namespace Views;
 
 class TeachersView extends \Models\Teachers{
     public function initIndex(){
-        $result = $this->index();
+        $rows = isset($_GET['row']) ? $_GET['row'] : '10';
+        $page_no = isset($_GET['page_no']) ? $_GET['page_no'] : '1';
+        $status = isset($_GET['status']) ? $_GET['status'] : 'active';
+        $query = isset($_GET['query']) ? $_GET['query'] : '';
+
+        $page_no = intval($page_no);
+
+        $total_records_per_page = $rows;
+
+        $offset = ($page_no - 1) * intval($total_records_per_page);
+        $previous_page = $page_no - 1;
+        $next_page = $page_no + 1;
+
+        $result_count = $this->accountsCount();
+
+        $records = count($result_count);
+        $total_no_page = ceil($records / $total_records_per_page);
+        $result = $this->index($offset, $total_records_per_page, $status, $query);
+
         ?>
-        <table class="table">
+        <table class="table border-top">
             <thead>
                 <tr>
                     <th>#</th>
@@ -58,6 +76,24 @@ class TeachersView extends \Models\Teachers{
                 <?php } ?>
             </tbody>
         </table>
+        <nav >
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link previous-btn <?= $page_no <= 1 ? 'disabled' : '' ?>" href="?row=<?= isset($_GET['row']) ? $_GET['row'] : 1 ?>&page_no=<?= $previous_page ?>&status=<?= isset($_GET['status']) ? $_GET['status'] : 'all' ?>">Previous</a>
+                </li>
+                <?php for ($i=0; $i < $total_no_page; $i++) { ?>
+
+                <li class="page-item">
+                    <a class="page-link page-number <?= $page_no !== $i + 1 ? '' : 'active'?>" href="?row=<?= isset($_GET['row']) ? $_GET['row'] : 1 ?>&page_no=<?= $i + 1 ?>&status=<?= isset($_GET['status']) ? $_GET['status'] : 'all' ?>"><?= $i + 1?></a>
+                </li>
+               
+                <?php } ?>
+                <li class="page-item">
+                    <a class="page-link next-btn <?= $page_no >= $total_no_page ? 'disabled' : '' ?>" href="?row=<?= isset($_GET['row']) ? $_GET['row'] : 1 ?>&page_no=<?= $next_page ?>status=<?= isset($_GET['status']) ? $_GET['status'] : 'all' ?>">Next</a>
+                </li>
+            </ul>
+            <span class="fw-semibold">Page <?= $page_no ?> out of <?= $total_no_page ?></span>
+        </nav>
         <?php
     }
 }
