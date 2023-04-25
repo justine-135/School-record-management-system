@@ -11,7 +11,7 @@ if (empty($_SESSION['username']) && empty($_SESSION['account_id'])) {
 ?>
 
 <main class="container-fluid w-90 border mt-4 p-4 bg-white operations">
-    <h4 class="">Operations</h4>
+    <h5 class="">Operations</h5>
     <!-- Modal -->
     <?php include './partials/subjects_modal.php'; ?>
     <?php include './partials/sections_modal.php'; ?>
