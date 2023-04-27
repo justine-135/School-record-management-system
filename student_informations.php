@@ -12,7 +12,7 @@ if (empty($_SESSION['username']) && empty($_SESSION['account_id'])) {
 }
 ?>
 
-<main class="container-fluid w-90 border mt-4 p-4 bg-white <?= $view ?>">
+<main class="container-fluid w-90 mt-4 p-0 bg-white <?= $view ?>">
 <?php include 'includes/student.inc.php'; ?>
 </main>
 <?php require $_SERVER['DOCUMENT_ROOT'].'/sabanges/partials/footer.php'; ?>
