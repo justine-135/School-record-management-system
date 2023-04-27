@@ -30,7 +30,6 @@ if (empty($_SESSION['username']) && empty($_SESSION['account_id'])) {
     </div>
     <div class="table-responsive <?= $view ?>-table min-vh-100">
     <?php
-    $masterlist = true;
     require $_SERVER['DOCUMENT_ROOT'].'/sabanges/includes/student.inc.php';
     ?>
     </div>
