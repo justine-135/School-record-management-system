@@ -23,7 +23,10 @@ const calculateAge = (birthday) => {
   const ageDate = new Date(ageDifMs);
   return Math.abs(ageDate.getUTCFullYear() - 1970);
 };
-ageSpan.innerHTML = "(" + calculateAge(bdaySpan.innerHTML) + ")";
+
+if (ageSpan !== null) {
+  ageSpan.innerHTML = "(" + calculateAge(bdaySpan.innerHTML) + ")";
+}
 
 const loadSubjects = (gradeLvl, lrn) => {
   var xmlhttp = new XMLHttpRequest();
@@ -51,9 +54,9 @@ selectGrade.addEventListener("change", () => {
 
 loadSubjects(gradeLvl);
 
+// Load grades
 const gradeSection = document.querySelector(".grades-section");
 let lrn = gradeSection.id;
-// Load grade section
 const loadGradeSection = () => {
   var xmlhttp = new XMLHttpRequest();
   xmlhttp.onreadystatechange = function () {
@@ -67,6 +70,7 @@ const loadGradeSection = () => {
 
 loadGradeSection();
 
+// Load sections for adding enrollment history
 const sectionSelect = document.querySelector(".section-select");
 const loadSectionSelect = (gradeValue) => {
   let section;
@@ -96,8 +100,38 @@ gradeSelect.addEventListener("change", () => {
 
 loadSectionSelect(gradeValue);
 
-const finalGradeDisplay = document.querySelectorAll(".final-grade-display");
-console.log(finalGradeDisplay);
-// finalGradeDisplay.forEach((element) => {
-//   console.log(element);
-// });
+// Load section for editing enrollment form
+const sectionSelectEnrollmentEdit = document.querySelector(
+  ".section-select-enrollment-edit"
+);
+const loadSectionSelectEnrollmentEdit = (gradeValueEnrollmentEditValue) => {
+  let section;
+  var xmlhttp = new XMLHttpRequest();
+  xmlhttp.onreadystatechange = function () {
+    if (this.readyState == 4) {
+      // Show HTML
+      sectionSelectEnrollmentEdit.innerHTML = this.responseText;
+    }
+  };
+  section = sectionSelectEnrollmentEdit.previousElementSibling.value;
+  xmlhttp.open(
+    "GET",
+    "./includes/operations.inc.php?section_select_enrollment_edit=" +
+      gradeValueEnrollmentEditValue,
+    true
+  );
+  xmlhttp.send();
+};
+
+const gradeSelectEnrollmentEdit = document.querySelector(
+  ".grade-select-enrollment-edit"
+);
+let gradeValueEnrollmentEditValue = gradeSelectEnrollmentEdit.value;
+console.log(gradeSelectEnrollmentEdit);
+
+gradeSelectEnrollmentEdit.addEventListener("change", () => {
+  gradeValueEnrollmentEditValue = gradeSelectEnrollmentEdit.value;
+  loadSectionSelectEnrollmentEdit(gradeValueEnrollmentEditValue);
+});
+
+loadSectionSelectEnrollmentEdit(gradeValueEnrollmentEditValue);
