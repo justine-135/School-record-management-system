@@ -92,6 +92,94 @@ class EnrollmentController extends \Models\Enrollment{
         }
     }
 
+    public function initUpdate($curr_lrn, $curr_grade_lvl, $curr_section, $enrollment_id, $student_id, $sname, $fname, $mname, $extname, $lrn, $from_sy, $to_sy, $grade_lvl, $section, $file, $bdate, $gender, $religion, 
+    $house_street, $subdivision, $barangay, $city, $province, $region,
+    $father_surname, $father_fname, $father_mname, $father_education, $father_employment, $father_contact, 
+    $mother_surname, $mother_fname, $mother_mname, $mother_education, $mother_employment, $mother_contact,
+    $guardian_surname, $guardian_fname, $guardian_mname, $guardian_education, $guardian_employment, $guardian_contact, 
+    $is_beneficiary, $father_education_textbox, $mother_education_textbox, $guardian_education_textbox)
+    {
+        if ($this->emptyInputs(
+            $sname, $fname, $mname, $extname, $lrn, $from_sy, $to_sy, $grade_lvl, $section, $bdate, $gender, $religion, 
+            $house_street, $subdivision, $barangay, $city, $province, $region,
+            $father_surname, $father_fname, $father_mname, $father_education, $father_employment, $father_contact, 
+            $mother_surname, $mother_fname, $mother_mname, $mother_education, $mother_employment, $mother_contact,
+            $guardian_surname, $guardian_fname, $guardian_mname, $guardian_education, $guardian_employment, $guardian_contact, 
+            $is_beneficiary, $father_education_textbox, $mother_education_textbox, $guardian_education_textbox
+        ) !== false) 
+        {
+            header("Location: ../student_informations.php?id={$enrollment_id}&edit_enrollment&error&empty");
+            die();
+        }
+
+        elseif ($this->invalidName($sname, $fname, $mname,
+            $father_surname, $father_fname, $father_mname, 
+            $mother_surname, $mother_fname, $mother_mname,
+            $guardian_surname, $guardian_fname, $guardian_mname) !== false) 
+        {
+            header("Location: ../student_informations.php?id={$enrollment_id}&edit_enrollment&error&nameerr");
+            die();
+        }
+
+        elseif ($this->invalidLRN($lrn) !== false) 
+        {
+            header("Location: ../student_informations.php?id={$enrollment_id}&edit_enrollment&error&lrnerr");
+            die();
+        }
+
+        elseif ($this->lrnExist2($lrn) !== false) 
+        {
+            header("Location: ../student_informations.php?id={$enrollment_id}&edit_enrollment&error&lrnexist");
+            die();
+        }
+
+        elseif ($this->invalidSchoolYear($from_sy, $to_sy) !== false) 
+        {
+            header("Location: ../student_informations.php?id={$enrollment_id}&edit_enrollment&error&sy");
+            die();
+        }
+
+        elseif ($this->invalidFile($file) !== false) {
+            # code...
+        }
+        elseif ($this->invalidBirthDate($bdate) !== false) 
+        {
+            header("Location: ../student_informations.php?id={$enrollment_id}&edit_enrollment&error&bdateerr");
+            die();
+        }
+
+        elseif ($this->invalidEducation($father_education, $mother_education, $guardian_education, $father_education_textbox, $mother_education_textbox, $guardian_education_textbox)) 
+        {
+            header("Location: ../student_informations.php?id={$enrollment_id}&edit_enrollment&error&nameerr");
+            die();
+        }
+
+        elseif ($this->invalidContactNumber($father_contact, $mother_contact, $guardian_contact) !== false) 
+        {
+            header("Location: ../student_informations.php?id={$enrollment_id}&edit_enrollment&error&contacterr");
+            die();
+        }
+
+        elseif ($this->checkGradeBeforeUpdate($curr_lrn, $curr_grade_lvl, $curr_section) !== false) {
+            header("Location: ../student_informations.php?id={$enrollment_id}&edit_enrollment&error&grade");
+            die();
+        }
+
+        else{
+            $this->update($curr_lrn, $enrollment_id, $student_id, $sname, $fname, $mname, $extname, $lrn, $from_sy, $to_sy, $grade_lvl, $section, $file, $bdate, $gender, $religion, 
+            $house_street, $subdivision, $barangay, $city, $province, $region,
+            $father_surname, $father_fname, $father_mname, $father_education, 
+            $father_employment, $father_contact, $mother_surname, $mother_fname, 
+            $mother_mname, $mother_education, $mother_employment, $mother_contact,
+            $guardian_surname, $guardian_fname, $guardian_mname, $guardian_education, 
+            $guardian_employment, $guardian_contact, $is_beneficiary,
+            $father_education_textbox, $mother_education_textbox, $guardian_education_textbox);
+
+            header("Location: ../student_informations.php?id={$enrollment_id}&edit_enrollment&submitted");
+            die();
+        }
+    }
+
     protected function emptyInputs($sname, $fname, $mname, $extname, $lrn, $from_sy, $to_sy, $grade_lvl, $section, $bdate, 
         $gender, $religion, $house_street, $subdivision, $barangay, $city, $province, $region,
         $father_surname, $father_fname, $father_mname, $father_contact, $father_education,
@@ -131,13 +219,12 @@ class EnrollmentController extends \Models\Enrollment{
         return $result;
     }
 
-    protected function invalidName($sname, $fname, $mname, $extname, 
-    $father_surname, $father_fname, $father_mname, 
+    protected function invalidName($sname, $fname, $mname, 
     $mother_surname, $mother_fname, $mother_mname,
     $guardian_surname, $guardian_fname, $guardian_mname){
         $result = false;
         if (!preg_match("/^[a-zA-Z\s]*$/", $sname) || !preg_match("/^[a-zA-Z\s]*$/", $fname) || 
-        !preg_match("/^[a-zA-Z\s]*$/", $mname) || !preg_match("/^[a-zA-Z\s]*$/", $extname) || 
+        !preg_match("/^[a-zA-Z\s]*$/", $mname) || 
         !preg_match("/^[a-zA-Z\s]*$/", $father_surname) || !preg_match("/^[a-zA-Z\s]*$/", $father_fname) || !preg_match("/^[a-zA-Z\s]*$/", $father_mname) ||
         !preg_match("/^[a-zA-Z\s]*$/", $mother_surname) || !preg_match("/^[a-zA-Z\s]*$/", $mother_fname) || !preg_match("/^[a-zA-Z\s]*$/", $mother_mname) ||
         !preg_match("/^[a-zA-Z\s]*$/", $guardian_surname) || !preg_match("/^[a-zA-Z\s]*$/", $guardian_fname) || !preg_match("/^[a-zA-Z\s]*$/", $guardian_mname)) {
@@ -148,7 +235,18 @@ class EnrollmentController extends \Models\Enrollment{
 
     protected function lrnExist($lrn){
         $result = false;
+
         if (count($this->studentExist($lrn)) > 0) {
+            $result = true;
+        }
+
+        return $result;
+    }
+
+    protected function lrnExist2($lrn){
+        $result = false;
+
+        if (count($this->studentExist($lrn)) > 1) {
             $result = true;
         }
 
@@ -266,6 +364,14 @@ class EnrollmentController extends \Models\Enrollment{
         if (!preg_match("/^[0-9]*$/", $guardian_contact) || strlen($guardian_contact) !== 11) {
             $result = true;
         }    
+        return $result;
+    }
+
+    protected function checkGradeBeforeUpdate($curr_lrn, $grade_lvl, $section){
+        $result = false;
+        if (count($this->checkGrades($curr_lrn, $grade_lvl, $section)) > 0) {
+            $result = true;
+        }
         return $result;
     }
 
