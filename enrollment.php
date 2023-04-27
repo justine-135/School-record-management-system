@@ -79,7 +79,7 @@ if (empty($_SESSION['username']) && empty($_SESSION['account_id'])) {
             <label for="ext" class="form-label">Extension</label>
             <select class="form-select" id="ext" aria-label="Default select example" name="extname">
               <option value="None" <?= isset($_GET['extname']) ? $_GET['extname'] === "None" ? "selected" : "" : ""?>>N/A</option>
-              <option value="Jr." <?= isset($_GET['extname']) ? $_GET['extname'] === "Jr." ? "selected" : "" : ""?>>Jr</option>
+              <option value="Jr" <?= isset($_GET['extname']) ? $_GET['extname'] === "Jr" ? "selected" : "" : ""?>>Jr</option>
               <option value="I" <?= isset($_GET['extname']) ? $_GET['extname'] === "I" ? "Selected" : "" : ""?>>I</option>
               <option value="II" <?= isset($_GET['extname']) ? $_GET['extname'] === "II" ? "selected" : "" : ""?>>II</option>
               <option value="III" <?= isset($_GET['extname']) ? $_GET['extname'] === "III" ? "selected" : "" : ""?>>III</option>
