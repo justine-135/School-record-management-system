@@ -18,24 +18,21 @@ if (empty($_SESSION['username']) && empty($_SESSION['account_id'])) {
 }
 ?>
 
-  <main class="container-fluid w-90 border mt-4 p-0 bg-white <?= $view ?>">
+<main class="container-fluid w-90 border mt-4 p-0 bg-white <?= $view ?>">
+  <div>
     <div>
-      <div>
-        <h5 class="border-bottom p-3 mb-0">Enrolled</h5>
-      </div>
+      <h5 class="border-bottom p-3 mb-0">Enrolled</h5>
     </div>
-      <div class="p-2 d-flex align-items-center">
-        <?php require $_SERVER['DOCUMENT_ROOT'].'/sabanges/partials/nav_filter_student.php'; ?>
-      </div>
-      <div class="table-responsive <?= $view ?>-table min-vh-100">
-        <?php
-        $masterlist = true;
-        require $_SERVER['DOCUMENT_ROOT'].'/sabanges/includes/student.inc.php';
-        ?>
-      </div>
-  </main>
-
-
+  </div>
+    <div class="p-2 d-flex align-items-center">
+      <?php require $_SERVER['DOCUMENT_ROOT'].'/sabanges/partials/nav_filter_student.php'; ?>
+    </div>
+    <div class="table-responsive <?= $view ?>-table min-vh-100">
+      <?php
+      require $_SERVER['DOCUMENT_ROOT'].'/sabanges/includes/student.inc.php';
+      ?>
+    </div>
+</main>
 
 <?php require $_SERVER['DOCUMENT_ROOT'].'/sabanges/partials/footer.php'; ?>
 
