@@ -11,28 +11,28 @@ class GradesController extends \Models\Grades{
         //     # code...
         // }
         if ($this->emptyInputs($lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter) !== false) {
-            header("Location: ../student_informations.php?id=" . $id . "&grades&error&empty");
+            header("Location: ../grading.php?grades&error&empty");
             die();
         }
         elseif ($this->initGradesExists($lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter) !== false) {
-            header("Location: ../student_informations.php?id=" . $id . "&grades&error&exist");
+            header("Location: ../grading.php?grades&error&exist");
             die();
         }
         elseif ($this->initStudentEnrolled($lrn, $grade_level) !== false) {
-            header("Location: ../student_informations.php?id=" . $id . "&grades&error&unenrolled");
+            header("Location: ../grading.php?grades&error&unenrolled");
             die();
         }
         elseif ($this->numberPeriods($subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter) !== false) {
-            header("Location: ../student_informations.php?id=" . $id . "&grades&error&characters");
+            header("Location: ../grading.php?grades&error&characters");
             die();
         }
         elseif ($this->minimunMaximumGrades($subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter) !== false) {
-            header("Location: ../student_informations.php?id=" . $id . "&grades&error&value");
+            header("Location: ../grading.php?grades&error&value");
             die();
         }
         else{
             $this->create($lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter);
-            header("Location: ../student_informations.php?id=" . $id . "&grades&submitted");
+            header("Location: ../grading.php?grades&submitted");
             die();
         }
     }
@@ -56,7 +56,7 @@ class GradesController extends \Models\Grades{
     protected function emptyInputs($lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter){
         $result = false;
         for ($i=0; $i < count($subjects); $i++) { 
-            if (empty($lrn) || empty($grade_level) || empty($subjects[$i]) || empty($first_quarter[$i]) || empty($second_quarter[$i]) || empty($third_quarter[$i]) || empty($fourth_quarter[$i])) {
+            if (empty($lrn) || empty($grade_level) || empty($subjects[$i])) {
                 $result = true;
                 break;
             }
@@ -65,14 +65,20 @@ class GradesController extends \Models\Grades{
     }
 
     protected function numberPeriods($subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter){
-        $result = true;
+        $result = false;
         for ($i=0; $i < count($subjects); $i++) { 
+
             if (is_numeric($first_quarter[$i]) || is_numeric($second_quarter[$i]) || is_numeric($third_quarter[$i]) || is_numeric($fourth_quarter[$i])) {
                 $result = false;
             }
             else{
-                $result = true;
-                break;
+                if (strtoupper($first_quarter[$i]) !== 'INC' && strtoupper($first_quarter[$i]) !== 'N/A' ||
+                strtoupper($second_quarter[$i]) !== 'INC' && strtoupper($second_quarter[$i]) !== 'N/A' || 
+                strtoupper($third_quarter[$i]) !== 'INC' && strtoupper($third_quarter[$i]) !== 'N/A' || 
+                strtoupper($fourth_quarter[$i]) !== 'INC' && strtoupper($fourth_quarter[$i]) !== 'N/A') {
+                    $result = true;
+                    break;
+                }
             }
         }
         return $result;
@@ -81,25 +87,25 @@ class GradesController extends \Models\Grades{
     protected function minimunMaximumGrades($subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter){
         $result = false;
         for ($i=0; $i < count($subjects); $i++) { 
-            if ($first_quarter[$i] !== 'Disabled') {
+            if ($first_quarter[$i] !== 'N/A' && strtoupper($first_quarter[$i]) !== 'INC') {
                 $result = $this->checkGradeValue($first_quarter[$i]);
                 if ($result === true) {
                     break;
                 }
             }
-            if ($second_quarter[$i] !== 'Disabled') {
+            if ($second_quarter[$i] !== 'N/A' && strtoupper($second_quarter[$i]) !== 'INC') {
                 $result = $this->checkGradeValue($second_quarter[$i]);
                 if ($result === true) {
                     break;
                 }
             }
-            if ($third_quarter[$i] !== 'Disabled') {
+            if ($third_quarter[$i] !== 'N/A' && strtoupper($third_quarter[$i]) !== 'INC') {
                 $result = $this->checkGradeValue($third_quarter[$i]);
                 if ($result === true) {
                     break;
                 }
             }
-            if ($fourth_quarter[$i] !== 'Disabled') {
+            if ($fourth_quarter[$i] !== 'N/A' && strtoupper($fourth_quarter[$i]) !== 'INC') {
                 $result = $this->checkGradeValue($fourth_quarter[$i]);
                 if ($result === true) {
                     break;

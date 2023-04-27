@@ -8,9 +8,9 @@ class Student extends \Dbh{
     protected function index($status, $offset, $total_records_per_page, $query, $level, $section){
         try{
             if (!empty($query) && empty($level) && empty($section)) {
-                $sql = "SELECT enrollment_history_table.enrollment_id, students_table.student_id, students_table.lrn, students_table.surname, students_table.first_name, students_table.middle_name, enrollment_history_table.enrolled_at, enrollment_history_table.grade_level, enrollment_history_table.section,  students_table.gender, enrollment_history_table.student_lrn, enrollment_history_table.status 
+                $sql = "SELECT enrollment_history_table.enrollment_id, students_table.student_id, students_table.lrn, students_table.surname, students_table.first_name, students_table.middle_name, students_table.ext, enrollment_history_table.enrolled_at, enrollment_history_table.grade_level, enrollment_history_table.section,  students_table.gender, enrollment_history_table.student_lrn, enrollment_history_table.status 
                 FROM `students_table`, `enrollment_history_table`
-                WHERE ? in (students_table.student_id, students_table.lrn, students_table.surname, students_table.first_name, students_table.middle_name, enrollment_history_table.enrolled_at, enrollment_history_table.grade_level, enrollment_history_table.section, students_table.gender, enrollment_history_table.student_lrn)
+                WHERE ? in (students_table.student_id, students_table.lrn, students_table.surname, students_table.first_name, students_table.middle_name, students_table.ext, enrollment_history_table.enrolled_at, enrollment_history_table.grade_level, enrollment_history_table.section, students_table.gender, enrollment_history_table.student_lrn)
                 AND enrollment_history_table.student_lrn = students_table.lrn
                 AND enrollment_history_table.status = ?
                 LIMIT $offset, $total_records_per_page
@@ -22,9 +22,9 @@ class Student extends \Dbh{
                 $results = $stmt->fetchAll();
             }
             elseif (!empty($level) && !empty($section) && !empty($query)) {
-                $sql = "SELECT enrollment_history_table.enrollment_id, students_table.student_id, students_table.lrn, students_table.surname, students_table.first_name, students_table.middle_name, enrollment_history_table.enrolled_at, enrollment_history_table.grade_level, enrollment_history_table.section, students_table.gender, enrollment_history_table.student_lrn, enrollment_history_table.status 
+                $sql = "SELECT enrollment_history_table.enrollment_id, students_table.student_id, students_table.lrn, students_table.surname, students_table.first_name, students_table.middle_name, students_table.ext, enrollment_history_table.enrolled_at, enrollment_history_table.grade_level, enrollment_history_table.section, students_table.gender, enrollment_history_table.student_lrn, enrollment_history_table.status 
                 FROM `students_table`, `enrollment_history_table`
-                WHERE ? in (students_table.student_id, students_table.lrn, students_table.surname, students_table.first_name, students_table.middle_name, enrollment_history_table.enrolled_at, enrollment_history_table.grade_level, enrollment_history_table.section, students_table.gender, enrollment_history_table.student_lrn)
+                WHERE ? in (students_table.student_id, students_table.lrn, students_table.surname, students_table.first_name, students_table.middle_name, students_table.ext, enrollment_history_table.enrolled_at, enrollment_history_table.grade_level, enrollment_history_table.section, students_table.gender, enrollment_history_table.student_lrn)
                 AND students_table.lrn = enrollment_history_table.student_lrn
                 AND enrollment_history_table.status = ?
                 AND enrollment_history_table.grade_level = ?
@@ -36,7 +36,7 @@ class Student extends \Dbh{
                 $results = $stmt->fetchAll();
             }
             elseif (!empty($level) && !empty($section) && empty($query)) {
-                $sql = "SELECT enrollment_history_table.enrollment_id, students_table.student_id, students_table.lrn, students_table.surname, students_table.first_name, students_table.middle_name, enrollment_history_table.enrolled_at, enrollment_history_table.grade_level, enrollment_history_table.section, students_table.gender, enrollment_history_table.student_lrn, enrollment_history_table.status 
+                $sql = "SELECT enrollment_history_table.enrollment_id, students_table.student_id, students_table.lrn, students_table.surname, students_table.first_name, students_table.middle_name, students_table.ext, enrollment_history_table.enrolled_at, enrollment_history_table.grade_level, enrollment_history_table.section, students_table.gender, enrollment_history_table.student_lrn, enrollment_history_table.status 
                 FROM `students_table`, `enrollment_history_table`
                 WHERE students_table.lrn = enrollment_history_table.student_lrn
                 AND enrollment_history_table.status = ?
@@ -48,8 +48,20 @@ class Student extends \Dbh{
                 $stmt->execute([$status, $level, $section]);        
                 $results = $stmt->fetchAll();
             }
+            elseif (!empty($level) && empty($section)) {
+                $sql = "SELECT enrollment_history_table.enrollment_id, students_table.student_id, students_table.lrn, students_table.surname, students_table.first_name, students_table.middle_name, students_table.ext, enrollment_history_table.enrolled_at, enrollment_history_table.grade_level, enrollment_history_table.section, students_table.gender, enrollment_history_table.student_lrn, enrollment_history_table.status 
+                FROM `students_table`, `enrollment_history_table`
+                WHERE students_table.lrn = enrollment_history_table.student_lrn
+                AND enrollment_history_table.status = ?
+                AND enrollment_history_table.grade_level = ?
+                
+                LIMIT $offset, $total_records_per_page";
+                $stmt = $this->connection()->prepare($sql);
+                $stmt->execute([$status, $level]);        
+                $results = $stmt->fetchAll();
+            }
             else{
-                $sql = "SELECT enrollment_history_table.enrollment_id, students_table.student_id, students_table.lrn, students_table.surname, students_table.first_name, students_table.middle_name, enrollment_history_table.enrolled_at, enrollment_history_table.grade_level, enrollment_history_table.section, students_table.gender, enrollment_history_table.student_lrn, enrollment_history_table.status 
+                $sql = "SELECT enrollment_history_table.enrollment_id, students_table.student_id, students_table.lrn, students_table.surname, students_table.first_name, students_table.middle_name, students_table.ext, enrollment_history_table.enrolled_at, enrollment_history_table.grade_level, enrollment_history_table.section, students_table.gender, enrollment_history_table.student_lrn, enrollment_history_table.status 
                 FROM `students_table`, `enrollment_history_table`
                 WHERE students_table.lrn = enrollment_history_table.student_lrn
                 AND enrollment_history_table.status = ?
@@ -123,6 +135,29 @@ class Student extends \Dbh{
         $conn = null;
     }
 
+    // protected function studentForm($id){
+    //     try{
+    //         $sql = "SELECT * FROM `students_table`, `fathers_table`, `mothers_table`, `guardians_table`, `enrollment_history_table`
+    //         WHERE students_table.lrn = fathers_table.student_lrn
+    //         AND students_table.lrn = mothers_table.student_lrn
+    //         AND students_table.lrn = guardians_table.student_lrn
+    //         AND enrollment_history_table.student_lrn = students_table.lrn
+    //         AND enrollment_history_table.status = 'Active'
+    //         AND students_table.student_id = ?;
+    //         ";
+   
+    //         $stmt = $this->connection()->prepare($sql);
+    //         $stmt->execute([$id]);
+    
+    //         $results = $stmt->fetchAll();
+    //         return $results;
+    //     }
+    //     catch(PDOException $e) {
+    //         echo "Error: " . $e->getMessage();
+    //     }
+    //     $conn = null;
+    // }
+
     protected function subjectIndex($grade_lvl){
         try{
             $sql = "SELECT * FROM `operations_subjects_table` WHERE `grade_level` = ?";
@@ -140,7 +175,11 @@ class Student extends \Dbh{
 
     protected function gradeSection($grade_level, $lrn){
         try{
-            $sql = "SELECT `grade_level`, `section` FROM `enrollment_history_table` WHERE `student_lrn` = ? AND `grade_level` = ?";
+            $sql = "SELECT enrollment_history_table.student_lrn, enrollment_history_table.grade_level, enrollment_history_table.section, 
+            students_table.surname, students_table.first_name, students_table.middle_name, students_table.ext 
+            FROM `enrollment_history_table`, `students_table` 
+            WHERE enrollment_history_table.student_lrn = ? AND enrollment_history_table.grade_level = ?
+            AND enrollment_history_table.student_lrn = students_table.lrn";
             $stmt = $this->connection()->prepare($sql);
             $stmt->execute([$lrn, $grade_level]);
     
@@ -183,11 +222,36 @@ class Student extends \Dbh{
         $conn = null;
     }
 
-    protected function studentCount(){
+    protected function studentCount($status, $level, $section){
         try{
-            $sql = "SELECT `enrollment_id` FROM `enrollment_history_table`";
-            $stmt = $this->connection()->prepare($sql);
-            $stmt->execute();
+
+            if (empty($level) || empty($section)) {
+                $sql = "SELECT `enrollment_id` FROM `enrollment_history_table` 
+                WHERE `status` = ?";
+                $stmt = $this->connection()->prepare($sql);
+                $stmt->execute([$status]);
+            }
+            else{
+                $sql = "SELECT `enrollment_id` FROM `enrollment_history_table` 
+                WHERE `status` = ? AND `grade_level` = ? AND `section` = ?";
+                $stmt = $this->connection()->prepare($sql);
+                $stmt->execute([$status, $level, $section]);
+            }
+
+            if (!empty($level) && empty($section)) {
+                $sql = "SELECT `enrollment_id` FROM `enrollment_history_table` 
+                WHERE `status` = ? AND `grade_level` = ?";
+                $stmt = $this->connection()->prepare($sql);
+                $stmt->execute([$status, $level]);
+            }
+            // else{
+            //     $sql = "SELECT `enrollment_id` FROM `enrollment_history_table` 
+            //     WHERE `status` = ? AND `grade_level` = ? AND `section` = ?";
+            //     $stmt = $this->connection()->prepare($sql);
+            //     $stmt->execute([$status, $level, $section]);
+            // }
+
+
     
             $results = $stmt->fetchAll();
             return $results;

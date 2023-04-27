@@ -105,11 +105,13 @@ class Teachers extends \Dbh{
         $conn = null;
     }
 
-    protected function accountsCount(){
+    protected function accountsCount($status){
         try{
-            $sql = "SELECT `account_id` FROM `teachers_account_table`";
+            $status = $status == 'active' ? 1 : 0;
+
+            $sql = "SELECT `account_id` FROM `teachers_account_table` WHERE `status` = ?";
             $stmt = $this->connection()->prepare($sql);
-            $stmt->execute();
+            $stmt->execute([$status]);
     
             $results = $stmt->fetchAll();
             return $results;

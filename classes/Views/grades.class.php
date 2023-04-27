@@ -8,7 +8,7 @@ class GradesView extends \Models\Grades{
         ?>
         <div class="accordion" id="accordionPanelsStayOpenExample">
             <?php for ($i=0; $i <= 6; $i++) { ?>
-            <div class="accordion-item border-0">
+            <div class="accordion-item  border border-top-0">
                 <h2 class="accordion-header" id="panelsStayOpen-<?= $i ?>">
                 <button class="accordion-button border-top" type="button" data-bs-toggle="collapse" data-bs-target="#grade-table-<?= $i ?>" aria-expanded="false" aria-controls="panelsStayOpen-<?= $i ?>collapseOne">
                     Grade level - <?= $i == 0 ? 'Kindergarten' : $i  ?>
@@ -49,7 +49,7 @@ class GradesView extends \Models\Grades{
                     if (count($result) > 0) {
                     ?>
                     <div class="table-responsive">
-                        <table class="table table-responsive">
+                        <table class="table table-responsive border">
                             <thead>
                                 <tr>
                                     <th>Subject</th>
@@ -62,40 +62,40 @@ class GradesView extends \Models\Grades{
                             </thead>
                             <tbody>
                                 <?php
-
-                                    foreach ($result as $row) { 
+                                foreach ($result as $row) { 
+                                    $number_col = 4;
+                                    $final = 0;
+                                    if (strtoupper($row['first_quarter']) == 'N/A' || strtoupper($row['first_quarter']) == 'INC') {
+                                        $number_col = $number_col - 1;
+                                    }
+                                    if (strtoupper($row['second_quarter']) == 'N/A' || strtoupper($row['second_quarter']) == 'INC') {
+                                        $number_col = $number_col - 1;
+                                    }
+                                    if (strtoupper($row['third_quarter']) == 'N/A' || strtoupper($row['third_quarter']) == 'INC') {
+                                        $number_col = $number_col - 1;
+                                    }
+                                    if (strtoupper($row['fourth_quarter']) == 'N/A' || strtoupper($row['fourth_quarter']) == 'INC') {
+                                        $number_col = $number_col - 1;
+                                    }
+                                    if ($number_col == 0) {
                                         $final = 0;
-                                        $number_col = 4;
-
-                                        if ($row['first_quarter'] == 'Disabled') {
-                                            $number_col = $number_col - 1;
-                                        }
-                                        if ( $row['second_quarter'] == 'Disabled') {
-                                            $number_col = $number_col - 1;
-                                        }
-                                        if ($row['third_quarter'] == 'Disabled') {
-                                            $number_col = $number_col - 1;
-                                        }
-                                        if ($row['fourth_quarter'] == 'Disabled') {
-                                            $number_col = $number_col - 1;
-                                        }
-                                        $final = (intval($row['first_quarter']) + intval($row['second_quarter']) + intval($row['third_quarter']) + intval($row['fourth_quarter'])) / $number_col;
-                                        var_dump($number_col);
-
+                                    }
+                                    else{
+                                        $final = (number_format((float)$row['first_quarter'], 2, '.', '') + number_format((float)$row['second_quarter'], 2, '.', '') + number_format((float)$row['third_quarter'], 2, '.', '') + number_format((float)$row['fourth_quarter'], 2, '.', '')) / $number_col;
+                                    }
                                 ?>
                                 <tr>
-                                    <td><input class="form-control" type="text" name="" id="" value="<?= $row['subject'] ?>" disabled></td>
-                                    <td><input class="form-control" type="text" name="" id="" value="<?= $row['first_quarter'] ?>" disabled></td>
-                                    <td><input class="form-control" type="text" name="" id="" value="<?= $row['second_quarter'] ?>" disabled></td>
-                                    <td><input class="form-control" type="text" name="" id="" value="<?= $row['third_quarter'] ?>" disabled></td>
-                                    <td><input class="form-control" type="text" name="" id="" value="<?= $row['fourth_quarter'] ?>" disabled></td>
-                                    <td><input class="form-control final-grade-display" type="text" name="" id="" value="<?=$final?>" disabled></td>
+                                    <td><input class="form-control" type="text" name="" id="" value="<?= $row['subject'] ?>" readonly></td>
+                                    <td><input class="form-control" type="text" name="" id="" value="<?= (strtoupper($row['first_quarter']) == 'N/A' ? 'N/A' : (strtoupper($row['first_quarter']) == 'INC' ? 'INC' : number_format((float)$row['first_quarter'], 2, '.', ''))) ?>"  <?= strtoupper($row['first_quarter']) == 'N/A' ? 'disabled' : 'readonly'?>></td>
+                                    <td><input class="form-control" type="text" name="" id="" value="<?= (strtoupper($row['second_quarter']) == 'N/A' ? 'N/A' : (strtoupper($row['second_quarter']) == 'INC' ? 'INC' : number_format((float)$row['second_quarter'], 2, '.', ''))) ?>" <?= strtoupper($row['second_quarter']) == 'N/A' ? 'disabled' : 'readonly' ?>></td>
+                                    <td><input class="form-control" type="text" name="" id="" value="<?= (strtoupper($row['third_quarter']) == 'N/A' ? 'N/A' : (strtoupper($row['third_quarter']) == 'INC' ? 'INC' : number_format((float)$row['third_quarter'], 2, '.', ''))) ?>" <?= strtoupper($row['third_quarter']) == 'N/A' ? 'disabled' : 'readonly'?>></td>
+                                    <td><input class="form-control" type="text" name="" id="" value="<?= (strtoupper($row['fourth_quarter']) == 'N/A' ? 'N/A' : (strtoupper($row['fourth_quarter']) == 'INC' ? 'INC' : number_format((float)$row['fourth_quarter'], 2, '.', ''))) ?>" <?= strtoupper($row['fourth_quarter']) == 'N/A' ? 'disabled' : 'readonly'?>></td>
+                                    <td><input class="form-control final-grade-display" type="text" name="" id="" value="<?= number_format((float)$final, 2, '.', '')?>" readonly></td>
                                 </tr>   
                                 <?php } ?>
                             </tbody>
                         </table>
                     </div>
-                        
                         <?php } else { ?>
                             <p>No grades recorded.</p>
                         <?php } ?>

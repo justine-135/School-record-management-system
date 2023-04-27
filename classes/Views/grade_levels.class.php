@@ -7,6 +7,14 @@ class GradeLevelsView extends \Models\GradeLevels{
     public function initIndexSelect($section_params){
         $results = $this->indexSelect($section_params);
         foreach ($results as $row) { ?>
+        <option value="<?= $row['section'] ?>"><?= $row['section'] ?></option>
+            <?php
+        }
+    }
+    public function initIndexSelectEnrollmentEdit($section_params){
+        $results = $this->indexSelect($section_params);
+        var_dump($results);
+        foreach ($results as $row) { ?>
         <option value="<?= $row['section'] ?>" ><?= $row['section'] ?></option>
             <?php
         }
