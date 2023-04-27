@@ -25,6 +25,11 @@ function initIndexSelect($section_params){
     $obj->initIndexSelect($section_params);
 }
 
+function initIndexSelectEnrollmentEdit($section_params){
+    $obj = new GradeLevelsView();
+    $obj->initIndexSelectEnrollmentEdit($section_params);
+}
+
 function initIndexSections(){
     $obj = new SubjectsView();
     $obj->initIndex();
@@ -54,10 +59,15 @@ if (isset($_POST['subjects-submit'])) {
     initCreateSubjects($subjects, $grade, $quarter);
 }
 
-
 if (isset($_GET['section_select'])) {
     $section_params = $_GET['section_select'];
     initIndexSelect($section_params);
+}
+
+if (isset($_GET['section_select_enrollment_edit'])) {
+    $section_params = $_GET['section_select_enrollment_edit'];
+    echo $section_params;
+    initIndexSelectEnrollmentEdit($section_params);
 }
 
 if (isset($_GET['grade_level_table'])) {

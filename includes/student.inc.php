@@ -6,9 +6,9 @@ use Views\StudentView;
 use Views\StudentInformationView;
 
 // Functions
-function index($query){
+function index($view){
     $obj = new StudentView();
-    $obj->initIndex($query);
+    $obj->initIndex($view);
 }
 
 function singleIndex($id){
@@ -21,12 +21,23 @@ function initAddGradeTable($grade_level, $lrn){
     $obj->addGradesTable($grade_level, $lrn); 
 }
 
+function initAddGradeModal($lrn, $grade_level, $section){
+    $obj = new StudentView();
+    $obj->initGradeModal($lrn, $grade_level, $section);
+}
 
 
 // Requests
-if (isset($masterlist)) {
-    $query = ""; 
-    index($query);
+if (isset($view)) {
+    if ($view == 'masterlist') {
+        index($view);
+    }
+    elseif ($view == 'grading') {
+        index($view);
+    }
+    elseif ($view == 'promotion') {
+        index($view);
+    }
 }
 
 if (isset($_POST['search'])) {
@@ -37,12 +48,7 @@ if (isset($_POST['search'])) {
     $level = $_POST['level'];
     $section = $_POST['section'];
     
-    if ($view == 'masterlist') {
-        header("Location: ../masterlist.php?row={$row}&page_no={$page_no}&status={$status}&level={$level}&section={$section}&query={$query}");
-    }
-    else{
-        header("Location: ../promotion.php?row={$row}&page_no={$page_no}&status={$status}&level={$level}&section={$section}&query={$query}");
-    }
+    header("Location: ../masterlist.php?row={$row}&page_no={$page_no}&status={$status}&level={$level}&section={$section}&query={$query}");
 }
 
 if (isset($_GET['id'])) {
@@ -56,3 +62,10 @@ if (isset($_GET['grade_level'])) {
     initAddGradeTable($grade_level, $lrn);
 }
 
+// if (isset($_GET['add_grade'])) {
+//     $lrn = $_GET['lrn'];
+//     $grade_level = $_GET['grade_level'];
+//     $section = $_GET['section'];
+//     initAddGradeModal($lrn, $grade_level, $section);
+
+// }
