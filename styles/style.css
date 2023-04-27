@@ -66,3 +66,11 @@ body {
 .login-form {
   height: 100vh;
 }
+
+.filter-rows {
+  width: 200px;
+}
+
+.filter-students-status {
+  width: 250px;
+}
