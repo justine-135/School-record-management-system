@@ -25,6 +25,7 @@ $section = isset($_GET['section']) ? $_GET['section'] : "";
             </div>
         </div>
 
+        <?php if ($view == 'masterlist' || $view == 'grading') {  ?>
         <div class="col-md p-0">
             <div class="dropdown border">
                 <button class="btn btn-white dropdown-toggle btn-sm" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -39,6 +40,7 @@ $section = isset($_GET['section']) ? $_GET['section'] : "";
                 </ul>
             </div>
         </div>
+        <?php } ?>
 
         <div class="col-md p-0">
             <div class="dropdown border">
@@ -65,7 +67,7 @@ $section = isset($_GET['section']) ? $_GET['section'] : "";
                 <button class="btn btn-white dropdown-toggle btn-sm" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                     Section
                     <span class="fw-semibold">
-                        <?= isset($_GET['section']) ? ucfirst($_GET['section']) : "" ?>
+                        <?= isset($_GET['section']) ? ucfirst($_GET['section']) : "None" ?>
                     </span>
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">

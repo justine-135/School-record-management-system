@@ -26,7 +26,7 @@ $query = isset($_GET['query']) ? $_GET['query'] : '';
         <div class="col-md p-0">
             <div class="dropdown border">
                 <button class="btn btn-white dropdown-toggle btn-sm" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                    Filter student status
+                    Filter account status
                     <span class="fw-semibold">
                         <?= isset($_GET['status']) ? ucfirst($_GET['status']) : "Active" ?>
                     </span>
@@ -44,6 +44,7 @@ $query = isset($_GET['query']) ? $_GET['query'] : '';
         <input type="hidden" class="form-control search-input" placeholder="Search" name="row" value="<?= $row ?>"/>
         <input type="hidden" class="form-control search-input" placeholder="Search" name="page_no" value="<?= $page_no ?>"/>
         <input type="hidden" class="form-control search-input" placeholder="Search" name="status"value="<?= $status ?>"/>
+        <input type="hidden" class="form-control search-input" placeholder="Search" name="view"value="<?= $view ?>"/>
         <button
         class="btn btn-primary search-btn"
         id="button-addon2"
