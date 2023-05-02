@@ -35,6 +35,23 @@ class Grades extends \Dbh{
         }
     }
 
+    protected function update($lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter){
+        try {
+            $sql = "UPDATE `student_grades_table` 
+            SET `first_quarter` = ?, `second_quarter` = ?, `third_quarter` = ?, `fourth_quarter` = ?
+            WHERE `student_lrn` = ? AND `grade_level` = ? AND `section` = ? AND `subject` = ?";
+
+            $stmt = $this->connection()->prepare($sql);
+
+            for ($i=0; $i < count($subjects); $i++) { 
+                $stmt->execute([$first_quarter[$i], $second_quarter[$i], $third_quarter[$i], $fourth_quarter[$i], $lrn, $grade_level, $section, $subjects[$i]]);
+            }
+
+        } catch(PDOException $e) {
+            echo "Error: " . $e->getMessage();
+        }
+    }
+
     protected function gradesExists($lrn, $grade_level, $section, $subjects){
         try{
             // var_dump($subjects);

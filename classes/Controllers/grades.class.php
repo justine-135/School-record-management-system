@@ -5,34 +5,53 @@ namespace Controllers;
 include $_SERVER['DOCUMENT_ROOT'].'/sabanges/classes/Models/grades.class.php';
 
 class GradesController extends \Models\Grades{
-    public function initCreate($id, $lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter){
+    public function initUpdate($id, $lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter, $rows, $status, $page_no){
+        if ($this->emptyInputs($lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter) !== false) {
+            header("Location: ../grading.php?grades&error&empty&rows={$rows}&status={$status}&page_no={$page_no}");
+            die();
+        }
+        elseif ($this->numberPeriods($subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter) !== false) {
+            header("Location: ../grading.php?grades&error&characters&rows={$rows}&status={$status}&page_no={$page_no}");
+            die();
+        }
+        elseif ($this->minimunMaximumGrades($subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter) !== false) {
+            header("Location: ../grading.php?grades&error&value&rows={$rows}&status={$status}&page_no={$page_no}");
+            die();
+        }
+        else{
+            $this->update($lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter);
+            header("Location: ../grading.php?grades&submitted&rows={$rows}&page_no={$page_no}&status={$status}");
+            die();
+        }
+    }
+    public function initCreate($id, $lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter, $rows, $status, $page_no){
         session_start();
         // if ($this->initValidateUser($_SESSION['email'], $grade_level, $section, )) {
         //     # code...
         // }
         if ($this->emptyInputs($lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter) !== false) {
-            header("Location: ../grading.php?grades&error&empty");
+            header("Location: ../grading.php?grades&error&empty&rows={$rows}&status={$status}&page_no={$page_no}");
             die();
         }
         elseif ($this->initGradesExists($lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter) !== false) {
-            header("Location: ../grading.php?grades&error&exist");
+            header("Location: ../grading.php?grades&error&exist&rows={$rows}&status={$status}&page_no={$page_no}");
             die();
         }
         elseif ($this->initStudentEnrolled($lrn, $grade_level) !== false) {
-            header("Location: ../grading.php?grades&error&unenrolled");
+            header("Location: ../grading.php?grades&error&unenrolled&rows={$rows}&status={$status}&page_no={$page_no}");
             die();
         }
         elseif ($this->numberPeriods($subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter) !== false) {
-            header("Location: ../grading.php?grades&error&characters");
+            header("Location: ../grading.php?grades&error&characters&rows={$rows}&status={$status}&page_no={$page_no}");
             die();
         }
         elseif ($this->minimunMaximumGrades($subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter) !== false) {
-            header("Location: ../grading.php?grades&error&value");
+            header("Location: ../grading.php?grades&error&value&rows={$rows}&status={$status}&page_no={$page_no}");
             die();
         }
         else{
             $this->create($lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter);
-            header("Location: ../grading.php?grades&submitted");
+            header("Location: ../grading.php?grades&submitted&rows={$rows}&status={$status}&page_no={$page_no}");
             die();
         }
     }
@@ -54,6 +73,7 @@ class GradesController extends \Models\Grades{
     }
 
     protected function emptyInputs($lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter){
+        
         $result = false;
         for ($i=0; $i < count($subjects); $i++) { 
             if (empty($lrn) || empty($grade_level) || empty($subjects[$i])) {
@@ -117,7 +137,7 @@ class GradesController extends \Models\Grades{
 
     protected function checkGradeValue($quarter_grades){
         $result = false;
-        if (intval($quarter_grades) < 65 || intval($quarter_grades) > 100) {
+        if (intval($quarter_grades) < 60 || intval($quarter_grades) > 100) {
             $result = true;
         }
         return $result;

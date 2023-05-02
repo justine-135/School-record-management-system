@@ -135,29 +135,6 @@ class Student extends \Dbh{
         $conn = null;
     }
 
-    // protected function studentForm($id){
-    //     try{
-    //         $sql = "SELECT * FROM `students_table`, `fathers_table`, `mothers_table`, `guardians_table`, `enrollment_history_table`
-    //         WHERE students_table.lrn = fathers_table.student_lrn
-    //         AND students_table.lrn = mothers_table.student_lrn
-    //         AND students_table.lrn = guardians_table.student_lrn
-    //         AND enrollment_history_table.student_lrn = students_table.lrn
-    //         AND enrollment_history_table.status = 'Active'
-    //         AND students_table.student_id = ?;
-    //         ";
-   
-    //         $stmt = $this->connection()->prepare($sql);
-    //         $stmt->execute([$id]);
-    
-    //         $results = $stmt->fetchAll();
-    //         return $results;
-    //     }
-    //     catch(PDOException $e) {
-    //         echo "Error: " . $e->getMessage();
-    //     }
-    //     $conn = null;
-    // }
-
     protected function subjectIndex($grade_lvl){
         try{
             $sql = "SELECT * FROM `operations_subjects_table` WHERE `grade_level` = ?";
@@ -244,14 +221,21 @@ class Student extends \Dbh{
                 $stmt = $this->connection()->prepare($sql);
                 $stmt->execute([$status, $level]);
             }
-            // else{
-            //     $sql = "SELECT `enrollment_id` FROM `enrollment_history_table` 
-            //     WHERE `status` = ? AND `grade_level` = ? AND `section` = ?";
-            //     $stmt = $this->connection()->prepare($sql);
-            //     $stmt->execute([$status, $level, $section]);
-            // }
 
+            $results = $stmt->fetchAll();
+            return $results;
+        }
+        catch(PDOException $e) {
+            echo "Error: " . $e->getMessage();
+        }
+        $conn = null;
+    }
 
+    protected function gradesSubmitted($grade_level, $lrn){
+        try{
+            $sql = "SELECT `subject`, `first_quarter`, `second_quarter`, `third_quarter`, `fourth_quarter` FROM `student_grades_table` WHERE `student_lrn` = ? AND `grade_level` = ?";
+            $stmt = $this->connection()->prepare($sql);
+            $stmt->execute([$lrn, $grade_level]);
     
             $results = $stmt->fetchAll();
             return $results;

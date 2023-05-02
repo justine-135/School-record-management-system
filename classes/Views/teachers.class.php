@@ -19,15 +19,11 @@ class TeachersView extends \Models\Teachers{
         $result_count = $this->accountsCount($status);
 
         $records = count($result_count);
-        var_dump($records);
-
         
         $total_no_page = ceil($records / $total_records_per_page);
         $result = $this->index($offset, $total_records_per_page, $status, $query);
-
-
         ?>
-        <table class="table border-top">
+        <table class="table table-bordered border-top">
             <thead>
                 <tr>
                     <th>#</th>

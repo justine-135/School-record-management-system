@@ -29,7 +29,7 @@ class EnrollmentController extends \Models\Enrollment{
             die();
         }
 
-        elseif ($this->invalidName($sname, $fname, $mname, $extname,
+        elseif ($this->invalidName($sname, $fname, $mname,
             $father_surname, $father_fname, $father_mname, 
             $mother_surname, $mother_fname, $mother_mname,
             $guardian_surname, $guardian_fname, $guardian_mname) !== false) 
@@ -220,6 +220,7 @@ class EnrollmentController extends \Models\Enrollment{
     }
 
     protected function invalidName($sname, $fname, $mname, 
+    $father_surname, $father_fname, $father_mname, 
     $mother_surname, $mother_fname, $mother_mname,
     $guardian_surname, $guardian_fname, $guardian_mname){
         $result = false;

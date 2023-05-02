@@ -90,7 +90,7 @@ class Enrollment extends \Dbh{
             }
             // Query
             $sql = 
-            "UPDATE `students_table` SET surname = ?, first_name = ?, middle_name = ?, ext = ?, `image` = ?, lrn = ?, birth_date = ?, gender = ?, religion = ?, house_street = ?, subdivision = ?, barangay = ?, city = ?, province = ?, region = ?
+            "UPDATE `students_table` SET enrolled_at = enrolled_at, surname = ?, first_name = ?, middle_name = ?, ext = ?, `image` = ?, lrn = ?, birth_date = ?, gender = ?, religion = ?, house_street = ?, subdivision = ?, barangay = ?, city = ?, province = ?, region = ?
             WHERE `student_id` = ?;
             UPDATE `fathers_table` SET student_lrn = ?, father_surname = ?, father_first_name = ?, father_middle_name = ?, father_education = ?, father_employment = ?, father_contact_number = ?, is_beneficiary = ?
             WHERE `student_lrn` = ?;
