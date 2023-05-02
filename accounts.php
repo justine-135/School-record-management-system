@@ -18,7 +18,7 @@
         <a type="submit" value="promote" name="promote" class="btn btn-primary ms-2" href="register.php">Add</a>
 
     </div>
-    <div class="table-responsive <?= $view ?>-table min-vh-100">
+    <div class="px-2 table-responsive <?= $view ?>-table min-vh-100">
     <?php
         $accounts = true;
         require $_SERVER['DOCUMENT_ROOT'].'/sabanges/includes/teachers.inc.php';
