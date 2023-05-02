@@ -17,7 +17,7 @@
     <div class="p-2 d-flex align-items-center">
       <?php require $_SERVER['DOCUMENT_ROOT'].'/sabanges/partials/nav_filter_student.php'; ?>
     </div>
-    <div class="table-responsive <?= $view ?>-table min-vh-100">
+    <div class="px-2 table-responsive <?= $view ?>-table min-vh-100">
       <?php
       require $_SERVER['DOCUMENT_ROOT'].'/sabanges/includes/student.inc.php';
       ?>
