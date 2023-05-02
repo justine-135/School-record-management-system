@@ -127,7 +127,6 @@ const gradeSelectEnrollmentEdit = document.querySelector(
   ".grade-select-enrollment-edit"
 );
 let gradeValueEnrollmentEditValue = gradeSelectEnrollmentEdit.value;
-console.log(gradeSelectEnrollmentEdit);
 
 gradeSelectEnrollmentEdit.addEventListener("change", () => {
   gradeValueEnrollmentEditValue = gradeSelectEnrollmentEdit.value;
