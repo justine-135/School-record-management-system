@@ -879,7 +879,7 @@ class StudentInformationView extends \Models\Student{
                             <input type="text" name="" id="" class="form-control final-grade" disabled>
                         </td>
                         <td>
-                            <input type="text" name="" id="" class="form-control" disabled>
+                            <input type="text" name="" id="" class="form-control remarks" disabled>
                         </td>
                     </tr>
                     <?php } ?>
@@ -904,7 +904,7 @@ class StudentInformationView extends \Models\Student{
                 <?php } else { ?>
                 <tbody>
                     <?php foreach ($subjects as $row) { ?>
-                    <tr>
+                    <tr class=<?= $row['id'] ?>>
                         <td>
                             <input class="form-control" type="hidden" name="subjects[]" id="" value="<?= $row['subject'] ?>" readonly>
                             <input style="background:white" class="form-control" type="text" name="subjects-display" id="" value="<?= $row['subject'] ?>" disabled>
@@ -929,7 +929,7 @@ class StudentInformationView extends \Models\Student{
                             <input type="text" name="" id="" class="form-control final-grade" disabled>
                         </td>
                         <td>
-                            <input type="text" name="" id="" class="form-control" disabled>
+                            <input type="text" name="" id="" class="form-control remarks" disabled>
                         </td>
                     </tr>
                     <?php } ?>
@@ -944,7 +944,7 @@ class StudentInformationView extends \Models\Student{
                             <button type="button" class="btn btn-primary review-grades">Review</button>
                         </td>
                         <td>
-                            <input type="text" class="form-control ">
+                            <input type="text" class="form-control remarks">
                         </td>
                         <td>
                             <input type="text" name="" id="" class="form-control">
