@@ -18,77 +18,136 @@ openGradeBtns.forEach((element) => {
         const finalGradesInput = document.querySelectorAll(".final-grade");
         const reviewBtn = document.querySelectorAll(".review-grades");
 
+        let firstQuarterInputs = document.querySelectorAll(".first-quarter");
+        let secondQuarterInputs = document.querySelectorAll(".second-quarter");
+        let thirdQuarterInputs = document.querySelectorAll(".third-quarter");
+        let fourthQuarterInputs = document.querySelectorAll(".fourth-quarter");
+        let finalGradeInputs = document.querySelectorAll(".final-grade");
+        let remarksInput = document.querySelectorAll(".remarks");
+
+        let firstQuarterGrades = [];
+        let secondQuarterGrades = [];
+        let thirdQuarterGrades = [];
+        let fourthQuarterGrades = [];
+
         reviewBtn.forEach((element) => {
           element.addEventListener("click", () => {
-            finalGradesInput.forEach((element) => {
-              let quarter1 =
-                element.parentElement.parentElement.childNodes[3].childNodes[1]
-                  .value.length == 0
-                  ? (element.parentElement.parentElement.childNodes[3].childNodes[1].value = 60)
-                  : element.parentElement.parentElement.childNodes[3]
-                      .childNodes[1].value;
-              let quarter2 =
-                element.parentElement.parentElement.childNodes[5].childNodes[1]
-                  .value.length == 0
-                  ? (element.parentElement.parentElement.childNodes[5].childNodes[1].value = 60)
-                  : element.parentElement.parentElement.childNodes[5]
-                      .childNodes[1].value;
-              let quarter3 =
-                element.parentElement.parentElement.childNodes[7].childNodes[1]
-                  .value.length == 0
-                  ? (element.parentElement.parentElement.childNodes[7].childNodes[1].value = 60)
-                  : element.parentElement.parentElement.childNodes[7]
-                      .childNodes[1].value;
-              let quarter4 =
-                element.parentElement.parentElement.childNodes[9].childNodes[1]
-                  .value.length == 0
-                  ? (element.parentElement.parentElement.childNodes[9].childNodes[1].value = 60)
-                  : element.parentElement.parentElement.childNodes[9]
-                      .childNodes[1].value;
-
-              // Mean
-              let dividedTo = 4;
-
-              if (quarter1 === "N/A") {
-                quarter1 = 0;
-                dividedTo--;
-              }
-
-              if (quarter2 === "N/A") {
-                quarter2 = 0;
-                dividedTo--;
-              }
-
-              if (quarter3 === "N/A") {
-                quarter3 = 0;
-                dividedTo--;
-              }
-
-              if (quarter4 === "N/A") {
-                quarter4 = 0;
-                dividedTo--;
-              }
-
-              console.log(quarter1);
-              console.log(quarter2);
-              console.log(quarter3);
-              console.log(quarter4);
-
-              let finalGrade =
-                (parseFloat(quarter1) +
-                  parseFloat(quarter2) +
-                  parseFloat(quarter3) +
-                  parseFloat(quarter4)) /
-                dividedTo;
-
-              if (isNaN(finalGrade)) {
-                element.value = "Incomplete";
-              } else {
-                element.value = finalGrade.toFixed(2);
-              }
-            });
+            getQuarterlyGrades();
+            getFinalGrade();
           });
         });
+
+        const getQuarterlyGrades = () => {
+          firstQuarterGrades = [];
+          secondQuarterGrades = [];
+          thirdQuarterGrades = [];
+          fourthQuarterGrades = [];
+
+          firstQuarterInputs.forEach((element) => {
+            firstQuarterGrades.push(element.value);
+          });
+          secondQuarterInputs.forEach((element) => {
+            secondQuarterGrades.push(element.value);
+          });
+          thirdQuarterInputs.forEach((element) => {
+            thirdQuarterGrades.push(element.value);
+          });
+          fourthQuarterInputs.forEach((element) => {
+            fourthQuarterGrades.push(element.value);
+          });
+        };
+
+        const getFinalGrade = () => {
+          for (let i = 0; i < finalGradeInputs.length; i++) {
+            let finalGrade = 0;
+            let dividedTo = 4;
+
+            let quarter1 = firstQuarterGrades[i];
+            let quarter2 = secondQuarterGrades[i];
+            let quarter3 = thirdQuarterGrades[i];
+            let quarter4 = fourthQuarterGrades[i];
+
+            let hasInc = 0;
+            let isEmpty = 0;
+
+            if (firstQuarterGrades[i] == "N/A") {
+              dividedTo--;
+              quarter1 = 0;
+            } else if (firstQuarterGrades[i].toUpperCase() === "INC") {
+              hasInc++;
+              quarter1 = 0;
+            } else if (!firstQuarterGrades[i]) {
+              isEmpty++;
+              quarter1 = 0;
+            }
+            if (secondQuarterGrades[i] == "N/A") {
+              dividedTo--;
+              quarter2 = 0;
+            } else if (secondQuarterGrades[i].toUpperCase() === "INC") {
+              hasInc++;
+              quarter2 = 0;
+            } else if (!secondQuarterGrades[i]) {
+              isEmpty++;
+              quarter2 = 0;
+            }
+
+            if (thirdQuarterGrades[i] == "N/A") {
+              dividedTo--;
+              quarter3 = 0;
+            } else if (thirdQuarterGrades[i].toUpperCase() === "INC") {
+              hasInc++;
+              quarter3 = 0;
+            } else if (!thirdQuarterGrades[i]) {
+              isEmpty++;
+              quarter3 = 0;
+            }
+
+            if (fourthQuarterGrades[i] == "N/A") {
+              dividedTo--;
+              quarter4 = 0;
+            } else if (fourthQuarterGrades[i].toUpperCase() === "INC") {
+              hasInc++;
+              quarter4 = 0;
+            } else if (!fourthQuarterGrades[i]) {
+              isEmpty++;
+              quarter4 = 0;
+            }
+
+            finalGrade =
+              (parseFloat(quarter1) +
+                parseFloat(quarter2) +
+                parseFloat(quarter3) +
+                parseFloat(quarter4)) /
+              dividedTo;
+
+            if (hasInc > 0) {
+              finalGradeInputs[i].value = "INC";
+            } else if (isEmpty > 0) {
+              finalGradeInputs[i].value = "";
+            } else {
+              finalGradeInputs[i].value = finalGrade.toFixed(2);
+            }
+
+            if (isNaN(finalGrade)) {
+              finalGradeInputs[i].value = "INVALID";
+            }
+
+            if (finalGradeInputs[i].value == "") {
+              remarksInput[i].value = "";
+              console.log("ASD");
+            } else if (finalGradeInputs[i].value >= 75) {
+              remarksInput[i].value = "Passed";
+            } else if (finalGradeInputs[i].value < 75) {
+              remarksInput[i].value = "Failed";
+            } else if (finalGradeInputs[i].value == "INC") {
+              remarksInput[i].value = "INC";
+            } else {
+              remarksInput[i].value = "INVALID";
+            }
+          }
+        };
+        getQuarterlyGrades();
+        getFinalGrade();
       }
     };
 
