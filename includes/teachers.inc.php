@@ -89,6 +89,16 @@ function initValidate($username, $password){
     $obj->initLogin($username, $password);
 }
 
+function initChangePassword($username,$oldpass,$newpass,$retypepass){
+    $obj = new TeachersController();
+    $obj->initChangePassword($username,$oldpass,$newpass,$retypepass);
+}
+
+function initAdvisories($email, $username){
+    $obj = new TeachersView();
+    $obj->manageAdvisories($email, $username);
+}
+
 if (isset($accounts)) {
     index();
 }
@@ -119,3 +129,17 @@ if (isset($_POST['logout'])) {
     unset($_SESSION["account_id"]);
     header("Location: ../index.php");
 }
+
+if (isset($_POST['change'])) {
+    $username = $_POST['username'];
+    $oldpass = $_POST['old-password'];
+    $newpass = $_POST['new-password'];
+    $retypepass = $_POST['retype-password'];
+    initChangePassword($username,$oldpass,$newpass,$retypepass);
+}
+
+// if (isset($_GET['advisories'])) {
+//     $username = $_GET['username'];
+//     $email = $_GET['email'];
+//     initAdvisories($email, $username);
+// }

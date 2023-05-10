@@ -6,9 +6,11 @@ require '../classes/Views/grades.class.php';
 use Controllers\GradesController;
 use Views\GradesView;
 
-function initAddGrades($id, $lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter, $rows, $status, $page_no){
+session_start();
+
+function initAddGrades($id, $lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter, $remark, $rows, $status, $page_no){
     $obj = new GradesController();
-    $obj->initCreate($id, $lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter, $rows, $status, $page_no);
+    $obj->initCreate($id, $lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter, $remark, $rows, $status, $page_no);
 }
 
 function initUpdateGrades($id, $lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter, $rows, $status, $page_no){
@@ -34,8 +36,9 @@ if (isset($_POST["submit-grade"])) {
     $fourth_quarter = isset($_POST['fourth-quarter']) ? $_POST['fourth-quarter'] : array();
     $grade_level = isset($_POST['grade-level']) ? $_POST['grade-level'] : '';
     $section = $_POST['section'];
+    $remark = $_POST['total-remarks'];
 
-    initAddGrades($id, $lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter, $rows, $status, $page_no);
+    initAddGrades($id, $lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter, $remark, $rows, $status, $page_no);
 }
 
 if (isset($_POST['update-grade'])) {
@@ -51,8 +54,9 @@ if (isset($_POST['update-grade'])) {
     $fourth_quarter = isset($_POST['fourth-quarter']) ? $_POST['fourth-quarter'] : array();
     $grade_level = isset($_POST['grade-level']) ? $_POST['grade-level'] : '';
     $section = $_POST['section'];
+    $remark = $_POST['total-remarks'];
 
-    initUpdateGrades($id, $lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter, $rows, $status, $page_no);
+    initUpdateGrades($id, $lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter, $remark, $rows, $status, $page_no);
 }
 
 if (isset($_GET['load_grade'])) {
