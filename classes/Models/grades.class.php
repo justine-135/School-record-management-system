@@ -18,9 +18,10 @@ class Grades extends \Dbh{
         }
     }
 
-    protected function create($lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter){
+    protected function create($id, $lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter, $remark){
         try {
-            $sql = "INSERT INTO `student_grades_table` 
+            $sql = 
+            "INSERT INTO `student_grades_table` 
             (`student_lrn`, `grade_level`, `section`, `subject`, `first_quarter`, `second_quarter`, `third_quarter`, `fourth_quarter`)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
 
@@ -30,21 +31,26 @@ class Grades extends \Dbh{
                 $stmt->execute([$lrn, $grade_level, $section, $subjects[$i], $first_quarter[$i], $second_quarter[$i], $third_quarter[$i], $fourth_quarter[$i]]);
             }
 
+            $sql = "UPDATE `enrollment_history_table` SET `promotion_status` = ? WHERE `enrollment_id` = ? AND `student_lrn` = ?;";
+            $stmt = $this->connection()->prepare($sql);
+            $stmt->execute([$remark, $id, $lrn]);
+
         } catch(PDOException $e) {
             echo "Error: " . $e->getMessage();
         }
     }
 
-    protected function update($lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter){
+    protected function update($id, $lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter, $remark){
         try {
             $sql = "UPDATE `student_grades_table` 
             SET `first_quarter` = ?, `second_quarter` = ?, `third_quarter` = ?, `fourth_quarter` = ?
-            WHERE `student_lrn` = ? AND `grade_level` = ? AND `section` = ? AND `subject` = ?";
+            WHERE `student_lrn` = ? AND `grade_level` = ? AND `section` = ? AND `subject` = ?;
+            UPDATE `enrollment_history_table` SET `promotion_status` = ? WHERE `enrollment_id` = ? AND `student_lrn` = ?";
 
             $stmt = $this->connection()->prepare($sql);
 
             for ($i=0; $i < count($subjects); $i++) { 
-                $stmt->execute([$first_quarter[$i], $second_quarter[$i], $third_quarter[$i], $fourth_quarter[$i], $lrn, $grade_level, $section, $subjects[$i]]);
+                $stmt->execute([$first_quarter[$i], $second_quarter[$i], $third_quarter[$i], $fourth_quarter[$i], $lrn, $grade_level, $section, $subjects[$i]], $remark, $id, $lrn);
             }
 
         } catch(PDOException $e) {
@@ -90,11 +96,11 @@ class Grades extends \Dbh{
         }
     }
 
-    protected function validateUser($email, $grade_level, $section){
+    protected function validateUser($email, $username, $grade_level, $section){
         try {
-            $sql = "SELECT `teacher`, `grade_level`, `section` FROM `teachers_advisory_table` WHERE `teacher` = ? AND `grade_level` = ? AND `section` = ?;";
+            $sql = "SELECT `email`, `username`, `grade_level`, `section` FROM `teachers_advisory_table` WHERE `email` = ? AND `username` = ? AND `grade_level` = ? AND `section` = ?;";
             $stmt = $this->connection()->prepare($sql);
-            $stmt->execute([$email, $grade_level, $section]);
+            $stmt->execute([$email, $username, $grade_level, $section]);
     
             $results = $stmt->fetchAll();
             return $results;

@@ -22,13 +22,16 @@ class TeachersView extends \Models\Teachers{
         
         $total_no_page = ceil($records / $total_records_per_page);
         $result = $this->index($offset, $total_records_per_page, $status, $query);
+
+        $this->manageAdvisories(0,0);
         ?>
+
         <table class="table table-bordered border-top">
             <thead>
                 <tr>
                     <th>#</th>
                     <th>Date registered</th>
-                    <th>Teacher</th>
+                    <th>Name</th>
                     <th>Username</th>
                     <th>Email</th>
                     <th>Contact</th>
@@ -47,7 +50,7 @@ class TeachersView extends \Models\Teachers{
                         strtoupper($row['surname']) . ', ' . strtoupper($row['first_name']) . ' ' . strtoupper($row['middle_name']) . ' ' . strtoupper($row['ext_name'])
                         ?>
                     </td>
-                    <td><?= $row['username'] ?></td>
+                    <td><?= strtoupper($row['username']) ?></td>
                     <td><?= $row['email'] ?></td>
                     <td><?= $row['contact'] ?></td>
                     <td><?= $row['gender'] ?></td>
@@ -68,7 +71,11 @@ class TeachersView extends \Models\Teachers{
                                 <input class="student-id" type="hidden" name="id" id="id" value="<?= $row['teacher_id'] ?>" >
                                 <!-- <li><input type="submit" class="dropdown-item information-links" name="information" value="Information"></li> -->
                                 <li><a class="dropdown-item" href="../sabanges/account_informations.php?id=<?= $row['teacher_id']?>">Informations</a></li>
-                                <li><a class="dropdown-item" href="../sabanges/account_informations.php?id=<?= $row['teacher_id']?>#grades-section">Grades</a></li>
+                                <li>
+                                    <a type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                    Permission
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                     </td>
@@ -96,15 +103,98 @@ class TeachersView extends \Models\Teachers{
         </nav>
         <?php
     }
+
+    public function manageAdvisories($email, $username){
+        $advisories = $this->getAdvisories($email, $username);
+        ?>
+    
+        <?php foreach ($advisories as $advisory) { ?>
+        <div class="row">
+            <div class="col-md">
+                <label for="grade-level" class="form-label">Grade level</label>
+                <input type="text" class="form-control" id='grade-level' value="<?= $advisory['grade_level'] ?>">
+            </div>
+            <div class="col-md">
+                <label for="section" class="form-label">Section</label>
+                <input type="text" class="form-control" id='section' value="<?= $advisory['section'] ?>">
+            </div>
+        </div>
+        <?php } ?>
+                
+        <?php
+    }
 }
 
 class TeacherInformationView extends \Models\Teachers{
     public function initSingleIndex($id){
         $result = $this->singleIndex($id);
+        $advisories = $this->getAdvisories($result[0]['email'], $result[0]['username']);
         ?>
-        <h4 class="">Profile</h4>
-        <div class="row d-flex flex-column align-items-center">
-            <div class="border mt-3 col-md">
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+           <form class="submit-advisory-form" action="./includes/advisory.inc.php" method="post" enctype="multipart/form-data"> 
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Add</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body advisories-modal">
+                            <input type="hidden" name="email" value="<?= $result[0]['email'] ?>">
+                            <input type="hidden" name="username" value="<?= $result[0]['username'] ?>">
+                        <div class="row ">
+                            <!-- <div class="col-md-4">
+                                <div id="emailHelp" class="form-text ps-3">*Add advisory classes to the user. Skip if not applicable.</div>
+                            </div> -->
+                            <div class="col-md">
+                                <div class="d-flex align-items-end justify-content-between w-100">
+                                    <div class="w-50">
+                                        <label class="form-check-label fw-semibold" for="grade-level">Grade level</label>
+                                        <select select class="form-select grade-select" id="grade-level" aria-label="Default select example" name="grade-lvl">
+                                            <option value="Kindergarten">Kindergarten</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                        </select>
+                                    </div>
+                                <div>
+                                    <label class="form-check-label fw-semibold" for="section">Section</label>
+                                    <select class="form-select section-select" id="section" aria-label="Default select example"></select>
+                                </div>
+                                <button type="button" class="btn btn-primary add-advisory">Add</button>
+                                </div>
+                            </div>
+                            </div>
+                            <div class="row mt-3">
+                            <div class="col-md">
+                                <h6>List of advisory</h6>
+                                <table class="table border advisory-table">
+                                <thead>
+                                    <tr>
+                                    <th>Grade level</th>
+                                    <th>Section</th>
+                                    <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="advisory-table-tbody">
+                                    
+                                </tbody>
+                                </table>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" name="add" class="btn btn-primary submit-advisory">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="row gap-3">
+            <div class="border col-md">
                 <div class="row ">
                     <div class="d-flex align-items-center justify-content-between py-3 px-3 border-bottom">
                         <h5>Information</h5>
@@ -165,6 +255,35 @@ class TeacherInformationView extends \Models\Teachers{
                         </div>
                         <?php } ?>
                     </div>
+                </div>
+            </div>
+            <div class="border col-md-4" id="history-section">
+                <div class="row">
+                    <div class="d-flex align-items-center justify-content-between py-3 px-3 border-bottom">
+                        <h5>Advisories</h5>
+                        <a type="button" class="btn btn-primary advisory-link" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            Add
+                        </a>
+                    </div>
+                    <?php foreach($advisories as $advisory){ ?>
+                    <form action="./includes/advisory.inc.php" method="post" enctype="multipart/form-data">
+                        <div class="w-100 py-2 px-3 border-bottom">
+                            <div class="d-flex">
+                                <div class="d-flex flex-column  justify-content-between">
+                                    <span class="fw-semibold">Grade level :</span>
+                                    <span><?= $advisory['grade_level'] ?></span>
+                                </div>
+                                <div class="d-flex flex-column  justify-content-between ms-5">
+                                    <span class="fw-semibold">Section :</span>
+                                    <span><?= $advisory['section'] ?></span>
+                                </div>
+                                <input type="hidden" name="id" value='<?= $advisory['id'] ?>'>
+                                
+                                <button type='submit' name='delete' class="btn btn-danger ms-auto">Delete</button>
+                            </div>
+                        </div>                        
+                    </form>
+                    <?php } ?>
                 </div>
             </div>
         </div>

@@ -15,35 +15,62 @@ class TeachersController extends \Models\Teachers{
         }
         else{
             $result = $this->login($username, $password);
+
+            if ($result[1]) {
+                session_start();
+
+                $dateNow = date("Y-m-d h:i:s");
+                $_SESSION["last_login_datetime"] = $dateNow;
+                // setcookie("last_login_cookie", $dateNow, time() + (3600), "/");
+                $_SESSION['username'] = $result[0][0]['username'];
+                $_SESSION['account_id'] = $result[0][0]['account_id'];
+                $_SESSION['email'] = $result[0][0]['email'];
+                $_SESSION['is_superadmin'] = $result[0][0]['superadmin'];
+                $_SESSION['permission_1'] = $result[0][0]['masterlist_view'];
+                $_SESSION['permission_2'] = $result[0][0]['masterlist_promotion_retention'];
+                $_SESSION['permission_3'] = $result[0][0]['student_info_view'];
+                $_SESSION['permission_4'] = $result[0][0]['student_info_edit'];
+                $_SESSION['permission_5'] = $result[0][0]['student_info_add_history'];
+                $_SESSION['permission_6'] = $result[0][0]['student_info_add_grades'];
+                $_SESSION['permission_7'] = $result[0][0]['enrollment_view'];
+                $_SESSION['permission_8'] = $result[0][0]['enrollment_add'];
+                $_SESSION['permission_9'] = $result[0][0]['users_view'];
+                $_SESSION['permission_10'] = $result[0][0]['users_add'];
+                $_SESSION['permission_11'] = $result[0][0]['users_edit'];
+                $_SESSION['permission_12'] = $result[0][0]['teacher_info_view'];
+                $_SESSION['permission_13'] = $result[0][0]['teacher_info_edit'];
+                $_SESSION['permission_14'] = $result[0][0]['operations_view'];
+                $_SESSION['permission_15'] = $result[0][0]['operations_add'];
+                $_SESSION['permission_16'] = $result[0][0]['operations_edit'];
+
+                header("Location: ../index.php");
+                die();
+            }
             
-            session_start();
+            else{
+                header("Location: ../login.php?login&err");
+                die();
+            }
+            
+        }
+    }
 
-            $dateNow = date("Y-m-d h:i:s");
-            $_SESSION["last_login_datetime"] = $dateNow;
-            // setcookie("last_login_cookie", $dateNow, time() + (3600), "/");
-            $_SESSION['username'] = $result[0]['username'];
-            $_SESSION['account_id'] = $result[0]['account_id'];
-            $_SESSION['email'] = $result[0]['email'];
-            $_SESSION['permission_1'] = $result[0]['masterlist_view'];
-            $_SESSION['permission_2'] = $result[0]['masterlist_promotion_retention'];
-            $_SESSION['permission_3'] = $result[0]['student_info_view'];
-            $_SESSION['permission_4'] = $result[0]['student_info_edit'];
-            $_SESSION['permission_5'] = $result[0]['student_info_add_history'];
-            $_SESSION['permission_6'] = $result[0]['student_info_add_grades'];
-            $_SESSION['permission_7'] = $result[0]['enrollment_view'];
-            $_SESSION['permission_8'] = $result[0]['enrollment_add'];
-            $_SESSION['permission_9'] = $result[0]['users_view'];
-            $_SESSION['permission_10'] = $result[0]['users_add'];
-            $_SESSION['permission_11'] = $result[0]['users_edit'];
-            $_SESSION['permission_12'] = $result[0]['teacher_info_view'];
-            $_SESSION['permission_13'] = $result[0]['teacher_info_edit'];
-            $_SESSION['permission_14'] = $result[0]['operations_view'];
-            $_SESSION['permission_15'] = $result[0]['operations_add'];
-            $_SESSION['permission_16'] = $result[0]['operations_edit'];
-
-            // $_SESSION['m-v'] = 
-
-            header("Location: ../index.php");
+    public function initChangePassword($username,$oldpass,$newpass,$retypepass){
+        if ($this->changePassEmptyInputs($username, $oldpass, $newpass, $retypepass) !== false) {
+            echo "empty";
+        }
+        elseif ($this->changePassSpecialChars($username, $oldpass, $newpass, $retypepass) !== false) {
+            echo 'special';
+        }
+        elseif ($this->initValidateUserChangePass($username, $oldpass) !== true) {
+            echo "user false";
+        }
+        elseif ($this->validatePassword($oldpass, $newpass, $retypepass) !== false) {
+            echo 'password not same';
+        }
+        else{
+            $this->changePassword($username, $newpass);
+            header("Location: ../login.php?changepass&submitted");
             die();
         }
     }
@@ -64,12 +91,46 @@ class TeachersController extends \Models\Teachers{
         return $result;
     }
 
+    protected function changePassEmptyInputs($username, $oldpass, $newpass, $retypepass){
+        $result = false;
+        if (empty($username) || empty($oldpass) || empty($newpass) || empty($retypepass)) {
+            $result = true;
+        }
+        return $result;
+    }
+
+    protected function changePassSpecialChars($username, $oldpass, $newpass, $retypepass){
+        $result = false;
+        if (!preg_match("/^[a-zA-Z0-9@.]*$/", $username) || !preg_match("/^[a-zA-Z0-9]*$/", $oldpass) || !preg_match("/^[a-zA-Z0-9]*$/", $newpass) || !preg_match("/^[a-zA-Z0-9]*$/", $retypepass)) {
+            $result = true;
+        }
+        return $result;
+    }
+
+    protected function validatePassword($oldpass, $newpass, $retypepass){
+        $result = false;
+        if (!preg_match("/^[a-zA-Z0-9]*$/", $oldpass) || !preg_match("/^[a-zA-Z0-9]*$/", $newpass)) {
+            $result = true;
+        }
+        if ($newpass !== $retypepass) {
+            $result = true;
+        }
+        return $result;
+    }
+
+    protected function initValidateUserChangePass($username, $oldpass){
+        $result = $this->validateUserPass($username, $oldpass);
+  
+        return $result;
+    }
+
     protected function initValidateUser($username, $password){
         $result = false;
         $account = $this->validateUser($username, $password);
         if (count($account) === 0) {
             $result = true;
         }
+  
         return $result;
     }
     // Registration validation
@@ -189,18 +250,6 @@ class TeachersController extends \Models\Teachers{
 
     // protected function validateGsisbp($gsisbp){
     //     $result = $this->validateDigits($gsisbp);
-    //     return $result;
-    // }
-
-    // protected function validatePassword($password, $confirm_password){
-    //     $result = false;
-    //     if (!preg_match("/^[a-zA-Z0-9]*$/", $password)) {
-    //         $result = true;
-    //     }
-    //     if ($password !== $confirm_password) {
-    //         $result = true;
-    //     }
-    //         return $result;
     //     return $result;
     // }
 

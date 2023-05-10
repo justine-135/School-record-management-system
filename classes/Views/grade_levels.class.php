@@ -28,6 +28,11 @@ class GradeLevelsView extends \Models\GradeLevels{
         $level = isset($_GET['level']) ? $_GET['level'] : "";
         $section = isset($_GET['section']) ? $_GET['section'] : "";
         $results = $this->indexSelect($section_params);
+        ?>
+        <li>
+            <a class="dropdown-item" href="?row=<?= $rows ?>&page_no=<?= $page_no ?>&status=<?= $status ?>&level=<?= $level ?>&section=None&query=<?= $query ?>" >None</a>
+        </li>
+        <?php
         foreach ($results as $row) { ?>
         <li>
             <a class="dropdown-item" href="?row=<?= $rows ?>&page_no=<?= $page_no ?>&status=<?= $status ?>&level=<?= $level ?>&section=<?= $row['section'] ?>&query=<?= $query ?>" ><?= $row['section'] ?></a>

@@ -12,8 +12,8 @@ class Teachers extends \Dbh{
     $permission_12, $permission_13, $permission_14, $permission_15, $permission_16, 
     $grade_level, $section){
         try{
-            $username = strtoupper($surname) . "12345";
-            $password = $birth_date;
+            $username = "SABANGES" . strtoupper($surname);
+            $password = strtoupper($surname) . "12345";
             // Hash the password
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
             // Turn file to base64 encoded
@@ -35,12 +35,12 @@ class Teachers extends \Dbh{
             $stmt = null;
 
             if ($grade_level !== null || $section !== null) {
-                $sql = "INSERT INTO `teachers_advisory_table` (`teacher`, `grade_level`, `section`) 
-                VALUES (?, ?, ?)";
+                $sql = "INSERT INTO `teachers_advisory_table` (`email`, `username`, `grade_level`, `section`) 
+                VALUES (?, ?, ?, ?)";
                 
                 $stmt = $this->connection()->prepare($sql);
                 for ($i=0; $i < count($grade_level); $i++) { 
-                    $stmt->execute([$email, $grade_level[$i], $section[$i]]);
+                    $stmt->execute([$email, $username, $grade_level[$i], $section[$i]]);
                 }
                 
             }
@@ -161,9 +161,30 @@ class Teachers extends \Dbh{
         $conn = null;
     }
 
+    protected function validateUserPass($username, $oldpass){
+        try{
+            $sql = "SELECT `password` FROM `teachers_account_table` WHERE username = ? OR email = ? ";
+
+            $stmt = $this->connection()->prepare($sql);
+            $stmt->execute([$username, $username]);
+    
+            $result = $stmt->fetchAll();
+
+            $hashed_password = $result;
+
+            $check_password = password_verify($oldpass, $hashed_password[0]['password']);
+
+            return $check_password;
+        }
+        catch(PDOException $e) {
+            echo "Error: " . $e->getMessage();
+        }
+        $conn = null;
+    }
+
     protected function login($username, $password){
         try{
-            $sql = "SELECT `account_id`, `username`, `email`, `password`, `masterlist_view`, `masterlist_promotion_retention`, `student_info_view`, `student_info_edit`, `student_info_add_history`, `student_info_add_grades`, `enrollment_view`, `enrollment_add`, `users_view`, `users_add`, `users_edit`, `teacher_info_view`, `teacher_info_edit`, `operations_view`, `operations_add`, `operations_edit`
+            $sql = "SELECT `account_id`, `username`, `email`, `password`, `superadmin`, `masterlist_view`, `masterlist_promotion_retention`, `student_info_view`, `student_info_edit`, `student_info_add_history`, `student_info_add_grades`, `enrollment_view`, `enrollment_add`, `users_view`, `users_add`, `users_edit`, `teacher_info_view`, `teacher_info_edit`, `operations_view`, `operations_add`, `operations_edit`
              FROM `teachers_account_table` 
              WHERE username = ? OR email = ? ";
 
@@ -173,11 +194,42 @@ class Teachers extends \Dbh{
             $hashed_password = $stmt->fetchAll();
             $check_password = password_verify($password, $hashed_password[0]["password"]);
 
-            return $hashed_password;
+            $login_res = array($hashed_password, $check_password);
+            
+            return $login_res;
         }
         catch(PDOException $e) {
             echo "Error: " . $e->getMessage();
         }
         $conn = null;
+    }
+
+    protected function getAdvisories($email, $username){
+        try {
+            $sql = "SELECT * FROM `teachers_advisory_table` WHERE `email` = ? AND `username` = ?;";
+            $stmt = $this->connection()->prepare($sql);
+            $stmt->execute([$email, $username]);
+    
+            $results = $stmt->fetchAll();
+            return $results;
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+        }
+    }
+
+    protected function changePassword($username ,$newpass){
+        
+        try {
+            $hashed_password = password_hash($newpass, PASSWORD_DEFAULT);
+            
+            $sql = "UPDATE `teachers_account_table` SET `password` = ? WHERE `email` = ? OR `username` = ?;";
+            $stmt = $this->connection()->prepare($sql);
+            $stmt->execute([$hashed_password, $username, $username]);
+
+            $results = $stmt->fetchAll();
+            return $results;
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+        }
     }
 }

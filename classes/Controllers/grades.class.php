@@ -5,8 +5,12 @@ namespace Controllers;
 include $_SERVER['DOCUMENT_ROOT'].'/sabanges/classes/Models/grades.class.php';
 
 class GradesController extends \Models\Grades{
-    public function initUpdate($id, $lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter, $rows, $status, $page_no){
-        if ($this->emptyInputs($lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter) !== false) {
+    public function initUpdate($id, $lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter, $remark, $rows, $status, $page_no){
+        if ($this->initValidateUser($_SESSION['email'], $_SESSION['username'], $grade_level, $section, ) !== false) {
+            header("Location: ../grading.php?grades&error&permission&rows={$rows}&status={$status}&page_no={$page_no}");
+            die();
+        }
+        elseif ($this->emptyInputs($lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter) !== false) {
             header("Location: ../grading.php?grades&error&empty&rows={$rows}&status={$status}&page_no={$page_no}");
             die();
         }
@@ -19,17 +23,17 @@ class GradesController extends \Models\Grades{
             die();
         }
         else{
-            $this->update($lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter);
+            $this->update($id, $lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter, $remark);
             header("Location: ../grading.php?grades&submitted&rows={$rows}&page_no={$page_no}&status={$status}");
             die();
         }
     }
-    public function initCreate($id, $lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter, $rows, $status, $page_no){
-        session_start();
-        // if ($this->initValidateUser($_SESSION['email'], $grade_level, $section, )) {
-        //     # code...
-        // }
-        if ($this->emptyInputs($lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter) !== false) {
+    public function initCreate($id, $lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter, $remark, $rows, $status, $page_no){
+        if ($this->initValidateUser($_SESSION['email'], $_SESSION['username'], $grade_level, $section, ) !== false) { 
+            header("Location: ../grading.php?grades&error&permission&rows={$rows}&status={$status}&page_no={$page_no}");
+            die();
+        }
+        elseif ($this->emptyInputs($lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter) !== false) {
             header("Location: ../grading.php?grades&error&empty&rows={$rows}&status={$status}&page_no={$page_no}");
             die();
         }
@@ -50,16 +54,19 @@ class GradesController extends \Models\Grades{
             die();
         }
         else{
-            $this->create($lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter);
+            $this->create($id, $lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter, $remark);
             header("Location: ../grading.php?grades&submitted&rows={$rows}&status={$status}&page_no={$page_no}");
             die();
         }
     }
 
-    protected function initValidateUser($email, $grade_level, $section){
-        $result = false;
-        if (count($this->validateUser($email, $grade_level, $section)) > 0) {
-            $result = true;
+    protected function initValidateUser($email, $username, $grade_level, $section){
+        $result = true;
+        if (count($this->validateUser($email, $username, $grade_level, $section)) > 0) {
+            $result = false;
+        }
+        if ($_SESSION['is_superadmin'] == 1) {
+            $result = false;
         }
         return $result;
     }

@@ -7,24 +7,20 @@ class GradesView extends \Models\Grades{
     public function loadGrades($lrn){
         ?>
         <div class="accordion" id="accordionPanelsStayOpenExample">
-            <?php for ($i=0; $i <= 6; $i++) { ?>
+            <?php for ($i=1; $i <= 6; $i++) { ?>
             <div class="accordion-item  border border-top-0">
                 <h2 class="accordion-header" id="panelsStayOpen-<?= $i ?>">
                 <button class="accordion-button border-top" type="button" data-bs-toggle="collapse" data-bs-target="#grade-table-<?= $i ?>" aria-expanded="false" aria-controls="panelsStayOpen-<?= $i ?>collapseOne">
-                    Grade level - <?= $i == 0 ? 'Kindergarten' : $i  ?>
+                    Grade level - <?= $i  ?>
                 </button>
                 </h2>
                 <div id="grade-table-<?= $i ?>" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-<?= $i ?>">
                     <div class="accordion-body">
                     <?php
-                    if ($i == 0) {
-                        $grade_lvl = "Kindergarten";
-                        $result = $this->index($lrn, $grade_lvl);
-                    }
-                    elseif ($i == 1){
+                    if ($i == 1) {
                         $grade_lvl = 1;
                         $result = $this->index($lrn, $grade_lvl);
-                    }  
+                    }
                     elseif ($i == 2){
                         $grade_lvl = 2;
                         $result = $this->index($lrn, $grade_lvl);
@@ -44,7 +40,11 @@ class GradesView extends \Models\Grades{
                     elseif ($i == 6){
                         $grade_lvl = 6;
                         $result = $this->index($lrn, $grade_lvl);
-                    }
+                    }  
+                    // elseif ($i == 6){
+                    //     $grade_lvl = 6;
+                    //     $result = $this->index($lrn, $grade_lvl);
+                    // }
                     
                     if (count($result) > 0) {
                     ?>

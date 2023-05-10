@@ -5,14 +5,14 @@ namespace Models;
 include_once $_SERVER['DOCUMENT_ROOT'].'/sabanges/classes/Database/dbh.class.php';
 
 class Subjects extends \Dbh{
-    protected function create($subject, $grade, $quarter){
+    protected function create($subject, $grade, $quarter1, $quarter2, $quarter3, $quarter4){
         try {
             $date = date("Y-m-d");
-            $sql = "INSERT INTO `operations_subjects_table` (`updated_at`, `subject`, `grade_level`, `quarters`)
-            VALUES (?, ?, ?, ?);";
+            $sql = "INSERT INTO `operations_subjects_table` (`updated_at`, `subject`, `grade_level`, `quarter_1`, `quarter_2`, `quarter_3`, `quarter_4`)
+            VALUES (?, ?, ?, ?, ?, ?, ?);";
 
             $stmt = $this->connection()->prepare($sql);
-            $stmt->execute([$date, $subject, $grade, $quarter]);
+            $stmt->execute([$date, $subject, $grade, $quarter1, $quarter2, $quarter3, $quarter4]);
             $stmt = null;
         } catch(PDOException $e) {
             echo "Error: " . $e->getMessage();

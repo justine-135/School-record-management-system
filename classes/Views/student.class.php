@@ -103,21 +103,21 @@ class StudentView extends \Models\Student{
                     <th scope="col">Status</th>
                     <?php } ?>
                     <?php if ($view == 'grading') { ?>
-                    <th>
-                        Graded
-                    </th>
+                    <th>Grade</th>
                     <?php } ?>
-                    <?php if ($view == 'grading') { ?>
-                    <th>
-                        Remarks
-                    </th>
+                    <?php if ($view == 'grading' || $view == 'promotion') { ?>
+                    <th scope='col'>Remarks</th>
                     <?php } ?>
+                    <?php if ($view != 'promotion') { ?>
                     <th scope="col">Action</th>
+                    <?php } ?>
                 </tr>
                 </thead>
                 <tbody>
                 <?php
                     foreach ($results as $row) {
+                        if ($view == 'grading') {
+                        if ($row['grade_level'] !== 'Kindergarten') {
                 ?>
                     <tr>
                         <td>
@@ -127,7 +127,7 @@ class StudentView extends \Models\Student{
                                 </span>
                                 <?php if ($view == 'promotion') { ?>            
                                 <div class="form-check">
-                                    <input class="form-check-input masterlist-chkbox" type="checkbox" name="chkbox-student[]" value="<?= $row['student_id'] ?>,<?= $row['student_lrn'] ?>,<?= $row['grade_level'] ?>" id="flexCheckDefault">
+                                    <input class="form-check-input masterlist-chkbox" type="checkbox" name="chkbox-student[]" value="<?= $row['student_id'] ?>,<?= $row['student_lrn'] ?>,<?= $row['grade_level'] ?>,<?= $row['promotion_status'] ?>" id="flexCheckDefault">
                                 </div>
                                 <?php } ?>
                             </div>
@@ -141,7 +141,7 @@ class StudentView extends \Models\Student{
                         <td><?= ($row['grade_level'] !== 'Kindergarten' ? 'Grade ' : '') . $row['grade_level'] . " - " . $row['section'] ?></td>
                         <?php if ($view !== 'grading') { ?>
                         <td>
-                            <p class="<?= $row['status'] === "Active" ? "text-primary" : "text-success"?> text-center fw-semibold">
+                            <p>
                                 <?= $row['status'] ?>
                             </p>
                         </td>
@@ -151,45 +151,29 @@ class StudentView extends \Models\Student{
                             <?php
                             $graded = $this->gradesSubmitted($row['grade_level'], $row['lrn']);
                             if (count($graded) <= 0) {
-                                echo '<span class="fw-semibold text-primary">Ungraded</span>';
+                                echo '<span class="">Ungraded</span>';
                             }
-                            else{
+                            else{                                
                                 foreach ($graded as $grade) {
                                     if (strtoupper($grade['first_quarter']) == 'INC' || strtoupper($grade['second_quarter']) == 'INC' || strtoupper($grade['third_quarter']) == 'INC' || strtoupper($grade['fourth_quarter']) == 'INC') {
-                                        echo '<span class="fw-semibold text-danger">Incomplete</span>';
+                                        echo '<span class="">Incomplete</span>';
 
                                     }
                                     else{
-                                        echo '<span class="fw-semibold text-success">Graded</span>';
+                                        echo '<span class="">Graded</span>';
                                     }
                                     break;
                                 }
                             }
                             ?>
                         </td>
-                        <?php } ?>
-                        <?php if ($view == 'grading') { ?>
+                        <?php } ?> 
+                        <?php if ($view == 'grading') { ?>     
                         <td>
-                        <?php
-                            $graded = $this->gradesSubmitted($row['grade_level'], $row['lrn']);
-                            foreach ($graded as $grade) {
-                                if ($grade['first_quarter'] <= 74 || $grade['second_quarter'] <= 74 || $grade['third_quarter'] <= 74 || $grade['fourth_quarter'] <= 74) {
-                                    echo '<span class="fw-semibold text-danger">Failed</span>';
-                                    break;
-                                }
-                                elseif (strtoupper($grade['first_quarter']) == 'INC' || strtoupper($grade['second_quarter']) == 'INC' || strtoupper($grade['third_quarter']) == 'INC' || strtoupper($grade['fourth_quarter']) == 'INC') {
-                                    echo '<span class="fw-semibold text-danger">Failed</span>';
-                                    break;
-                                }
-                                else{
-                                    echo '<span class="fw-semibold text-success">Passed</span>';
-                                }
-                                break;
-                            }
-                            
-                        ?>
-                        </td>
-                        <?php } ?>
+                            <?= $row['promotion_status'] == null ? 'None' : $row['promotion_status'] ?>
+                        </td>                  
+                        <?php } ?>         
+                        <?php if ($view !== 'promotion') { ?>              
                         <td>
                             <?php if ($view == 'masterlist') { ?>
                             <div class="dropdown ml-auto">
@@ -219,9 +203,103 @@ class StudentView extends \Models\Student{
                             <input type="hidden" name="section" value="<?= $row['section'] ?>" id="">
                             <?php } ?>
                         </td>
+                        <?php } ?>
                     </tr>
                 <?php 
                     }
+                }
+                else{
+                    ?>
+                    <tr>
+                        <td>
+                            <div class="d-flex">
+                                <span class="me-2">
+                                <?= $row['enrollment_id'] ?>
+                                </span>
+                                <?php if ($view == 'promotion') { ?>            
+                                <div class="form-check">
+                                    <input class="form-check-input masterlist-chkbox" type="checkbox" name="chkbox-student[]" value="<?= $row['enrollment_id'] ?>,<?= $row['student_lrn'] ?>,<?= $row['grade_level'] ?>,<?= $row['promotion_status'] ?>" id="flexCheckDefault">
+                                </div>
+                                <?php } ?>
+                            </div>
+                        </td>
+                        <td><?= $row['lrn'] ?></td>
+                        <td><?= strtoupper($row['surname']) . ', ' . strtoupper($row['first_name']) . ' ' . strtoupper($row['middle_name'])  ?> <?= strtoupper($row['ext']) == 'NONE' ? '' : strtoupper($row['ext']) ?></td>
+                        <?php if ($view !== 'grading') { ?>
+                        <td><?= $row['enrolled_at'] ?></td>
+                        <?php } ?>
+                        <td><?= $row['gender'] ?></td>
+                        <td><?= ($row['grade_level'] !== 'Kindergarten' ? 'Grade ' : '') . $row['grade_level'] . " - " . $row['section'] ?></td>
+                        <?php if ($view !== 'grading') { ?>
+                        <td>
+                            <p>
+                                <?= $row['status'] ?>
+                            </p>
+                        </td>
+                        <?php } ?>
+                        <?php if ($view == 'grading') { ?>
+                        <td>
+                            <?php
+                            $graded = $this->gradesSubmitted($row['grade_level'], $row['lrn']);
+                            if (count($graded) <= 0) {
+                                echo '<span class="">Ungraded</span>';
+                            }
+                            else{
+                                foreach ($graded as $grade) {
+                                    if (strtoupper($grade['first_quarter']) == 'INC' || strtoupper($grade['second_quarter']) == 'INC' || strtoupper($grade['third_quarter']) == 'INC' || strtoupper($grade['fourth_quarter']) == 'INC') {
+                                        echo '<span class="">Incomplete</span>';
+
+                                    }
+                                    else{
+                                        echo '<span class="">Graded</span>';
+                                    }
+                                    break;
+                                }
+                            }
+                            ?>
+                        </td>
+                        <?php } ?>    
+                        <?php if ($view == 'promotion') { ?>     
+                        <td>
+                            <?= $row['promotion_status'] == null ? 'None' : $row['promotion_status'] ?>
+                        </td>                  
+                        <?php } ?> 
+                        <?php if ($view !== 'promotion') { ?>            
+                        <td>
+                            <?php if ($view == 'masterlist') { ?>
+                            <div class="dropdown ml-auto">
+                                <a
+                                class="btn dropdown-toggle btn-primary"
+                                href="#"
+                                role="button"
+                                id="dropdownMenuLink"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false"
+                                >
+                                View
+                                </a>
+                                
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <input class="student-id" type="hidden" name="id" id="id" value="<?= $row['student_id'] ?>" >
+                                    <li><a class="dropdown-item" href="../sabanges/student_informations.php?id=<?= $row['student_id']?>">Informations</a></li>
+                                    <li><a class="dropdown-item" href="../sabanges/student_informations.php?id=<?= $row['student_id']?>#grades-section">Grades</a></li>
+                                </ul>
+                            </div>
+                            <?php } elseif ($view == 'grading') { ?>
+                            <a class="btn btn-primary open-grade-btn" data-bs-toggle="modal" href="#add-grade-modal" role="button">
+                            Grade
+                            </a>     
+                            <input type="hidden" name="lrn" value="<?= $row['lrn'] ?>" id="">
+                            <input type="hidden" name="grade-level" value="<?= $row['grade_level'] ?>" id="">
+                            <input type="hidden" name="section" value="<?= $row['section'] ?>" id="">
+                            <?php } ?>
+                        </td>
+                        <?php } ?>
+                    </tr>
+                    <?php
+                }
+            }
+
                 ?>
             </tbody>
         </table>
@@ -295,7 +373,7 @@ class StudentInformationView extends \Models\Student{
         foreach ($result2 as $row2) {
             array_push($grade_levels, $row2['grade_level']);
         }
-        // count($result) === 0 ? header("Location: ./student_informations.php?id={$id}&err=not_found") : "";
+        count($result) === 0 ? header("Location: ./masterlist.php?id={$id}&err=not_found") : "";
         ?>
         <div class="row gap-3">
             <form class="border col-md" action="./includes/enrollment.inc.php" method="post" enctype="multipart/form-data">
@@ -788,7 +866,6 @@ class StudentInformationView extends \Models\Student{
         $student = $this->gradeSection($grade_level, $lrn);
         $grades = $this->gradesSubmitted($grade_level, $lrn);
     
-
         ?>
         <div class="modal-header">
             <h5 class="modal-title" id="">Grade learner</h5>
@@ -816,6 +893,7 @@ class StudentInformationView extends \Models\Student{
                     <div class="col-md-4">
                         <label class="form-check-label fw-bold" for="current-grade-lvl">LRN</label>
                         <input class="form-control grade-level-grades" type="text" name="lrn" value="<?= $row['student_lrn'] ?>" id="current-grade-level" readonly>
+                        <input class="form-control grade-level-id" type="hidden" name="id" value="<?= $row['enrollment_id'] ?>" id="current-id" readonly>
                     </div>
                     <div class="col-md-4">
                         <label class="form-check-label fw-bold" for="current-grade-lvl">Grade level</label>
@@ -860,20 +938,20 @@ class StudentInformationView extends \Models\Student{
                             <input style="background:white" class="form-control" type="text" name="subjects-display" id="" value="<?= $row['subject'] ?>" disabled>
                         </td>
                         <td>
-                            <input class="form-control first-quarter" type="<?= strtoupper($row['first_quarter']) != 'N/A' ? 'text' : "hidden" ?>" name="first-quarter[]" id="" value=<?= (strtoupper($row['first_quarter']) == 'N/A' ? 'N/A' : (strtoupper($row['first_quarter']) == 'INC' ? 'INC' : number_format((float)$row['first_quarter'], 2, '.', ''))) ?>>
-                            <input class="form-control" type="<?= strtoupper($row['first_quarter']) != 'N/A' ? 'hidden' : "text" ?>" name="first-quarter-display" id="" value=<?= (strtoupper($row['first_quarter']) == 'N/A' ? 'N/A' : (strtoupper($row['first_quarter']) == 'INC' ? 'INC' : number_format((float)$row['first_quarter'], 2, '.', ''))) ?> <?= strtoupper($row['first_quarter']) != 'N/A' ? '' : "disabled" ?>>
+                            <input class="form-control first-quarter" type="<?= $row['first_quarter'] != 'N/A' ? 'text' : "hidden" ?>" name="first-quarter[]" id="" value="<?= $row['first_quarter'] ?>">
+                            <input class="form-control" type="<?= $row['first_quarter'] != 'N/A' ? 'hidden' : "text" ?>" name="first-quarter-display" id=""  value="<?= $row['first_quarter'] == 1 ? '' : 'N/A' ?>" <?= $row['first_quarter'] == 1 ? : 'disabled' ?>>
                         </td>
                         <td>
-                            <input class="form-control second-quarter" type="<?= strtoupper($row['second_quarter']) != 'N/A' ? 'text' : "hidden" ?>" name="second-quarter[]" id="" value=<?= (strtoupper($row['second_quarter']) == 'N/A' ? 'N/A' : (strtoupper($row['second_quarter']) == 'INC' ? 'INC' : number_format((float)$row['second_quarter'], 2, '.', ''))) ?>>
-                            <input class="form-control" type="<?= strtoupper($row['second_quarter']) != 'N/A' ? 'hidden' : "text" ?>" name="second-quarter-display" id="" value=<?= (strtoupper($row['second_quarter']) == 'N/A' ? 'N/A' : (strtoupper($row['second_quarter']) == 'INC' ? 'INC' : number_format((float)$row['second_quarter'], 2, '.', ''))) ?> <?= strtoupper($row['second_quarter']) != 'N/A' ? '' : "disabled" ?>>
+                            <input class="form-control second-quarter" type="<?= $row['second_quarter']!= 'N/A' ? 'text' : "hidden" ?>" name="second-quarter[]" id="" value="<?= $row['second_quarter'] ?>">
+                            <input class="form-control" type="<?= $row['second_quarter'] != 'N/A' ? 'hidden' : "text" ?>" name="second-quarter-display" id="" value="<?= $row['second_quarter'] ?>" <?= $row['second_quarter'] == 1 ? : 'disabled' ?>>
                         </td>
                         <td>
-                            <input class="form-control third-quarter" type="<?= strtoupper($row['third_quarter']) != 'N/A' ? 'text' : "hidden" ?>" name="third-quarter[]" id="" value=<?= (strtoupper($row['third_quarter']) == 'N/A' ? 'N/A' : (strtoupper($row['third_quarter']) == 'INC' ? 'INC' : number_format((float)$row['third_quarter'], 2, '.', ''))) ?>>
-                            <input class="form-control" type="<?= strtoupper($row['third_quarter']) != 'N/A' ? 'hidden' : "text" ?>" name="third-quarter-display" id="" value=<?= (strtoupper($row['third_quarter']) == 'N/A' ? 'N/A' : (strtoupper($row['third_quarter']) == 'INC' ? 'INC' : number_format((float)$row['third_quarter'], 2, '.', ''))) ?> <?= strtoupper($row['third_quarter']) != 'N/A' ? '' : "disabled" ?>>
+                            <input class="form-control third-quarter" type="<?= $row['third_quarter'] != 'N/A' ? 'text' : "hidden" ?>" name="third-quarter[]" id="" value="<?= $row['third_quarter'] ?>">
+                            <input class="form-control" type="<?= $row['third_quarter'] != 'N/A' ? 'hidden' : "text" ?>" name="third-quarter-display" id="" value="<?= $row['third_quarter'] ?>" <?= $row['third_quarter'] == 1 ? : 'disabled' ?>>
                         </td>
                         <td>
-                            <input class="form-control fourth-quarter" type="<?= strtoupper($row['fourth_quarter']) != 'N/A' ? 'text' : "hidden" ?>" name="fourth-quarter[]" id="" value=<?= (strtoupper($row['fourth_quarter']) == 'N/A' ? 'N/A' : (strtoupper($row['fourth_quarter']) == 'INC' ? 'INC' : number_format((float)$row['fourth_quarter'], 2, '.', ''))) ?>>
-                            <input class="form-control" type="<?= strtoupper($row['fourth_quarter']) != 'N/A' ? 'hidden' : "text" ?>" name="fourth-quarter-display" id="" value=<?= (strtoupper($row['fourth_quarter']) == 'N/A' ? 'N/A' : (strtoupper($row['fourth_quarter']) == 'INC' ? 'INC' : number_format((float)$row['fourth_quarter'], 2, '.', ''))) ?> <?= strtoupper($row['fourth_quarter']) != 'N/A' ? '' : "disabled" ?>>
+                            <input class="form-control fourth-quarter" type="<?= $row['fourth_quarter'] != 'N/A' ? 'text' : "hidden" ?>" name="fourth-quarter[]" id="" value="<?= $row['fourth_quarter'] ?>">
+                            <input class="form-control" type="<?= $row['fourth_quarter'] != 'N/A' ? 'hidden' : "text" ?>" name="fourth-quarter-display" id="" value="<?= $row['fourth_quarter'] ?>" <?= $row['fourth_quarter'] == 1 ? : 'disabled' ?>>
                         </td>
                         <td>
                             <input type="text" name="" id="" class="form-control final-grade" disabled>
@@ -894,10 +972,11 @@ class StudentInformationView extends \Models\Student{
                             <button type="button" class="btn btn-primary review-grades">Review</button>
                         </td>
                         <td>
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control total-final-grades" disabled>
                         </td>
                         <td>
-                            <input type="text" name="" id="" class="form-control">
+                            <input type="hidden" name="total-remarks" id="" class="form-control total-remarks">
+                            <input type="text" name="" id="" class="form-control total-remarks-display" disabled>
                         </td>
                     </tr>
                 </tfoot>
@@ -910,20 +989,20 @@ class StudentInformationView extends \Models\Student{
                             <input style="background:white" class="form-control" type="text" name="subjects-display" id="" value="<?= $row['subject'] ?>" disabled>
                         </td>
                         <td>
-                            <input class="form-control first-quarter" type="<?= $row['quarters'] <= 4 ? 'text' : "hidden" ?>" name="first-quarter[]" id="" value=<?= $row['quarters'] <= 4 ? '' : "N/A" ?>>
-                            <input class="form-control" type="<?= $row['quarters'] <= 4 ? 'hidden' : "text" ?>" name="first-quarter-display" id="" value=<?= $row['quarters'] <= 4 ? '' : "N/A" ?> <?= $row['quarters'] <= 4 ? '' : 'disabled' ?>>
+                            <input class="form-control first-quarter" type="<?= $row['quarter_1'] == 1 ? 'text' : "hidden" ?>" name="first-quarter[]" id="" value="<?= $row['quarter_1'] == 1 ? '' : 'N/A' ?>">
+                            <input class="form-control" type="<?= $row['quarter_1'] == 1 ? 'hidden' : "text" ?>" name="first-quarter-display" id=""  value="<?= $row['quarter_1'] == 1 ? '' : 'N/A' ?>" <?= $row['quarter_1'] == 1 ? : 'disabled' ?>>
                         </td>
                         <td>
-                            <input class="form-control second-quarter" type="<?= $row['quarters'] <= 4 && $row['quarters'] >= 2 ? 'text' : "hidden" ?>" name="second-quarter[]" id="" value=<?= $row['quarters'] <= 4 && $row['quarters'] >= 2 ? '' : "N/A" ?>>
-                            <input class="form-control" type="<?= $row['quarters'] <= 4 && $row['quarters'] >= 2 ? 'hidden' : "text" ?>" name="second-quarter-display" id="" value=<?= $row['quarters'] <= 4 && $row['quarters'] >= 2 ? '' : "N/A" ?> <?= $row['quarters'] <= 4 && $row['quarters'] >= 2 ? '' : 'disabled' ?>>
+                            <input class="form-control second-quarter" type="<?= $row['quarter_2'] == 1 ? 'text' : "hidden" ?>" name="second-quarter[]" id="" value="<?= $row['quarter_2'] == 1 ? '' : 'N/A' ?>">
+                            <input class="form-control" type="<?= $row['quarter_2'] == 1 ? 'hidden' : "text" ?>" name="second-quarter-display" id="" value="<?= $row['quarter_2'] == 1 ? '' : 'N/A' ?>" <?= $row['quarter_2'] == 1 ? : 'disabled' ?>>
                         </td>
                         <td>
-                            <input class="form-control third-quarter" type="<?= $row['quarters'] >= 3 ? 'text' : "hidden" ?>" name="third-quarter[]" id="" value=<?= $row['quarters'] >= 3 ? '' : "N/A" ?> >
-                            <input class="form-control" type="<?= $row['quarters'] >= 3 ? 'hidden' : "text" ?>" name="third-quarter-display" id="" value=<?= $row['quarters'] >= 3 ? '' : "N/A" ?> <?= $row['quarters'] >= 3 ? '' : 'disabled' ?>>
+                            <input class="form-control third-quarter" type="<?= $row['quarter_3'] == 1 ? 'text' : "hidden" ?>" name="third-quarter[]" id="" value="<?= $row['quarter_3'] == 1 ? '' : 'N/A' ?>">
+                            <input class="form-control" type="<?= $row['quarter_3'] == 1 ? 'hidden' : "text" ?>" name="third-quarter-display" id="" value="<?= $row['quarter_3'] == 1 ? '' : 'N/A' ?>" <?= $row['quarter_3'] == 1 ? : 'disabled' ?>>
                         </td>
                         <td>
-                            <input class="form-control fourth-quarter" type="<?= $row['quarters'] == 4 ? 'text' : "hidden" ?>" name="fourth-quarter[]" id="" value=<?= $row['quarters'] == 4 ? '' : "N/A" ?>>
-                            <input class="form-control" type="<?= $row['quarters'] == 4 ? 'hidden' : "text" ?>" name="fourth-quarter-display" id="" value=<?= $row['quarters'] == 4 ? '' : "N/A" ?> <?= $row['quarters'] == 4 ? '' : 'disabled' ?>>
+                            <input class="form-control fourth-quarter" type="<?= $row['quarter_4'] == 1 ? 'text' : "hidden" ?>" name="fourth-quarter[]" id="" value="<?= $row['quarter_4'] == 1 ? '' : 'N/A' ?>">
+                            <input class="form-control" type="<?= $row['quarter_4'] == 1 ? 'hidden' : "text" ?>" name="fourth-quarter-display" id="" value="<?= $row['quarter_4'] == 1 ? '' : 'N/A' ?>" <?= $row['quarter_4'] == 1 ? : 'disabled' ?>>
                         </td>
                         <td>
                             <input type="text" name="" id="" class="form-control final-grade" disabled>
@@ -944,10 +1023,11 @@ class StudentInformationView extends \Models\Student{
                             <button type="button" class="btn btn-primary review-grades">Review</button>
                         </td>
                         <td>
-                            <input type="text" class="form-control remarks">
+                            <input type="text" class="form-control total-final-grades" disabled>
                         </td>
                         <td>
-                            <input type="text" name="" id="" class="form-control">
+                            <input type="hidden" name="total-remarks" id="" class="form-control total-remarks">
+                            <input type="text" name="" id="" class="form-control total-remarks-display" disabled>
                         </td>
                     </tr>
                 </tfoot>
