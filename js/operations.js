@@ -19,7 +19,9 @@ const loadSections = () => {
       const sectionsTable = document.querySelector(".sections-table");
       sectionsTable.innerHTML = this.responseText;
 
-      console.log(sectionsTable);
+      // const addGradeLevelBtn = document.querySelector(".add-grade-level");
+      // const gradeLevelSelectList = document.querySelector(".grade-level-list");
+      // console.log(addGradeLevelBtn);
     }
   };
   xmlhttp.open("GET", "./includes/operations.inc.php?sections_table", true);
@@ -29,12 +31,18 @@ const loadSections = () => {
 loadGradeLevels();
 loadSections();
 
-const quarterSelect = document.querySelector(".quarters-select");
-quarterSelect.style.display = "none";
-
 const gradeLevelSelectSubject = document.querySelector(
   ".grade-level-select-subject"
 );
+
+const quarterSelect = document.querySelector(".quarters-select");
+
+if (gradeLevelSelectSubject.value !== "Kindergarten") {
+  quarterSelect.style.display = "block";
+} else {
+  quarterSelect.style.display = "none";
+}
+
 gradeLevelSelectSubject.addEventListener("change", (e) => {
   let value = e.target.value;
   if (value !== "Kindergarten") {

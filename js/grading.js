@@ -22,18 +22,31 @@ openGradeBtns.forEach((element) => {
         let secondQuarterInputs = document.querySelectorAll(".second-quarter");
         let thirdQuarterInputs = document.querySelectorAll(".third-quarter");
         let fourthQuarterInputs = document.querySelectorAll(".fourth-quarter");
+
         let finalGradeInputs = document.querySelectorAll(".final-grade");
-        let remarksInput = document.querySelectorAll(".remarks");
+
+        let remarksInputs = document.querySelectorAll(".remarks");
+
+        let totalFinalGradeInput = document.querySelector(
+          ".total-final-grades"
+        );
+        let totalRemarksInput = document.querySelector(".total-remarks");
+        let totalRemarksInputDisplay = document.querySelector(
+          ".total-remarks-display"
+        );
 
         let firstQuarterGrades = [];
         let secondQuarterGrades = [];
         let thirdQuarterGrades = [];
         let fourthQuarterGrades = [];
+        let finalGrades = [];
+        let remarks = [];
 
         reviewBtn.forEach((element) => {
           element.addEventListener("click", () => {
             getQuarterlyGrades();
             getFinalGrade();
+            getSummary();
           });
         });
 
@@ -42,6 +55,8 @@ openGradeBtns.forEach((element) => {
           secondQuarterGrades = [];
           thirdQuarterGrades = [];
           fourthQuarterGrades = [];
+          finalGrades = [];
+          remarks = [];
 
           firstQuarterInputs.forEach((element) => {
             firstQuarterGrades.push(element.value);
@@ -120,34 +135,91 @@ openGradeBtns.forEach((element) => {
                 parseFloat(quarter4)) /
               dividedTo;
 
+            let finalResult = "";
             if (hasInc > 0) {
-              finalGradeInputs[i].value = "INC";
+              finalResult = "INC";
+              finalGradeInputs[i].value = finalResult;
             } else if (isEmpty > 0) {
-              finalGradeInputs[i].value = "";
+              finalGradeInputs[i].value = finalResult;
             } else {
-              finalGradeInputs[i].value = finalGrade.toFixed(2);
+              finalResult = finalGrade.toFixed(2);
+              finalGradeInputs[i].value = finalResult;
             }
 
             if (isNaN(finalGrade)) {
-              finalGradeInputs[i].value = "INVALID";
+              finalResult = "INVALID";
+              finalGradeInputs[i].value = finalResult;
             }
 
+            finalGrades.push(finalResult);
+
+            let remarksResult = "";
             if (finalGradeInputs[i].value == "") {
-              remarksInput[i].value = "";
-              console.log("ASD");
+              remarksResult = "";
+              remarksInputs[i].value = remarksResult;
             } else if (finalGradeInputs[i].value >= 75) {
-              remarksInput[i].value = "Passed";
+              remarksResult = "PASSED";
+              remarksInputs[i].value = remarksResult;
             } else if (finalGradeInputs[i].value < 75) {
-              remarksInput[i].value = "Failed";
+              remarksResult = "FAILED";
+              remarksInputs[i].value = remarksResult;
             } else if (finalGradeInputs[i].value == "INC") {
-              remarksInput[i].value = "INC";
+              remarksResult = "INC";
+              remarksInputs[i].value = remarksResult;
             } else {
-              remarksInput[i].value = "INVALID";
+              remarksResult = "INVALID";
+              remarksInputs[i].value = remarksResult;
+            }
+
+            remarks.push(remarksResult);
+          }
+        };
+
+        const getSummary = () => {
+          let totalFinalGrade = 0;
+          let totalFailedRemark = 0;
+          let finalTrue = true;
+          for (let i = 0; i < finalGrades.length; i++) {
+            const grade = finalGrades[i];
+            const remark = remarks[i];
+
+            if (grade !== "INC" && grade !== "N/A" && grade !== "INVALID") {
+              totalFinalGrade += parseFloat(grade);
+            }
+            if (remark == "FAILED" || remark == "INC") {
+              totalFailedRemark++;
+            }
+
+            if (
+              !firstQuarterGrades[i] ||
+              !secondQuarterGrades[i] ||
+              !thirdQuarterGrades[i] ||
+              !fourthQuarterGrades[i]
+            ) {
+              finalTrue = false;
+            }
+          }
+
+          if (finalTrue) {
+            totalFinalGrade = totalFinalGrade / finalGrades.length;
+            totalFinalGradeInput.value = totalFinalGrade.toFixed(2);
+
+            if (totalFailedRemark >= 3) {
+              totalRemarksInput.value = "Retention";
+              totalRemarksInputDisplay.value = "RETENTION";
+            } else if (totalFinalGrade == 2) {
+              totalRemarksInput.value = "Conditional Promotion";
+              totalRemarksInputDisplay.value = "CONDITIONAL PROMOTION";
+            } else {
+              totalRemarksInput.value = "Promotion";
+              totalRemarksInputDisplay.value = "PROMOTION";
             }
           }
         };
+
         getQuarterlyGrades();
         getFinalGrade();
+        getSummary();
       }
     };
 
