@@ -52,7 +52,9 @@ $section = isset($_GET['section']) ? $_GET['section'] : "";
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                     <li><a class="dropdown-item" href="?row=<?= $row ?>&page_no=<?= 1 ?>&status=<?= $status ?>">All</a></li>
-                    <li><a class="dropdown-item" href="?row=<?= $row ?>&page_no=<?= 1 ?>&status=<?= $status ?>&level=Kindergarten&section=<?= $section ?>">Kindergarten</a></li>
+                    <?php if ($view !== 'grading') { ?>
+                    <li><a class="dropdown-item" href="?row=<?= $row ?>&page_no=<?= 1 ?>&status=<?= $status ?>&level=Kindergarten&section=None">Kindergarten</a></li>
+                    <?php } ?>
                     <li><a class="dropdown-item" href="?row=<?= $row ?>&page_no=<?= 1 ?>&status=<?= $status ?>&level=1&section=None">1</a></li>
                     <li><a class="dropdown-item" href="?row=<?= $row ?>&page_no=<?= 1 ?>&status=<?= $status ?>&level=2&section=None">2</a></li>
                     <li><a class="dropdown-item" href="?row=<?= $row ?>&page_no=<?= 1 ?>&status=<?= $status ?>&level=3&section=None">3</a></li>

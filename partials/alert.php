@@ -29,7 +29,7 @@ if (isset($_GET['grades'])) {
   <div class="alert alert-<?= isset($_GET['error']) ? 'danger' : (isset($_GET['submitted']) ? 'success' : '')  ?> d-flex align-items-center alert-dismissible fade show" role="alert">
   <?php require isset($_GET['error']) ? 'danger_icon.php' : (isset($_GET['submitted']) ? 'success_icon.php' : '') ?>
     <div>
-      <?= isset($_GET['exist']) ? 'Grades are already submitted.' : (isset($_GET['empty']) ? 'Fil up all grades input.' : (isset($_GET['unenrolled']) ? 'Student not enrolled to the grade level submitted.' : (isset($_GET['value']) ? 'Grades cannot be lower than 60, and higher than 100.' : (isset($_GET['characters']) ? 'Grades only accept number values.' : 'Grades submitted.'))))?>
+      <?= isset($_GET['exist']) ? 'Grades are already submitted.' : (isset($_GET['empty']) ? 'Fil up all grades input.' : (isset($_GET['unenrolled']) ? 'Student not enrolled to the grade level submitted.' : (isset($_GET['value']) ? 'Grades cannot be lower than 60, and higher than 100.' : (isset($_GET['characters']) ? 'Grades only accept number values.' : (isset($_GET['permission']) ? 'You are not permitted to submit grade to this student.' : 'Grades submitted.')))))?>
     </div>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
