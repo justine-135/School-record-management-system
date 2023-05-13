@@ -38,6 +38,9 @@ if (isset($view)) {
     elseif ($view == 'promotion') {
         index($view);
     }
+    elseif ($view == 'batch_enrollment') {
+        index($view);
+    }
 }
 
 if (isset($_POST['search'])) {

@@ -13,9 +13,9 @@ function initAddGrades($id, $lrn, $grade_level, $section, $subjects, $first_quar
     $obj->initCreate($id, $lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter, $remark, $rows, $status, $page_no);
 }
 
-function initUpdateGrades($id, $lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter, $rows, $status, $page_no){
+function initUpdateGrades($id, $lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter, $remark, $rows, $status, $page_no){
     $obj = new GradesController();
-    $obj->initUpdate($id, $lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter, $rows, $status, $page_no);
+    $obj->initUpdate($id, $lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter, $remark, $rows, $status, $page_no);
 }
 
 function initLoadGrades($lrn){

@@ -94,7 +94,7 @@ elseif (isset($_POST['add-enrollment-history'])) {
     $grade_lvl = $_POST['grade-lvl'];
     $section = $_POST['section'];
     $old_grade_lvl = $_POST['old-grade-lvl'];
-    $status = $_POST['status'];
+    $status = 'Completed';
 
     $enrollment_history_check_obj = new EnrollmentHistoryController();
     $enrollment_history_validation_result = $enrollment_history_check_obj->checkValidationHistory($id, $lrn, $from_sy, $to_sy, $old_grade_lvl, $grade_lvl, $section, $status);
@@ -102,9 +102,6 @@ elseif (isset($_POST['add-enrollment-history'])) {
 elseif (isset($_POST['update'])) {
     // Student information
     $curr_lrn = $_POST['curr-lrn'];
-    $curr_grade_lvl = $_POST['curr-grade-level'];
-    $curr_section = $_POST['curr-section'];
-    $enrollment_id = $_POST['enrollment_id'];
     $student_id = $_POST['student_id'];
 
     $sname = $_POST['sname'];
@@ -164,7 +161,7 @@ elseif (isset($_POST['update'])) {
     // Check inputs
     $enrollment_check_obj = new EnrollmentController();
     $enrollment_validation_result = $enrollment_check_obj->initUpdate(
-    $curr_lrn, $curr_grade_lvl, $curr_section, $enrollment_id, $student_id, $sname, $fname, $mname, $extname, $lrn, $from_sy, $to_sy, $grade_lvl, $section, $file, $bdate, $gender, $religion, 
+    $curr_lrn, $student_id, $sname, $fname, $mname, $extname, $lrn, $from_sy, $to_sy, $grade_lvl, $section, $file, $bdate, $gender, $religion, 
     $house_street, $subdivision, $barangay, $city, $province, $region,
     $father_surname, $father_fname, $father_mname, $father_education, $father_employment, $father_contact, 
     $mother_surname, $mother_fname, $mother_mname, $mother_education, $mother_employment, $mother_contact,
@@ -177,6 +174,25 @@ elseif (isset($_POST['update'])) {
     // $mother_surname, $mother_fname, $mother_mname, $mother_education, $mother_employment, $mother_contact,
     // $guardian_surname, $guardian_fname, $guardian_mname, $guardian_education, $guardian_employment, $guardian_contact, 
     // $is_beneficiary;
+}
+elseif (isset($_POST['batch'])) {
+    $section = isset($_POST['section']) ? $_POST['section'] : null;
+    $chkbox_students = isset($_POST['chkbox-student']) ? $_POST['chkbox-student'] : null;
+    $ids = array();
+    $lrns = array();
+    $grade_levels = array();
+
+    if ($chkbox_students !== null) {
+        foreach ($chkbox_students as $key => $obj) {
+            $data = explode(",",$obj);
+            array_push($ids, $data[0]);
+            array_push($lrns, $data[1]);
+            array_push($grade_levels, $data[2]);
+        }    
+    }
+
+    $enrollment_check_obj = new EnrollmentController();
+    $enrollment_validation_result = $enrollment_check_obj->batchEnroll($ids, $lrns, $grade_levels, $section);
 }
 else{
     header("location: ../index.php");

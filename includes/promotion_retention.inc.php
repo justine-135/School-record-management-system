@@ -9,6 +9,11 @@ function promote($ids, $lrns, $grade_levels){
     $obj->initPromote($ids, $lrns, $grade_levels);
 }
 
+function retention($ids, $lrns, $grade_levels){
+    $obj = new PromotionRetentionController();
+    $obj->initRetention($ids, $lrns, $grade_levels);
+}
+
 if (isset($_POST['promote'])) {
     $chkbox_students = $_POST['chkbox-student'];
     $ids = array();
@@ -23,4 +28,20 @@ if (isset($_POST['promote'])) {
     }
 
     promote($ids, $lrns, $grade_levels);
+}
+
+if (isset($_POST['retain'])) {
+    $chkbox_students = $_POST['chkbox-student'];
+    $ids = array();
+    $lrns = array();
+    $grade_levels = array();
+
+    foreach ($chkbox_students as $key => $obj) {
+        $data = explode(",",$obj);
+        array_push($ids, $data[0]);
+        array_push($lrns, $data[1]);
+        array_push($grade_levels, $data[2]);
+    }
+
+    retention($ids, $lrns, $grade_levels);
 }
