@@ -7,6 +7,12 @@
 <?php include "partials/nav.php"; ?>
 <?php include './partials/alert.php'; ?>
 
+<?php
+if (empty($_SESSION['username']) && empty($_SESSION['account_id'])) {
+  header("Location: ./login.php");
+}
+?>
+
 <form class="container-fluid w-90 border mt-4 p-4 bg-white mb-3" action="./includes/teachers.inc.php" method="post" enctype="multipart/form-data">
     <h4 class="">Registeration form</h4>
     <div class="border mt-3">
