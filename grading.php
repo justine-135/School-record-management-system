@@ -7,6 +7,11 @@
 <?php include "partials/nav.php"; ?>
 <?php include 'partials/alert.php'; ?>
 
+<?php
+if (empty($_SESSION['username']) && empty($_SESSION['account_id'])) {
+  header("Location: ./login.php");
+}
+?>
 
 <main class="container-fluid w-90 border mt-4 p-0 bg-white <?= $view ?>">
   <div>
@@ -19,7 +24,7 @@
     </div>
     <div class="px-2 table-responsive <?= $view ?>-table min-vh-100">
       <?php
-      require $_SERVER['DOCUMENT_ROOT'].'/sabanges/includes/student.inc.php';
+      require $_SERVER['DOCUMENT_ROOT'].'/sabanges/includes/student_grading.inc.php';
       ?>
     </div>
 </main>
