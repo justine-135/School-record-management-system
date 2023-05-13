@@ -200,6 +200,7 @@ openGradeBtns.forEach((element) => {
             }
           }
 
+          console.log(totalFailedRemark);
           if (finalTrue) {
             totalFinalGrade = totalFinalGrade / finalGrades.length;
             totalFinalGradeInput.value = totalFinalGrade.toFixed(2);
@@ -207,7 +208,7 @@ openGradeBtns.forEach((element) => {
             if (totalFailedRemark >= 3) {
               totalRemarksInput.value = "Retention";
               totalRemarksInputDisplay.value = "RETENTION";
-            } else if (totalFinalGrade == 2) {
+            } else if (totalFailedRemark >= 1) {
               totalRemarksInput.value = "Conditional Promotion";
               totalRemarksInputDisplay.value = "CONDITIONAL PROMOTION";
             } else {
