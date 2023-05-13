@@ -6,6 +6,12 @@
 
 <?php include "partials/nav.php"; ?>
 
+<?php
+if (empty($_SESSION['username']) && empty($_SESSION['account_id'])) {
+  header("Location: ./login.php");
+}
+?>
+
 <main class="container-fluid w-90 border mt-4 p-0 bg-white <?= $view ?>">
     <div>
         <div>
