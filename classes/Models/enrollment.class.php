@@ -148,4 +148,25 @@ class Enrollment extends \Dbh{
         }
         $conn = null;
     }
+
+    protected function batchCreate($id, $lrn, $grade_level, $section){
+        try{
+            $status = 'Active';
+            $from_sy = (int)date('Y');
+            $to_sy = (int)date('Y') + 1;
+
+            if ($grade_level == 6) {
+                $status = 'Completed';
+            }
+            $sql = "UPDATE `enrollment_history_table` SET `from_sy` = ?, `to_sy` = ?, `section` = ?, `status` = ? WHERE `enrollment_id` = ? AND `student_lrn` = ? AND `grade_level` = ?;";
+            $stmt = $this->connection()->prepare($sql);
+            $stmt->execute([$from_sy, $to_sy, $section, $status, $id, $lrn, $grade_level]);
+            $results = $stmt->fetchAll();
+            $stmt = null;
+        }
+        catch(PDOException $e) {
+            echo "Error: " . $e->getMessage();
+        }
+        $conn = null;
+    }
 }

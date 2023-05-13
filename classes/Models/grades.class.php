@@ -44,14 +44,17 @@ class Grades extends \Dbh{
         try {
             $sql = "UPDATE `student_grades_table` 
             SET `first_quarter` = ?, `second_quarter` = ?, `third_quarter` = ?, `fourth_quarter` = ?
-            WHERE `student_lrn` = ? AND `grade_level` = ? AND `section` = ? AND `subject` = ?;
-            UPDATE `enrollment_history_table` SET `promotion_status` = ? WHERE `enrollment_id` = ? AND `student_lrn` = ?";
+            WHERE `student_lrn` = ? AND `grade_level` = ? AND `section` = ? AND `subject` = ?;";
 
             $stmt = $this->connection()->prepare($sql);
 
             for ($i=0; $i < count($subjects); $i++) { 
-                $stmt->execute([$first_quarter[$i], $second_quarter[$i], $third_quarter[$i], $fourth_quarter[$i], $lrn, $grade_level, $section, $subjects[$i]], $remark, $id, $lrn);
+                $stmt->execute([$first_quarter[$i], $second_quarter[$i], $third_quarter[$i], $fourth_quarter[$i], $lrn, $grade_level, $section, $subjects[$i]]);
             }
+
+            $sql = "UPDATE `enrollment_history_table` SET `promotion_status` = ? WHERE `enrollment_id` = ? AND `student_lrn` = ?;";
+            $stmt = $this->connection()->prepare($sql);
+            $stmt->execute([$remark, $id, $lrn]);
 
         } catch(PDOException $e) {
             echo "Error: " . $e->getMessage();
@@ -62,11 +65,11 @@ class Grades extends \Dbh{
         try{
             // var_dump($subjects);
             // $sql = "SELECT * FROM `student_grades_table` WHERE `student_lrn` = ? AND `grade_level` = ? AND `subjects` = ? `first_quarter` = ? AND `second_quarter` = ? AND `third_quarter` = ? AND `fourth_quarter` = ?";
-            $sql = "SELECT * FROM `student_grades_table` WHERE `student_lrn` = ? AND `grade_level` = ? AND `section` = ? AND `subject` = ?";
+            $sql = "SELECT * FROM `student_grades_table` WHERE `student_lrn` = ? AND `grade_level` = ? AND `subject` = ?";
             $stmt = $this->connection()->prepare($sql);
 
             for ($i=0; $i < count($subjects); $i++) { 
-                $stmt->execute([$lrn, $grade_level, $section, $subjects[$i]]);
+                $stmt->execute([$lrn, $grade_level, $subjects[$i]]);
                 $results = $stmt->fetchAll();
                 if (count($results) > 0) {
                     break;

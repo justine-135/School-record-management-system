@@ -6,7 +6,8 @@ include $_SERVER['DOCUMENT_ROOT'].'/sabanges/classes/Models/promotion_retention.
 
 class PromotionRetentionController extends \Models\PromotionRetention{
     public function initPromote($ids, $lrns, $grade_levels){
-        if ($this->checkPassingGrades($ids, $lrns, $grade_levels) !== false) {
+        $promote = 1;
+        if ($this->checkPassingGrades($ids, $lrns, $grade_levels, $promote) !== false) {
             // header("Location: ../masterlist.php?promotion&err&grades");
             // die();
         }
@@ -19,33 +20,32 @@ class PromotionRetentionController extends \Models\PromotionRetention{
         }
     }
 
-    protected function checkPassingGrades($ids, $lrns, $grade_levels){
+    public function initRetention($ids, $lrns, $grade_levels){
+        $promote = 0;
+        if ($this->checkPassingGrades($ids, $lrns, $grade_levels, $promote) !== false) {
+            // header("Location: ../masterlist.php?promotion&err&grades");
+            // die();
+        }
+    }
+
+    protected function checkPassingGrades($ids, $lrns, $grade_levels, $promote){
         $result = false;
 
         for ($i=0; $i < count($ids); $i++) { 
             $remarks = $this->getRemarks($ids[$i], $lrns[$i]);
             $promotion = $remarks[0]['promotion_status'];
-            // echo $grade_levels[$i];
-            if ($promotion == 'Promotion' || $grade_levels[$i] == 'Kindergarten') {
+            if ($promote == 1) {
+                if ($promotion == 'Promotion' || $grade_levels[$i] == 'Kindergarten') {
+                    $this->promote($ids[$i], $lrns[$i], $grade_levels[$i]);
+                }
             }
-        }
+            else{
+                if ($promotion == 'Retention') {
+                    $this->retain($ids[$i], $lrns[$i], $grade_levels[$i]);
+                }
+            }
 
-        // $result = false;
-        // $passing_grade = 75;
-        // $remarks = $this->getRemarks($ids, $lrns);
-        // echo '<pre>' , var_dump($validation) , '</pre>';
-        // foreach ($validation as $key => $value) {
-        //     foreach ($value as $grades) {
-        //         foreach ($grades as $grade) {
-        //             var_dump($grade);
-        //             // if (intval($grade) < $passing_grade) {
-        //             //     $result = true;
-        //             // }
-        //         }
-        //     }
-        // }
-        // return $result;
-        // var_dump($remarks);
+        }
         die();
     }
 }

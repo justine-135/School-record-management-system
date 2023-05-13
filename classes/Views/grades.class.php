@@ -107,5 +107,4 @@ class GradesView extends \Models\Grades{
         </div>
         <?php
     }
-
 }

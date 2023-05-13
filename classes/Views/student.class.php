@@ -58,9 +58,10 @@ class StudentView extends \Models\Student{
 
         $this->validateRequest($rows, $offset, $page_no, $status, $query, $level, $section);
 
+        if ($view == 'batch_enrollment') {
+            $status = 'Unenrolled';
+        }
         $results = $this->index($status, $offset, $total_records_per_page, $query, $level, $section);
-
-        // $grades = $this->gradesSubmitted($grade_level, $lrn);
 
         ?>
 
@@ -78,14 +79,24 @@ class StudentView extends \Models\Student{
             </div>
         </form>
         <?php } ?>
-
+        <?php if ($view == 'batch_enrollment') { ?>
+        <div class="d-flex align-items-center mb-2">
+        <?php
+            require $_SERVER['DOCUMENT_ROOT'].'/sabanges/partials/nav_filter_student.php';
+        ?>
+        <select class="form-select section-select w-25 me-2" id="section" aria-label="Default select example" name="section">
+            <option value="None" selected>Select section to enroll ---</option>
+        </select>
+        <input type="submit" class="btn btn-primary" name="batch" value='Batch enroll'>
+        </div>
+        <?php } ?>
         <table class="table table-hover mb-0 border-top table-bordered student-table">
             <thead>
                 <tr>
                     <th scope="col">     
                         <div class="d-flex">
                             <span class="me-2">#</span>      
-                            <?php if ($view == 'promotion') { ?>            
+                            <?php if ($view == 'promotion' || $view == 'batch_enrollment') { ?>            
                             <div class="form-check">
                                 <input class="form-check-input masterlist-chkbox-all" type="checkbox" value="" id="flexCheckDefault">
                             </div>
@@ -108,26 +119,24 @@ class StudentView extends \Models\Student{
                     <?php if ($view == 'grading' || $view == 'promotion') { ?>
                     <th scope='col'>Remarks</th>
                     <?php } ?>
-                    <?php if ($view != 'promotion') { ?>
+                    <?php if ($view != 'promotion' && $view != 'batch_enrollment') { ?>
                     <th scope="col">Action</th>
                     <?php } ?>
                 </tr>
                 </thead>
                 <tbody>
                 <?php
-                    foreach ($results as $row) {
-                        if ($view == 'grading') {
-                        if ($row['grade_level'] !== 'Kindergarten') {
-                ?>
+                foreach ($results as $row) {
+                if ($view == 'batch_enrollment') { ?>
                     <tr>
                         <td>
                             <div class="d-flex">
                                 <span class="me-2">
                                 <?= $row['enrollment_id'] ?>
                                 </span>
-                                <?php if ($view == 'promotion') { ?>            
+                                <?php if ($view == 'promotion' || $view == 'batch_enrollment') { ?>            
                                 <div class="form-check">
-                                    <input class="form-check-input masterlist-chkbox" type="checkbox" name="chkbox-student[]" value="<?= $row['student_id'] ?>,<?= $row['student_lrn'] ?>,<?= $row['grade_level'] ?>,<?= $row['promotion_status'] ?>" id="flexCheckDefault">
+                                    <input class="form-check-input masterlist-chkbox" type="checkbox" name="chkbox-student[]" value="<?= $row['enrollment_id'] ?>,<?= $row['student_lrn'] ?>,<?= $row['grade_level'] ?>,<?= $row['promotion_status'] ?>" id="flexCheckDefault">
                                 </div>
                                 <?php } ?>
                             </div>
@@ -153,7 +162,7 @@ class StudentView extends \Models\Student{
                             if (count($graded) <= 0) {
                                 echo '<span class="">Ungraded</span>';
                             }
-                            else{                                
+                            else{
                                 foreach ($graded as $grade) {
                                     if (strtoupper($grade['first_quarter']) == 'INC' || strtoupper($grade['second_quarter']) == 'INC' || strtoupper($grade['third_quarter']) == 'INC' || strtoupper($grade['fourth_quarter']) == 'INC') {
                                         echo '<span class="">Incomplete</span>';
@@ -167,13 +176,71 @@ class StudentView extends \Models\Student{
                             }
                             ?>
                         </td>
-                        <?php } ?> 
-                        <?php if ($view == 'grading') { ?>     
+                        <?php } ?>    
+                        <?php if ($view == 'promotion') { ?>     
                         <td>
                             <?= $row['promotion_status'] == null ? 'None' : $row['promotion_status'] ?>
                         </td>                  
-                        <?php } ?>         
-                        <?php if ($view !== 'promotion') { ?>              
+                        <?php } ?> 
+                    </tr>
+                <?php } elseif ($view == 'promotion') {
+                if ($row['grade_level'] == 'Kindergarten' || $row['promotion_status'] !== null) {
+                ?>
+                    <tr>
+                        <td>
+                            <div class="d-flex">
+                                <span class="me-2">
+                                <?= $row['enrollment_id'] ?>
+                                </span>
+                                <?php if ($view == 'promotion') { ?>            
+                                <div class="form-check">
+                                    <input class="form-check-input masterlist-chkbox" type="checkbox" name="chkbox-student[]" value="<?= $row['enrollment_id'] ?>,<?= $row['student_lrn'] ?>,<?= $row['grade_level'] ?>,<?= $row['promotion_status'] ?>" id="flexCheckDefault">
+                                </div>
+                                <?php } ?>
+                            </div>
+                        </td>
+                        <td><?= $row['lrn'] ?></td>
+                        <td><?= strtoupper($row['surname']) . ', ' . strtoupper($row['first_name']) . ' ' . strtoupper($row['middle_name'])  ?> <?= strtoupper($row['ext']) == 'NONE' ? '' : strtoupper($row['ext']) ?></td>
+                        <?php if ($view !== 'grading') { ?>
+                        <td><?= $row['enrolled_at'] ?></td>
+                        <?php } ?>
+                        <td><?= $row['gender'] ?></td>
+                        <td><?= ($row['grade_level'] !== 'Kindergarten' ? 'Grade ' : '') . $row['grade_level'] . " - " . $row['section'] ?></td>
+                        <?php if ($view !== 'grading') { ?>
+                        <td>
+                            <p>
+                                <?= $row['status'] ?>
+                            </p>
+                        </td>
+                        <?php } ?>
+                        <?php if ($view == 'grading') { ?>
+                        <td>
+                            <?php
+                            $graded = $this->gradesSubmitted($row['grade_level'], $row['lrn']);
+                            if (count($graded) <= 0) {
+                                echo '<span class="">Ungraded</span>';
+                            }
+                            else{
+                                foreach ($graded as $grade) {
+                                    if (strtoupper($grade['first_quarter']) == 'INC' || strtoupper($grade['second_quarter']) == 'INC' || strtoupper($grade['third_quarter']) == 'INC' || strtoupper($grade['fourth_quarter']) == 'INC') {
+                                        echo '<span class="">Incomplete</span>';
+
+                                    }
+                                    else{
+                                        echo '<span class="">Graded</span>';
+                                    }
+                                    break;
+                                }
+                            }
+                            ?>
+                        </td>
+                        <?php } ?>    
+                        <?php if ($view == 'promotion') { ?>     
+                        <td>
+                            <?= $row['promotion_status'] == null ? 'None' : $row['promotion_status'] ?>
+                        </td>                  
+                        <?php } ?> 
+                        <?php if ($view !== 'promotion') { ?>            
                         <td>
                             <?php if ($view == 'masterlist') { ?>
                             <div class="dropdown ml-auto">
@@ -205,11 +272,7 @@ class StudentView extends \Models\Student{
                         </td>
                         <?php } ?>
                     </tr>
-                <?php 
-                    }
-                }
-                else{
-                    ?>
+                <?php }} else { ?>
                     <tr>
                         <td>
                             <div class="d-flex">
@@ -366,6 +429,7 @@ class StudentView extends \Models\Student{
 class StudentInformationView extends \Models\Student{
     public function initSingleIndex($id){
         $result = $this->singleIndex($id);
+
         foreach ($result as $row) {
             $result2 = $this->enrollmentHistory($row['student_lrn']);
         }
@@ -395,7 +459,6 @@ class StudentInformationView extends \Models\Student{
                         <?php foreach($result as $row){ ?>
                             <h2 class="text-end"><?= strtoupper($row['surname']) . ", " . strtoupper($row['first_name']) . " " . strtoupper($row['middle_name']) . " " ?> <?= strtoupper($row['ext']) == 'NONE' ? '' : strtoupper($row['ext']) ?></h2>
                             <span class="d-block text-end"> <?= strtoupper($row['lrn']) ?></span>
-                            <span class="d-block text-end">Grade level - <?= $row['grade_level'] ?></span>
                         <?php } ?>
                         </div>
                     </div>
@@ -408,52 +471,9 @@ class StudentInformationView extends \Models\Student{
                             <div class="row py-2 px-2">
                                 <div class="col-md py-1">
                                     <span class="fw-semibold">LRN : </span>
-                                    <?php if (isset($_GET['edit_enrollment'])) { ?>
-                                    <input  class="form-control " type="text" name="lrn" id="" value="<?= $row['lrn'] ?>">
-                                    <?php } else { ?>
                                     <span><?= strtoupper($row['lrn']) ?></span>
-                                    <?php } ?>
-                                </div>
-                                <div class="col-md py-1">
-                                    <span class="fw-semibold">Grade level : </span>
-                                    <?php if (isset($_GET['edit_enrollment'])) { ?>
-                                    <select class="form-select grade-select-enrollment-edit" id="grade-level" aria-label="Default select example" name="grade-lvl">
-                                        <option value="Kindergarten" <?= $row['grade_level'] == 'Kindergarten' ? 'selected' : '' ?>>Kindergarten</option>
-                                        <option value="1" <?= $row['grade_level'] == '1' ? 'selected' : '' ?>>1</option>
-                                        <option value="2" <?= $row['grade_level'] == '2' ? 'selected' : '' ?> >2</option>
-                                        <option value="3" <?= $row['grade_level'] == '3' ? 'selected' : '' ?> >3</option>
-                                        <option value="4" <?= $row['grade_level'] == '4' ? 'selected' : '' ?> >4</option>
-                                        <option value="5" <?= $row['grade_level'] == '5' ? 'selected' : '' ?> >5</option>
-                                        <option value="6" <?= $row['grade_level'] == '6' ? 'selected' : '' ?> >6</option>
-                                    </select>
-                                    <?php } else { ?>
-                                    <span><?= strtoupper($row['grade_level']) ?></span>
-                                    <?php } ?>
-                                </div>
-                                <div class="col-md py-1">
-                                    <span class="fw-semibold">Section : </span>
-                                    <?php if (isset($_GET['edit_enrollment'])) { ?>
-                                    <select class="form-select section-select-enrollment-edit" id="section" aria-label="Default select example" name="section">
-                                        <option value="None" selected>Choose</option>
-                                    </select>                                    
-                                    <?php } else { ?>
-                                    <span><?= $row['section'] ?></span>
-                                    <?php } ?>
                                 </div>
                             </div>
-                            <?php if (isset($_GET['edit_enrollment'])) { ?>
-
-                            <div class="row py-2 px-2">
-                                <div class="col-md-4 py-1">
-                                    <span class="fw-semibold">From sy :</span>
-                                    <input type="number" class="form-control from-sy-textbox" id="from-sy" placeholder="Enter year" name="from-sy" value="<?= $row['from_sy'] ?>" required>
-                                </div>
-                                <div class="col-md-4 py-1">
-                                    <span class="fw-semibold">To sy :</span>
-                                    <input type="number" class="form-control to-sy-textbox" id="to-sy" placeholder="Enter year" name="to-sy" value="<?= $row['to_sy'] ?>" required>
-                                </div>
-                            </div>
-                            <?php } ?>
                             <div class="py-2 px-2 border-top border-bottom">
                                 <h6 class="m-0">Basic information</h6>
                             </div>
@@ -788,10 +808,7 @@ class StudentInformationView extends \Models\Student{
                         if (isset($_GET['edit_enrollment'])) { ?>
                         <div class="d-flex align-items-center border-top p-2">
                             <input type="hidden" name="curr-lrn" id="" value="<?= $row['lrn'] ?>">
-                            <input type="hidden" name="enrollment_id" id="" value="<?= $row['enrollment_id'] ?>">
                             <input type="hidden" name="student_id" id="" value="<?= $row['student_id'] ?>">
-                            <input type="hidden" name="curr-grade-level" id="" value="<?= $row['grade_level'] ?>">
-                            <input type="hidden" name="curr-section" id="" value="<?= $row['section'] ?>">
                             <span class="fw-semibold ms-auto">Confirm changes? </span>
                             <a class="btn btn-danger ms-3" href="../sabanges/student_informations.php?id=<?= $result[0]['student_id'] ?>">Cancel</a>
                             <input class="btn btn-primary ms-1" type="submit" name="update" value="Submit">

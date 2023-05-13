@@ -92,7 +92,7 @@ class EnrollmentController extends \Models\Enrollment{
         }
     }
 
-    public function initUpdate($curr_lrn, $curr_grade_lvl, $curr_section, $enrollment_id, $student_id, $sname, $fname, $mname, $extname, $lrn, $from_sy, $to_sy, $grade_lvl, $section, $file, $bdate, $gender, $religion, 
+    public function initUpdate($curr_lrn, $student_id, $sname, $fname, $mname, $extname, $lrn, $from_sy, $to_sy, $grade_lvl, $section, $file, $bdate, $gender, $religion, 
     $house_street, $subdivision, $barangay, $city, $province, $region,
     $father_surname, $father_fname, $father_mname, $father_education, $father_employment, $father_contact, 
     $mother_surname, $mother_fname, $mother_mname, $mother_education, $mother_employment, $mother_contact,
@@ -108,7 +108,7 @@ class EnrollmentController extends \Models\Enrollment{
             $is_beneficiary, $father_education_textbox, $mother_education_textbox, $guardian_education_textbox
         ) !== false) 
         {
-            header("Location: ../student_informations.php?id={$enrollment_id}&edit_enrollment&error&empty");
+            header("Location: ../student_informations.php?id={$student_id}&edit_enrollment&error&empty");
             die();
         }
 
@@ -117,25 +117,25 @@ class EnrollmentController extends \Models\Enrollment{
             $mother_surname, $mother_fname, $mother_mname,
             $guardian_surname, $guardian_fname, $guardian_mname) !== false) 
         {
-            header("Location: ../student_informations.php?id={$enrollment_id}&edit_enrollment&error&nameerr");
+            header("Location: ../student_informations.php?id={$student_id}&edit_enrollment&error&nameerr");
             die();
         }
 
         elseif ($this->invalidLRN($lrn) !== false) 
         {
-            header("Location: ../student_informations.php?id={$enrollment_id}&edit_enrollment&error&lrnerr");
+            header("Location: ../student_informations.php?id={$student_id}&edit_enrollment&error&lrnerr");
             die();
         }
 
         elseif ($this->lrnExist2($lrn) !== false) 
         {
-            header("Location: ../student_informations.php?id={$enrollment_id}&edit_enrollment&error&lrnexist");
+            header("Location: ../student_informations.php?id={$student_id}&edit_enrollment&error&lrnexist");
             die();
         }
 
         elseif ($this->invalidSchoolYear($from_sy, $to_sy) !== false) 
         {
-            header("Location: ../student_informations.php?id={$enrollment_id}&edit_enrollment&error&sy");
+            header("Location: ../student_informations.php?id={$student_id}&edit_enrollment&error&sy");
             die();
         }
 
@@ -144,26 +144,26 @@ class EnrollmentController extends \Models\Enrollment{
         }
         elseif ($this->invalidBirthDate($bdate) !== false) 
         {
-            header("Location: ../student_informations.php?id={$enrollment_id}&edit_enrollment&error&bdateerr");
+            header("Location: ../student_informations.php?id={$student_id}&edit_enrollment&error&bdateerr");
             die();
         }
 
         elseif ($this->invalidEducation($father_education, $mother_education, $guardian_education, $father_education_textbox, $mother_education_textbox, $guardian_education_textbox)) 
         {
-            header("Location: ../student_informations.php?id={$enrollment_id}&edit_enrollment&error&nameerr");
+            header("Location: ../student_informations.php?id={$student_id}&edit_enrollment&error&nameerr");
             die();
         }
 
         elseif ($this->invalidContactNumber($father_contact, $mother_contact, $guardian_contact) !== false) 
         {
-            header("Location: ../student_informations.php?id={$enrollment_id}&edit_enrollment&error&contacterr");
+            header("Location: ../student_informations.php?id={$student_id}&edit_enrollment&error&contacterr");
             die();
         }
 
-        elseif ($this->checkGradeBeforeUpdate($curr_lrn, $curr_grade_lvl, $curr_section) !== false) {
-            header("Location: ../student_informations.php?id={$enrollment_id}&edit_enrollment&error&grade");
-            die();
-        }
+        // elseif ($this->checkGradeBeforeUpdate($curr_lrn, $curr_grade_lvl, $curr_section) !== false) {
+        //     header("Location: ../student_informations.php?id={$student_id}&edit_enrollment&error&grade");
+        //     die();
+        // }
 
         else{
             $this->update($curr_lrn, $enrollment_id, $student_id, $sname, $fname, $mname, $extname, $lrn, $from_sy, $to_sy, $grade_lvl, $section, $file, $bdate, $gender, $religion, 
@@ -177,6 +177,17 @@ class EnrollmentController extends \Models\Enrollment{
 
             header("Location: ../student_informations.php?id={$enrollment_id}&edit_enrollment&submitted");
             die();
+        }
+    }
+
+    public function batchEnroll($ids, $lrns, $grade_levels, $section){
+        if (count($ids) == 0 || $section == null) {
+            echo 'missingi nputs';
+        }
+        else{
+            for ($i=0; $i < count($ids); $i++) { 
+                $this->batchCreate($ids[$i], $lrns[$i], $grade_levels[$i], $section);
+            }
         }
     }
 
