@@ -7,8 +7,8 @@ $level = isset($_GET['level']) ? $_GET['level'] : "";
 $section = isset($_GET['section']) ? $_GET['section'] : "";
 ?>
 <div class="d-flex w-100 justify-content-between align-items-center">
-    <div class="ms-1 row gap-2 align-items-center">
-        <div class="col-md p-0">
+    <div class="container row align-items-center w-75">
+        <div class="col-md-3 p-0">
             <div class="dropdown border">
                 <button class="btn btn-white dropdown-toggle btn-sm" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                     Number of rows
@@ -25,8 +25,8 @@ $section = isset($_GET['section']) ? $_GET['section'] : "";
             </div>
         </div>
 
-        <?php if ($view == 'grading') {  ?>
-        <div class="col-md p-0">
+        <?php if ($view == 'grading' || $view == 'masterlist') {  ?>
+        <div class="col-md-3 p-0">
             <div class="dropdown border">
                 <button class="btn btn-white dropdown-toggle btn-sm" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                     Filter student status
@@ -42,7 +42,7 @@ $section = isset($_GET['section']) ? $_GET['section'] : "";
         </div>
         <?php } ?>
 
-        <div class="col-md p-0">
+        <div class="col-md-3 p-0">
             <div class="dropdown border">
                 <button class="btn btn-white dropdown-toggle btn-sm" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                     Grade level
@@ -65,7 +65,8 @@ $section = isset($_GET['section']) ? $_GET['section'] : "";
             </div>
         </div>
 
-        <div class="col-md p-0">
+        <?php if ($view !== 'batch_enrollment') { ?>
+        <div class="col-md-3 p-0">
             <div class="dropdown border">
                 <button class="btn btn-white dropdown-toggle btn-sm" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                     Section
@@ -82,6 +83,7 @@ $section = isset($_GET['section']) ? $_GET['section'] : "";
                 </ul>
             </div>
         </div>
+        <?php } ?>
     </div>
 
     <?php if ($view == 'masterlist') {  ?>
@@ -106,7 +108,7 @@ $section = isset($_GET['section']) ? $_GET['section'] : "";
     <?php if ($view == 'promotion') {  ?>
     <div class="promotion-retention ms-auto" role="group" aria-label="Basic mixed styles example">
         <button type="submit" value="promote" name="promote" class="btn btn-primary">Promote</button>
-        <button type="submit" value="retian" name="retain" class="btn btn-danger">Retain</button>
+        <button type="submit" value="retain" name="retain" class="btn btn-danger">Retain</button>
     </div>
     <?php } ?>
 </div>

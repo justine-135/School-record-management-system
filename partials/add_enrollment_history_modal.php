@@ -10,7 +10,6 @@
         <?php foreach ($result as $row) {
           $id = $row['id'];
           $lrn = $row['lrn'];
-          $grade_lvl = $row['grade_level'];
         } ?>
         <div class="mb-3">
           <label for="lrn-input" class="form-label">LRN</label>
@@ -46,13 +45,13 @@
             <select class="form-select section-select" id="section-select" aria-label="Default select example" name="section"></select>
             <input type="text" name="old-grade-lvl" id="old-grade-lvl" value="<?= $grade_lvl ?>" hidden>
         </div>
-        <div class="mb-3">
+        <!-- <div class="mb-3">
           <label for="status-select" class="form-label">Status</label>
             <select class="form-select" id="status-select" aria-label="Default select example" name="status">
               <option value="Retained">Retained</option>
               <option value="Completed" selected>Completed</option>
             </select>
-        </div>
+        </div> -->
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
