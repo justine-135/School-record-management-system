@@ -30,7 +30,7 @@ if (empty($_SESSION['username']) && empty($_SESSION['account_id'])) {
     </div>
     <div class="px-2 table-responsive <?= $view ?>-table min-vh-100">
     <?php
-    require $_SERVER['DOCUMENT_ROOT'].'/sabanges/includes/student.inc.php';
+    require $_SERVER['DOCUMENT_ROOT'].'/sabanges/includes/promotion_retention.inc.php';
     ?>
     </div>
 </form>
