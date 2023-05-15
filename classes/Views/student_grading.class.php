@@ -58,6 +58,7 @@ class StudentGradingView extends \Models\StudentGrading{
         $this->validateRequest($rows, $offset, $page_no, $status, $query, $level, $section);
 
         $results = $this->index($status, $offset, $total_records_per_page, $query, $level, $section);
+        var_dump($records);
         ?>
 
         <form class="" action="./includes/grades.inc.php" method="post" enctype="multipart/form-data">
@@ -78,23 +79,17 @@ class StudentGradingView extends \Models\StudentGrading{
                     <th scope="col">     
                         <div class="d-flex">
                             <span class="me-2">#</span>      
-                            <?php if ($view == 'promotion' || $view == 'batch_enrollment') { ?>            
                             <div class="form-check">
                                 <input class="form-check-input masterlist-chkbox-all" type="checkbox" value="" id="flexCheckDefault">
                             </div>
-                            <?php } ?>
                         </div>
                     </th>
                     <th scope="col">LRN</th>
                     <th scope="col">Student</th>
-                    <?php if ($view !== 'grading') { ?>
                     <th scope="col">Enrolled at</th>
-                    <?php } ?>
                     <th scope="col">Gender</th>
                     <th scope="col">Class</th>
-                    <?php if ($view !== 'grading') { ?>
                     <th scope="col">Status</th>
-                    <?php } ?>
                     <th>Grade</th>
                     <th scope='col'>Remarks</th>
                     <th scope="col">Action</th>
@@ -112,27 +107,19 @@ class StudentGradingView extends \Models\StudentGrading{
                                 <span class="me-2">
                                 <?= $row['enrollment_id'] ?>
                                 </span>
-                                <?php if ($view == 'promotion') { ?>            
-                                <div class="form-check">
-                                    <input class="form-check-input masterlist-chkbox" type="checkbox" name="chkbox-student[]" value="<?= $row['enrollment_id'] ?>,<?= $row['student_lrn'] ?>,<?= $row['grade_level'] ?>,<?= $row['promotion_status'] ?>" id="flexCheckDefault">
-                                </div>
-                                <?php } ?>
+                                
                             </div>
                         </td>
                         <td><?= $row['lrn'] ?></td>
                         <td><?= strtoupper($row['surname']) . ', ' . strtoupper($row['first_name']) . ' ' . strtoupper($row['middle_name'])  ?> <?= strtoupper($row['ext']) == 'NONE' ? '' : strtoupper($row['ext']) ?></td>
-                        <?php if ($view !== 'grading') { ?>
                         <td><?= $row['enrolled_at'] ?></td>
-                        <?php } ?>
                         <td><?= $row['gender'] ?></td>
                         <td><?= ($row['grade_level'] !== 'Kindergarten' ? 'Grade ' : '') . $row['grade_level'] . " - " . $row['section'] ?></td>
-                        <?php if ($view !== 'grading') { ?>
                         <td>
                             <p>
                                 <?= $row['status'] ?>
                             </p>
                         </td>
-                        <?php } ?>
                         <td>
                             <?php
                             $graded = $this->gradesSubmitted($row['grade_level'], $row['lrn']);

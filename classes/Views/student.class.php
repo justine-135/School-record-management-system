@@ -58,38 +58,10 @@ class StudentView extends \Models\Student{
 
         $this->validateRequest($rows, $offset, $page_no, $status, $query, $level, $section);
 
-        if ($view == 'batch_enrollment') {
-            $status = 'Unenrolled';
-        }
         $results = $this->index($status, $offset, $total_records_per_page, $query, $level, $section);
 
         ?>
 
-        <?php if ($view == 'grading') { ?>
-        <form class="" action="./includes/grades.inc.php" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="rows" value="<?= $rows ?>">
-            <input type="hidden" name="status" value="<?= $status ?>">
-            <input type="hidden" name="page-no" value="<?= $page_no ?>">
-            <div class="modal fade add-grade-form" id="add-grade-modal" aria-hidden="true" aria-labelledby="add-grade-modalLabel" tabindex="-1">
-                <div class="modal-dialog modal-fullscreen modal-dialog-centered">
-                    <div class="modal-content grading-modal-body">
-                        
-                    </div>
-                </div>
-            </div>
-        </form>
-        <?php } ?>
-        <?php if ($view == 'batch_enrollment') { ?>
-        <div class="d-flex align-items-center mb-2">
-        <?php
-            require $_SERVER['DOCUMENT_ROOT'].'/sabanges/partials/nav_filter_student.php';
-        ?>
-        <select class="form-select section-select w-25 me-2" id="section" aria-label="Default select example" name="section">
-            <option value="None" selected>Select section to enroll ---</option>
-        </select>
-        <input type="submit" class="btn btn-primary" name="batch" value='Batch enroll'>
-        </div>
-        <?php } ?>
         <table class="table table-hover mb-0 border-top table-bordered student-table">
             <thead>
                 <tr>
@@ -127,64 +99,6 @@ class StudentView extends \Models\Student{
                 <tbody>
                 <?php
                 foreach ($results as $row) {
-                if ($view == 'batch_enrollment') { ?>
-                    <tr>
-                        <td>
-                            <div class="d-flex">
-                                <span class="me-2">
-                                <?= $row['enrollment_id'] ?>
-                                </span>
-                                <?php if ($view == 'promotion' || $view == 'batch_enrollment') { ?>            
-                                <div class="form-check">
-                                    <input class="form-check-input masterlist-chkbox" type="checkbox" name="chkbox-student[]" value="<?= $row['enrollment_id'] ?>,<?= $row['student_lrn'] ?>,<?= $row['grade_level'] ?>,<?= $row['promotion_status'] ?>" id="flexCheckDefault">
-                                </div>
-                                <?php } ?>
-                            </div>
-                        </td>
-                        <td><?= $row['lrn'] ?></td>
-                        <td><?= strtoupper($row['surname']) . ', ' . strtoupper($row['first_name']) . ' ' . strtoupper($row['middle_name'])  ?> <?= strtoupper($row['ext']) == 'NONE' ? '' : strtoupper($row['ext']) ?></td>
-                        <?php if ($view !== 'grading') { ?>
-                        <td><?= $row['enrolled_at'] ?></td>
-                        <?php } ?>
-                        <td><?= $row['gender'] ?></td>
-                        <td><?= ($row['grade_level'] !== 'Kindergarten' ? 'Grade ' : '') . $row['grade_level'] . " - " . $row['section'] ?></td>
-                        <?php if ($view !== 'grading') { ?>
-                        <td>
-                            <p>
-                                <?= $row['status'] ?>
-                            </p>
-                        </td>
-                        <?php } ?>
-                        <?php if ($view == 'grading') { ?>
-                        <td>
-                            <?php
-                            $graded = $this->gradesSubmitted($row['grade_level'], $row['lrn']);
-                            if (count($graded) <= 0) {
-                                echo '<span class="">Ungraded</span>';
-                            }
-                            else{
-                                foreach ($graded as $grade) {
-                                    if (strtoupper($grade['first_quarter']) == 'INC' || strtoupper($grade['second_quarter']) == 'INC' || strtoupper($grade['third_quarter']) == 'INC' || strtoupper($grade['fourth_quarter']) == 'INC') {
-                                        echo '<span class="">Incomplete</span>';
-
-                                    }
-                                    else{
-                                        echo '<span class="">Graded</span>';
-                                    }
-                                    break;
-                                }
-                            }
-                            ?>
-                        </td>
-                        <?php } ?>    
-                        <?php if ($view == 'promotion') { ?>     
-                        <td>
-                            <?= $row['promotion_status'] == null ? 'None' : $row['promotion_status'] ?>
-                        </td>                  
-                        <?php } ?> 
-                    </tr>
-                <?php } elseif ($view == 'promotion') {
-                if ($row['grade_level'] == 'Kindergarten' || $row['promotion_status'] !== null) {
                 ?>
                     <tr>
                         <td>
@@ -235,98 +149,7 @@ class StudentView extends \Models\Student{
                             ?>
                         </td>
                         <?php } ?>    
-                        <?php if ($view == 'promotion') { ?>     
-                        <td>
-                            <?= $row['promotion_status'] == null ? 'None' : $row['promotion_status'] ?>
-                        </td>                  
-                        <?php } ?> 
-                        <?php if ($view !== 'promotion') { ?>            
-                        <td>
-                            <?php if ($view == 'masterlist') { ?>
-                            <div class="dropdown ml-auto">
-                                <a
-                                class="btn dropdown-toggle btn-primary"
-                                href="#"
-                                role="button"
-                                id="dropdownMenuLink"
-                                data-bs-toggle="dropdown"
-                                aria-expanded="false"
-                                >
-                                View
-                                </a>
-                                
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                    <input class="student-id" type="hidden" name="id" id="id" value="<?= $row['student_id'] ?>" >
-                                    <li><a class="dropdown-item" href="../sabanges/student_informations.php?id=<?= $row['student_id']?>">Informations</a></li>
-                                    <li><a class="dropdown-item" href="../sabanges/student_informations.php?id=<?= $row['student_id']?>#grades-section">Grades</a></li>
-                                </ul>
-                            </div>
-                            <?php } elseif ($view == 'grading') { ?>
-                            <a class="btn btn-primary open-grade-btn" data-bs-toggle="modal" href="#add-grade-modal" role="button">
-                            Grade
-                            </a>     
-                            <input type="hidden" name="lrn" value="<?= $row['lrn'] ?>" id="">
-                            <input type="hidden" name="grade-level" value="<?= $row['grade_level'] ?>" id="">
-                            <input type="hidden" name="section" value="<?= $row['section'] ?>" id="">
-                            <?php } ?>
-                        </td>
-                        <?php } ?>
-                    </tr>
-                <?php }} else { ?>
-                    <tr>
-                        <td>
-                            <div class="d-flex">
-                                <span class="me-2">
-                                <?= $row['enrollment_id'] ?>
-                                </span>
-                                <?php if ($view == 'promotion') { ?>            
-                                <div class="form-check">
-                                    <input class="form-check-input masterlist-chkbox" type="checkbox" name="chkbox-student[]" value="<?= $row['enrollment_id'] ?>,<?= $row['student_lrn'] ?>,<?= $row['grade_level'] ?>,<?= $row['promotion_status'] ?>" id="flexCheckDefault">
-                                </div>
-                                <?php } ?>
-                            </div>
-                        </td>
-                        <td><?= $row['lrn'] ?></td>
-                        <td><?= strtoupper($row['surname']) . ', ' . strtoupper($row['first_name']) . ' ' . strtoupper($row['middle_name'])  ?> <?= strtoupper($row['ext']) == 'NONE' ? '' : strtoupper($row['ext']) ?></td>
-                        <?php if ($view !== 'grading') { ?>
-                        <td><?= $row['enrolled_at'] ?></td>
-                        <?php } ?>
-                        <td><?= $row['gender'] ?></td>
-                        <td><?= ($row['grade_level'] !== 'Kindergarten' ? 'Grade ' : '') . $row['grade_level'] . " - " . $row['section'] ?></td>
-                        <?php if ($view !== 'grading') { ?>
-                        <td>
-                            <p>
-                                <?= $row['status'] ?>
-                            </p>
-                        </td>
-                        <?php } ?>
-                        <?php if ($view == 'grading') { ?>
-                        <td>
-                            <?php
-                            $graded = $this->gradesSubmitted($row['grade_level'], $row['lrn']);
-                            if (count($graded) <= 0) {
-                                echo '<span class="">Ungraded</span>';
-                            }
-                            else{
-                                foreach ($graded as $grade) {
-                                    if (strtoupper($grade['first_quarter']) == 'INC' || strtoupper($grade['second_quarter']) == 'INC' || strtoupper($grade['third_quarter']) == 'INC' || strtoupper($grade['fourth_quarter']) == 'INC') {
-                                        echo '<span class="">Incomplete</span>';
-
-                                    }
-                                    else{
-                                        echo '<span class="">Graded</span>';
-                                    }
-                                    break;
-                                }
-                            }
-                            ?>
-                        </td>
-                        <?php } ?>    
-                        <?php if ($view == 'promotion') { ?>     
-                        <td>
-                            <?= $row['promotion_status'] == null ? 'None' : $row['promotion_status'] ?>
-                        </td>                  
-                        <?php } ?> 
+                       
                         <?php if ($view !== 'promotion') { ?>            
                         <td>
                             <?php if ($view == 'masterlist') { ?>
@@ -360,7 +183,7 @@ class StudentView extends \Models\Student{
                         <?php } ?>
                     </tr>
                     <?php
-                }
+                
             }
 
                 ?>

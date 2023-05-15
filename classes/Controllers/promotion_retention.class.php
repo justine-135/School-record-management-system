@@ -20,6 +20,21 @@ class PromotionRetentionController extends \Models\PromotionRetention{
         }
     }
 
+    public function initPromoteTransfer($ids, $lrns, $grade_levels){
+        $promote = 2;
+        if ($this->checkPassingGrades($ids, $lrns, $grade_levels, $promote) !== false) {
+            // header("Location: ../masterlist.php?promotion&err&grades");
+            // die();
+        }
+        // elseif ($this->checkNullGrades($lrns, $grade_levels) !== false) {
+        //     # code...
+        // }
+        else{
+            // header("Location: ../masterlist.php?promotion&submitted");
+            // die();
+        }
+    }
+
     public function initRetention($ids, $lrns, $grade_levels){
         $promote = 0;
         if ($this->checkPassingGrades($ids, $lrns, $grade_levels, $promote) !== false) {
@@ -39,9 +54,14 @@ class PromotionRetentionController extends \Models\PromotionRetention{
                     $this->promote($ids[$i], $lrns[$i], $grade_levels[$i]);
                 }
             }
-            else{
+            elseif ($promote == 0){
                 if ($promotion == 'Retention') {
                     $this->retain($ids[$i], $lrns[$i], $grade_levels[$i]);
+                }
+            }
+            elseif ($promote == 2){
+                if ($promotion == 'Promotion' || $grade_levels[$i] == 'Kindergarten') {
+                    $this->promoteTransfer($ids[$i], $lrns[$i], $grade_levels[$i]);
                 }
             }
 
