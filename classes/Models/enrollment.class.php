@@ -5,6 +5,138 @@ namespace Models;
 include_once $_SERVER['DOCUMENT_ROOT'].'/sabanges/classes/Database/dbh.class.php';
 
 class Enrollment extends \Dbh{
+    protected function index($status, $offset, $total_records_per_page, $query, $level, $section){
+        try{
+            if (!empty($query) && empty($level) && empty($section)) {
+                echo '1';
+                $sql = "SELECT enrollment_history_table.enrollment_id, students_table.student_id, students_table.lrn, students_table.surname, students_table.first_name, students_table.middle_name, students_table.ext, enrollment_history_table.enrolled_at, enrollment_history_table.grade_level, enrollment_history_table.section,  students_table.gender, enrollment_history_table.student_lrn, enrollment_history_table.status, enrollment_history_table.promotion_status 
+                FROM `students_table`, `enrollment_history_table`
+                WHERE ? in (students_table.student_id, students_table.lrn, students_table.surname, students_table.first_name, students_table.middle_name, students_table.ext, enrollment_history_table.enrolled_at, enrollment_history_table.grade_level, enrollment_history_table.section, students_table.gender, enrollment_history_table.student_lrn)
+                AND enrollment_history_table.student_lrn = students_table.lrn
+                AND enrollment_history_table.status = ?
+                AND enrollment_history_table.transfer IS NOT NULL
+                ORDER BY `grade_level` ASC, `surname` ASC
+                LIMIT $offset, $total_records_per_page
+                ";
+
+                $stmt = $this->connection()->prepare($sql);
+                $stmt->execute([$query, $status]);
+        
+                $results = $stmt->fetchAll();
+            }
+            elseif (!empty($level) && !empty($section) && !empty($query)) {
+                echo '2';
+                $sql = "SELECT enrollment_history_table.enrollment_id, students_table.student_id, students_table.lrn, students_table.surname, students_table.first_name, students_table.middle_name, students_table.ext, enrollment_history_table.enrolled_at, enrollment_history_table.grade_level, enrollment_history_table.section, students_table.gender, enrollment_history_table.student_lrn, enrollment_history_table.status, enrollment_history_table.promotion_status 
+                FROM `students_table`, `enrollment_history_table`
+                WHERE ? in (students_table.student_id, students_table.lrn, students_table.surname, students_table.first_name, students_table.middle_name, students_table.ext, enrollment_history_table.enrolled_at, enrollment_history_table.grade_level, enrollment_history_table.section, students_table.gender, enrollment_history_table.student_lrn)
+                AND students_table.lrn = enrollment_history_table.student_lrn
+                AND enrollment_history_table.status = ?
+                AND enrollment_history_table.grade_level = ?
+                AND enrollment_history_table.section = ?
+                AND enrollment_history_table.transfer IS NOT NULL
+                ORDER BY `grade_level` ASC, `surname` ASC
+                LIMIT $offset, $total_records_per_page
+                ";
+
+                $stmt = $this->connection()->prepare($sql);
+                $stmt->execute([$query, $status, $level, $section]);        
+                $results = $stmt->fetchAll();
+            }
+            elseif (!empty($level) && $section == 'None') {
+                echo '3';
+                $sql = "SELECT enrollment_history_table.enrollment_id, students_table.student_id, students_table.lrn, students_table.surname, students_table.first_name, students_table.middle_name, students_table.ext, enrollment_history_table.enrolled_at, enrollment_history_table.grade_level, enrollment_history_table.section, students_table.gender, enrollment_history_table.student_lrn, enrollment_history_table.status, enrollment_history_table.promotion_status
+                FROM `students_table`, `enrollment_history_table`
+                WHERE students_table.lrn = enrollment_history_table.student_lrn
+                AND enrollment_history_table.status = ?
+                AND enrollment_history_table.grade_level = ?
+                AND enrollment_history_table.transfer IS NOT NULL
+                ORDER BY `grade_level` ASC, `surname` ASC
+                LIMIT $offset, $total_records_per_page
+                ";
+
+                $stmt = $this->connection()->prepare($sql);
+                $stmt->execute([$status, $level]);        
+                $results = $stmt->fetchAll();
+            }
+            elseif (!empty($level) && !empty($section) && empty($query)) {
+                echo '4';
+                $sql = "SELECT enrollment_history_table.enrollment_id, students_table.student_id, students_table.lrn, students_table.surname, students_table.first_name, students_table.middle_name, students_table.ext, enrollment_history_table.enrolled_at, enrollment_history_table.grade_level, enrollment_history_table.section, students_table.gender, enrollment_history_table.student_lrn, enrollment_history_table.status, enrollment_history_table.promotion_status
+                FROM `students_table`, `enrollment_history_table`
+                WHERE students_table.lrn = enrollment_history_table.student_lrn
+                AND enrollment_history_table.status = ?
+                AND enrollment_history_table.grade_level = ?
+                AND enrollment_history_table.section = ?
+                AND enrollment_history_table.transfer IS NOT NULL
+                ORDER BY `grade_level` ASC, `surname` ASC
+                LIMIT $offset, $total_records_per_page
+                ";
+
+                $stmt = $this->connection()->prepare($sql);
+                $stmt->execute([$status, $level, $section]);        
+                $results = $stmt->fetchAll();
+            }
+            else{
+                echo '5';
+                $sql = "SELECT enrollment_history_table.enrollment_id, students_table.student_id, students_table.lrn, students_table.surname, students_table.first_name, students_table.middle_name, students_table.ext, enrollment_history_table.enrolled_at, enrollment_history_table.grade_level, enrollment_history_table.section, students_table.gender, enrollment_history_table.student_lrn, enrollment_history_table.status, enrollment_history_table.promotion_status
+                FROM `students_table`, `enrollment_history_table`
+                WHERE students_table.lrn = enrollment_history_table.student_lrn
+                AND enrollment_history_table.status = ?   
+                AND enrollment_history_table.transfer IS NOT NULL             -- OR enrollment_history_table.promotion_status IS NULL
+                ORDER BY `grade_level` ASC, `surname` ASC
+                LIMIT $offset, $total_records_per_page
+                ";
+                
+                $stmt = $this->connection()->prepare($sql);
+                $stmt->execute([$status]);        
+                $results = $stmt->fetchAll();
+            }
+            return $results;
+        }
+        catch(PDOException $e) {
+            echo "Error: " . $e->getMessage();
+        }
+        $conn = null;
+
+    }
+    protected function studentCount($status, $level, $section){
+        try{
+            if (empty($level) || empty($section)) {
+                $sql = "SELECT `enrollment_id` FROM `enrollment_history_table` 
+                WHERE `status` = ?
+                AND `grade_level` < 7
+                AND `transfer` IS NOT NULL
+                ";
+                $stmt = $this->connection()->prepare($sql);
+                $stmt->execute([$status]);
+            }
+            else{
+                $sql = "SELECT `enrollment_id` FROM `enrollment_history_table` 
+                WHERE `status` = ? AND `grade_level` = ? AND `section` = ?
+                AND `grade_level` < 7
+                AND `transfer` IS NOT NULL
+                ";
+                $stmt = $this->connection()->prepare($sql);
+                $stmt->execute([$status, $level, $section]);
+            }
+
+            if (!empty($level) && empty($section)) {
+                $sql = "SELECT `enrollment_id` FROM `enrollment_history_table` 
+                WHERE `status` = ? AND `grade_level` = ?
+                AND `grade_level` < 7
+                AND `transfer` IS NOT NULL
+                ";
+                $stmt = $this->connection()->prepare($sql);
+                $stmt->execute([$status, $level]);
+            }
+
+            $results = $stmt->fetchAll();
+            return $results;
+        }
+        catch(PDOException $e) {
+            echo "Error: " . $e->getMessage();
+        }
+        $conn = null;
+    }
     protected function create($sname, $fname, $mname, $extname, $lrn, $from_sy, $to_sy, $grade_lvl, $section, $file, $bdate, $gender, $religion, 
     $house_street, $subdivision, $barangay, $city, $province, $region,
     $father_surname, $father_fname, $father_mname, $father_education, 
@@ -155,7 +287,7 @@ class Enrollment extends \Dbh{
             $from_sy = (int)date('Y');
             $to_sy = (int)date('Y') + 1;
 
-            if ($grade_level == 6) {
+            if ($grade_level > 6) {
                 $status = 'Completed';
             }
             $sql = "UPDATE `enrollment_history_table` SET `from_sy` = ?, `to_sy` = ?, `section` = ?, `status` = ? WHERE `enrollment_id` = ? AND `student_lrn` = ? AND `grade_level` = ?;";
@@ -163,6 +295,85 @@ class Enrollment extends \Dbh{
             $stmt->execute([$from_sy, $to_sy, $section, $status, $id, $lrn, $grade_level]);
             $results = $stmt->fetchAll();
             $stmt = null;
+        }
+        catch(PDOException $e) {
+            echo "Error: " . $e->getMessage();
+        }
+        $conn = null;
+    }
+
+    protected function hasActive($lrn){
+        try{
+            $status = 'Active';
+            $sql = "SELECT `status` FROM `enrollment_history_table` WHERE `student_lrn` = ? AND `status` = ?;";
+            $stmt = $this->connection()->prepare($sql);
+            $stmt->execute([$lrn, $status]);
+
+            $results = $stmt->fetchAll();
+            return $results;
+        }
+        catch(PDOException $e) {
+            echo "Error: " . $e->getMessage();
+        }
+        $conn = null;
+    }
+
+    protected function levelCurrentlyEnrolled($lrn, $grade_level){
+        try{
+            $sql = "SELECT `grade_level` FROM `enrollment_history_table` WHERE `student_lrn` = ? AND `grade_level` = ?;";
+            $stmt = $this->connection()->prepare($sql);
+            $stmt->execute([$lrn, $grade_level]);
+
+            $results = $stmt->fetchAll();
+            return $results;
+        }
+        catch(PDOException $e) {
+            echo "Error: " . $e->getMessage();
+        }
+        $conn = null;
+    }
+
+    protected function gradeLevelLower($lrn){
+        try{
+            $sql = "SELECT `grade_level` FROM `enrollment_history_table` WHERE `student_lrn` = ?;";
+            $stmt = $this->connection()->prepare($sql);
+            $stmt->execute([$lrn]);
+
+            $results = $stmt->fetchAll();
+            return $results;
+        }
+        catch(PDOException $e) {
+            echo "Error: " . $e->getMessage();
+        }
+        $conn = null;
+    }
+
+    protected function hasTransferred($lrn){
+        try{
+            $sql = "SELECT `transfer` FROM `enrollment_history_table` WHERE `student_lrn` = ?;";
+            $stmt = $this->connection()->prepare($sql);
+            $stmt->execute([$lrn]);
+
+            $results = $stmt->fetchAll();
+            return $results;
+        }
+        catch(PDOException $e) {
+            echo "Error: " . $e->getMessage();
+        }
+        $conn = null;
+    }
+
+    protected function createReturnee($lrn, $from_sy, $to_sy, $grade_lvl, $section){
+        try{
+            $status = 'Active';
+            $school = "Sabang Elementary School";
+            $sql = "INSERT INTO `enrollment_history_table` (student_lrn, from_sy, to_sy, school, grade_level, section, `status`) 
+            VALUES (?, ?, ?, ?, ?, ?, ?)";
+            $stmt = $this->connection()->prepare($sql);
+            $stmt->execute([$lrn, $from_sy, $to_sy, $school, $grade_lvl, $section, $status]);
+    
+            $results = $stmt->fetchAll();
+            return $results;
         }
         catch(PDOException $e) {
             echo "Error: " . $e->getMessage();

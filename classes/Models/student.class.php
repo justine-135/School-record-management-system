@@ -13,7 +13,7 @@ class Student extends \Dbh{
                 WHERE ? in (students_table.student_id, students_table.lrn, students_table.surname, students_table.first_name, students_table.middle_name, students_table.ext, enrollment_history_table.enrolled_at, enrollment_history_table.grade_level, enrollment_history_table.section, students_table.gender, enrollment_history_table.student_lrn)
                 AND enrollment_history_table.student_lrn = students_table.lrn
                 AND enrollment_history_table.status = ?
-                ORDER BY `grade_level` ASC
+                ORDER BY `grade_level` ASC, `surname` ASC
                 LIMIT $offset, $total_records_per_page
                 ";
 
@@ -30,7 +30,7 @@ class Student extends \Dbh{
                 AND enrollment_history_table.status = ?
                 AND enrollment_history_table.grade_level = ?
                 AND enrollment_history_table.section = ?
-                ORDER BY `grade_level` ASC
+                ORDER BY `grade_level` ASC, `surname` ASC
                 LIMIT $offset, $total_records_per_page
                 ";
 
@@ -44,7 +44,7 @@ class Student extends \Dbh{
                 WHERE students_table.lrn = enrollment_history_table.student_lrn
                 AND enrollment_history_table.status = ?
                 AND enrollment_history_table.grade_level = ?
-                ORDER BY `grade_level` ASC
+                ORDER BY`grade_level` ASC,,`surname` ASC,
                 LIMIT $offset, $total_records_per_page
                 ";
 
@@ -59,7 +59,7 @@ class Student extends \Dbh{
                 AND enrollment_history_table.status = ?
                 AND enrollment_history_table.grade_level = ?
                 AND enrollment_history_table.section = ?
-                ORDER BY `grade_level` ASC
+                ORDER BY `grade_level` ASC, `surname` ASC
                 LIMIT $offset, $total_records_per_page
                 ";
 
@@ -72,7 +72,7 @@ class Student extends \Dbh{
                 FROM `students_table`, `enrollment_history_table`
                 WHERE students_table.lrn = enrollment_history_table.student_lrn
                 AND enrollment_history_table.status = ?
-                ORDER BY `grade_level` ASC
+                ORDER BY `grade_level` ASC, `surname` ASC
                 LIMIT $offset, $total_records_per_page
                 ";
                 
