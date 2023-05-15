@@ -1,6 +1,7 @@
 <?php include "partials/header.php"; ?>
 
 <?php $header = "/enrollment"; ?>
+<?php $view = "enrollment"; ?>
 
 <?php include "partials/nav.php"; ?>
 
@@ -13,14 +14,7 @@ if (empty($_SESSION['username']) && empty($_SESSION['account_id'])) {
 ?>
 
 <main class="container-fluid w-90 mt-4 ">
-  <ul class="nav nav-tabs">
-    <li class="nav-item">
-      <a class="nav-link active" aria-current="page" href="enrollment.php">New student</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="batch_enrollment.php">Batch enrollment</a>
-    </li>
-  </ul>
+  <?php include './partials/nav_enrollment_tabs.php'; ?>
   <form class="border border-top-0 p-0 bg-white mb-3" action="./includes/enrollment.inc.php" method="post" enctype="multipart/form-data">
 
     <div>
