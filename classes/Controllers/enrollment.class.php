@@ -100,7 +100,7 @@ class EnrollmentController extends \Models\Enrollment{
     $is_beneficiary, $father_education_textbox, $mother_education_textbox, $guardian_education_textbox)
     {
         if ($this->emptyInputs(
-            $sname, $fname, $mname, $extname, $lrn, $from_sy, $to_sy, $grade_lvl, $section, $bdate, $gender, $religion, 
+            $sname, $fname, $mname, $extname, $bdate, $gender, $religion, 
             $house_street, $subdivision, $barangay, $city, $province, $region,
             $father_surname, $father_fname, $father_mname, $father_education, $father_employment, $father_contact, 
             $mother_surname, $mother_fname, $mother_mname, $mother_education, $mother_employment, $mother_contact,
@@ -140,7 +140,8 @@ class EnrollmentController extends \Models\Enrollment{
         }
 
         elseif ($this->invalidFile($file) !== false) {
-            # code...
+            header("Location: ../student_informations.php?id={$student_id}&edit_enrollment&error&filesize");
+            die();
         }
         elseif ($this->invalidBirthDate($bdate) !== false) 
         {
@@ -189,6 +190,98 @@ class EnrollmentController extends \Models\Enrollment{
                 $this->batchCreate($ids[$i], $lrns[$i], $grade_levels[$i], $section);
             }
         }
+    }
+
+    public function initSearchLrn($lrn){
+        if ($this->invalidLRN($lrn) !== false) {
+            header("Location: ../returnee.php?returnee&err&lrn");
+            die();
+        }
+        elseif ($this->initHasActiveHistory($lrn) !== false) {
+            header("Location: ../returnee.php?returnee&err&active");
+        }
+        elseif ($this->lrnExist($lrn) !== false) {
+            header("Location: ../returnee.php?lrn=" . $lrn);
+        }
+        else{
+            header("Location: ../returnee.php?returnee&err&exist");
+        }
+    }
+
+    public function initHasActiveHistory($lrn){
+        $result = false;
+        if (count($this->hasActive($lrn)) > 0) {
+            $result = true;
+        }
+        return $result;
+    }
+
+    public function initEnrollReturnee($lrn, $from_sy, $to_sy, $grade_level, $section){
+        if ($this->invalidSchoolYear($from_sy, $to_sy)) {
+            header("Location: ../returnee.php?returnee&err&sy");
+            die();
+        }
+        elseif ($this->invalidLRN($lrn)) {
+            header("Location: ../returnee.php?returnee&err&lrn");
+            die();
+        }
+        elseif ($this->invalidGradeLevel($lrn, $grade_level)) {
+            header("Location: ../returnee.php?returnee&err&gradelevel");
+            die();
+        }
+        elseif ($this->initLevelCurrentlyEnrolled($lrn, $grade_level)) {
+            header("Location: ../returnee.php?returnee&err&enrolled");
+            die();
+        }
+        elseif ($this->initHasTransferred($lrn)) {
+            header("Location: ../returnee.php?returnee&err&transferree");
+            die();
+        }
+        else{
+            $this->createReturnee($lrn, $from_sy, $to_sy, $grade_level, $section);
+            header("Location: ../returnee.php?submitted");
+            die();
+        }
+    }
+
+    protected function initHasTransferred($lrn){
+        $result = false;
+        $transfers = $this->hasTransferred($lrn);
+        $i=0;
+        foreach ($transfers as $transfer) {
+            $i++;
+            if ($i == count($transfers)) {
+                if ($transfer['transfer'] != '1') {
+                    $result = true;
+                }
+            }
+        }
+        return $result;
+        // if ($this->initHasTransferred($lrn)) {
+        //     $result = true;
+        // }
+        // return $result;
+    }
+
+    protected function initLevelCurrentlyEnrolled($lrn, $grade_level){
+        $result = false;
+        if (count($this->levelCurrentlyEnrolled($lrn, $grade_level)) > 0) {
+            $result = true;
+        }
+        return $result;
+    }
+
+    protected function invalidGradeLevel($lrn, $grade_level){
+        $result = false;
+        $grade_levels = $this->gradeLevelLower($lrn, $grade_level);
+        foreach ($grade_levels as $data) {
+            if ($data['grade_level'] !== 'Kindergarten') {
+                if ($data['grade_level'] >= $grade_level) {
+                    $result = true;
+                }
+            }
+        }
+        return $result;
     }
 
     protected function emptyInputs($sname, $fname, $mname, $extname, $lrn, $from_sy, $to_sy, $grade_lvl, $section, $bdate, 
@@ -252,6 +345,10 @@ class EnrollmentController extends \Models\Enrollment{
             $result = true;
         }
 
+        //  var_dump(count($this->studentExist($lrn)));
+        //  var_dump($result);
+
+        //  die();
         return $result;
     }
 
