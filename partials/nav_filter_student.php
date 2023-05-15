@@ -42,7 +42,7 @@ $section = isset($_GET['section']) ? $_GET['section'] : "";
         </div>
         <?php } ?>
 
-        <div class="col-md-3 p-0">
+        <div class="<?= $view == 'batch_enrollment' ? 'col-md-4' : 'col-md-3' ?> p-0">
             <div class="dropdown border">
                 <button class="btn btn-white dropdown-toggle btn-sm" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                     Grade level
@@ -106,9 +106,13 @@ $section = isset($_GET['section']) ? $_GET['section'] : "";
     <?php } ?>
 
     <?php if ($view == 'promotion') {  ?>
-    <div class="promotion-retention ms-auto" role="group" aria-label="Basic mixed styles example">
+    <div class="d-flex promotion-retention ms-auto" role="group" aria-label="Basic mixed styles example">
+        <select class="form-select" aria-label="Default select example" name='select-promotion'>
+            <option selected value='1'>Promote</option>
+            <option value="2">Promote and transfer</option>
+            <option value="3">Retain</option>
+        </select>
         <button type="submit" value="promote" name="promote" class="btn btn-primary">Promote</button>
-        <button type="submit" value="retain" name="retain" class="btn btn-danger">Retain</button>
     </div>
     <?php } ?>
 </div>
