@@ -3,7 +3,9 @@
 include_once $_SERVER['DOCUMENT_ROOT'].'/sabanges/classes/Controllers/enrollment_history.class.php';
 include_once $_SERVER['DOCUMENT_ROOT'].'/sabanges/classes/Controllers/enrollment.class.php';
 include_once $_SERVER['DOCUMENT_ROOT'].'/sabanges/classes/Views/student.class.php';
+include_once $_SERVER['DOCUMENT_ROOT'].'/sabanges/classes/Views/enrollment.class.php';
 
+use Views\EnrollmentView;
 use Controllers\EnrollmentController;
 use Controllers\EnrollmentHistoryController;
 use Views\StudentInformationView;
@@ -193,6 +195,31 @@ elseif (isset($_POST['batch'])) {
 
     $enrollment_check_obj = new EnrollmentController();
     $enrollment_validation_result = $enrollment_check_obj->batchEnroll($ids, $lrns, $grade_levels, $section);
+}
+elseif (isset($view)) {
+    if ($view == 'batch_enrollment') {
+        $obj = new EnrollmentView();
+        $obj->initIndex($view);
+    }
+    if ($view == 'returnee') {
+        $obj = new EnrollmentView();
+        $obj->initSingleIndex($view);
+    }
+}
+elseif (isset($_POST['search-lrn'])) {
+    $lrn = $_POST['lrn'];
+    $enrollment_check_obj = new EnrollmentController();
+    $enrollment_validation_result = $enrollment_check_obj->initSearchLrn($lrn);
+}
+elseif (isset($_POST['enroll-returnee'])) {
+    $lrn = $_POST['lrn'];
+    $from_sy = $_POST['from-sy'];
+    $to_sy = $_POST['to-sy'];
+    $grade_level = $_POST['grade-lvl'];
+    $section = $_POST['section'];
+
+    $enrollment_check_obj = new EnrollmentController();
+    $enrollment_validation_result = $enrollment_check_obj->initEnrollReturnee($lrn, $from_sy, $to_sy, $grade_level, $section);
 }
 else{
     header("location: ../index.php");
