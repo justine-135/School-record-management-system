@@ -179,9 +179,10 @@ class Student extends \Dbh{
 
     protected function enrollmentHistory($lrn){
         try{
-            $sql = "SELECT * FROM `enrollment_history_table` WHERE `student_lrn` = '$lrn'";
+            $sql = "SELECT * FROM `enrollment_history_table` WHERE `student_lrn` = ?
+            ORDER BY `grade_level` ASC";
             $stmt = $this->connection()->prepare($sql);
-            $stmt->execute();
+            $stmt->execute([$lrn]);
     
             $results = $stmt->fetchAll();
             return $results;
