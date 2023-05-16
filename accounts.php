@@ -21,7 +21,10 @@ if (empty($_SESSION['username']) && empty($_SESSION['account_id'])) {
     <div class="p-2 d-flex align-items-center justify-content-between">
 
         <?php require $_SERVER['DOCUMENT_ROOT'].'/sabanges/partials/nav_filter_accounts.php'; ?>
-        <a type="submit" value="promote" name="promote" class="btn btn-primary ms-2" href="register.php">Add</a>
+        <a class="d-flex align-items-center btn btn-primary ms-2" href="register.php">
+            <?php include $_SERVER['DOCUMENT_ROOT'].'/sabanges/partials/add_icon.php'; ?>
+            Add
+        </a>
 
     </div>
     <div class="px-2 table-responsive <?= $view ?>-table min-vh-100">
