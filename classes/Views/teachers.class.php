@@ -262,6 +262,7 @@ class TeacherInformationView extends \Models\Teachers{
                     <div class="d-flex align-items-center justify-content-between py-3 px-3 border-bottom">
                         <h5>Advisories</h5>
                         <a type="button" class="btn btn-primary advisory-link" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            <?php include $_SERVER['DOCUMENT_ROOT'].'/sabanges/partials/add_icon.php'; ?>
                             Add
                         </a>
                     </div>

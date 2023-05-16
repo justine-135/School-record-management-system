@@ -268,8 +268,8 @@ class StudentInformationView extends \Models\Student{
                     <div class="d-flex align-items-center justify-content-between py-3 px-3 border-bottom">
                         <h5>Information</h5>
                         <a class="btn btn-primary" href="../sabanges/student_informations.php?id=<?= $result[0]['student_id'] ?>&edit_enrollment">
-                        Edit
-                        <?php include_once $_SERVER['DOCUMENT_ROOT'].'/sabanges/partials/edit_icon.php'; ?>
+                            <?php include_once $_SERVER['DOCUMENT_ROOT'].'/sabanges/partials/edit_icon.php'; ?>
+                            Edit
                         </a>
                     </div>
                     <div class="d-flex align-items-center justify-content-between py-3 px-3">
@@ -647,6 +647,7 @@ class StudentInformationView extends \Models\Student{
                         <h5>Enrolled History</h5>
                         <?php include $_SERVER['DOCUMENT_ROOT'].'/sabanges/partials/add_enrollment_history_modal.php'; ?>
                         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#enrollment-modal">
+                            <?php include $_SERVER['DOCUMENT_ROOT'].'/sabanges/partials/add_icon.php'; ?>
                             Add
                         </button>
                     </div>
