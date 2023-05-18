@@ -22,6 +22,10 @@ class GradesController extends \Models\Grades{
             header("Location: ../grading.php?grades&error&value&rows={$rows}&status={$status}&page_no={$page_no}");
             die();
         }
+        elseif($this->initGradingPeriod() !== false){
+            header("Location: ../grading.php?grades&error&schedule&rows={$rows}&status={$status}&page_no={$page_no}");
+            die();
+        }
         else{
             $this->update($id, $lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter, $remark);
             header("Location: ../grading.php?grades&submitted&rows={$rows}&page_no={$page_no}&status={$status}");
@@ -51,6 +55,10 @@ class GradesController extends \Models\Grades{
         }
         elseif ($this->minimunMaximumGrades($subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter) !== false) {
             header("Location: ../grading.php?grades&error&value&rows={$rows}&status={$status}&page_no={$page_no}");
+            die();
+        }
+        elseif($this->initGradingPeriod() !== false){
+            header("Location: ../grading.php?grades&error&schedule&rows={$rows}&status={$status}&page_no={$page_no}");
             die();
         }
         else{
@@ -155,6 +163,29 @@ class GradesController extends \Models\Grades{
         if (count($this->studentEnrolled($lrn, $grade_level)) === 0) {
             $result = true;
         }
+        return $result;
+    }
+
+    protected function initGradingPeriod(){
+        $result = false;
+
+        $schedules = $this->gradingPeriod();
+
+        $presentDate = date('Y-m-d');
+        $presentDate = date('Y-m-d', strtotime($presentDate));
+        
+        foreach ($schedules as $schedule) {
+            $start_period = $schedule['from'];
+            $end_period = $schedule['to'];
+
+            if (($presentDate >= $start_period) && ($presentDate <= $end_period)){
+                $result = false;
+                break;
+            }else{
+                $result = true;
+            }
+        }
+        
         return $result;
     }
 }
