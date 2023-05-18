@@ -7,16 +7,16 @@ include $_SERVER['DOCUMENT_ROOT'].'/sabanges/classes/Models/subjects.class.php';
 class SubjectsController extends \Models\Subjects{
     public function checkValidationSubject($subject, $grade, $quarter1, $quarter2, $quarter3, $quarter4){
         if ($this->initExists($subject, $grade) !== false) {
-            header("Location: ../operations.php?operations&error&exists");
+            header("Location: ../operations_subjects.php?operations&error&exists");
             die();
         }
         elseif ($this->validateSpecialChars($subject, $grade) !== false) {
-            header("Location: ../operations.php?operations&error&value");
+            header("Location: ../operations_subjects.php?operations&error&value");
             die();
         }
         else{
             $this->create($subject, $grade, $quarter1, $quarter2, $quarter3, $quarter4);
-            header("Location: ../operations.php?operations&submitted");
+            header("Location: ../operations_subjects.php?operations&submitted");
             die();
         }
     }
@@ -38,4 +38,9 @@ class SubjectsController extends \Models\Subjects{
         return $result;
     }
 
+    public function initDestroy($id){
+        $this->destroy($id);
+        header("Location: ../operations_subjects.php?id=" . $id . "&operations_subjects&deleted");
+        die();
+    }
 }
