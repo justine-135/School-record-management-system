@@ -8,7 +8,6 @@ class StudentGrading extends \Dbh{
     protected function index($status, $offset, $total_records_per_page, $query, $level, $section){
         try{
             if (!empty($query) && empty($level) && empty($section)) {
-                echo '1';
                 $sql = "SELECT enrollment_history_table.enrollment_id, students_table.student_id, students_table.lrn, students_table.surname, students_table.first_name, students_table.middle_name, students_table.ext, enrollment_history_table.enrolled_at, enrollment_history_table.grade_level, enrollment_history_table.section,  students_table.gender, enrollment_history_table.student_lrn, enrollment_history_table.status, enrollment_history_table.promotion_status 
                 FROM `students_table`, `enrollment_history_table`
                 WHERE ? in (students_table.student_id, students_table.lrn, students_table.surname, students_table.first_name, students_table.middle_name, students_table.ext, enrollment_history_table.enrolled_at, enrollment_history_table.grade_level, enrollment_history_table.section, students_table.gender, enrollment_history_table.student_lrn)
@@ -26,7 +25,6 @@ class StudentGrading extends \Dbh{
                 $results = $stmt->fetchAll();
             }
             elseif (!empty($level) && !empty($section) && !empty($query)) {
-                echo '2';
                 $sql = "SELECT enrollment_history_table.enrollment_id, students_table.student_id, students_table.lrn, students_table.surname, students_table.first_name, students_table.middle_name, students_table.ext, enrollment_history_table.enrolled_at, enrollment_history_table.grade_level, enrollment_history_table.section, students_table.gender, enrollment_history_table.student_lrn, enrollment_history_table.status, enrollment_history_table.promotion_status 
                 FROM `students_table`, `enrollment_history_table`
                 WHERE ? in (students_table.student_id, students_table.lrn, students_table.surname, students_table.first_name, students_table.middle_name, students_table.ext, enrollment_history_table.enrolled_at, enrollment_history_table.grade_level, enrollment_history_table.section, students_table.gender, enrollment_history_table.student_lrn)
@@ -45,7 +43,6 @@ class StudentGrading extends \Dbh{
                 $results = $stmt->fetchAll();
             }
             elseif (!empty($level) && $section == 'None') {
-                echo '3';
                 $sql = "SELECT enrollment_history_table.enrollment_id, students_table.student_id, students_table.lrn, students_table.surname, students_table.first_name, students_table.middle_name, students_table.ext, enrollment_history_table.enrolled_at, enrollment_history_table.grade_level, enrollment_history_table.section, students_table.gender, enrollment_history_table.student_lrn, enrollment_history_table.status, enrollment_history_table.promotion_status
                 FROM `students_table`, `enrollment_history_table`
                 WHERE students_table.lrn = enrollment_history_table.student_lrn
@@ -62,7 +59,6 @@ class StudentGrading extends \Dbh{
                 $results = $stmt->fetchAll();
             }
             elseif (!empty($level) && !empty($section) && empty($query)) {
-                echo '4';
                 $sql = "SELECT enrollment_history_table.enrollment_id, students_table.student_id, students_table.lrn, students_table.surname, students_table.first_name, students_table.middle_name, students_table.ext, enrollment_history_table.enrolled_at, enrollment_history_table.grade_level, enrollment_history_table.section, students_table.gender, enrollment_history_table.student_lrn, enrollment_history_table.status, enrollment_history_table.promotion_status
                 FROM `students_table`, `enrollment_history_table`
                 WHERE students_table.lrn = enrollment_history_table.student_lrn
@@ -80,7 +76,6 @@ class StudentGrading extends \Dbh{
                 $results = $stmt->fetchAll();
             }
             else{
-                echo '5';
                 $sql = "SELECT enrollment_history_table.enrollment_id, students_table.student_id, students_table.lrn, students_table.surname, students_table.first_name, students_table.middle_name, students_table.ext, enrollment_history_table.enrolled_at, enrollment_history_table.grade_level, enrollment_history_table.section, students_table.gender, enrollment_history_table.student_lrn, enrollment_history_table.status, enrollment_history_table.promotion_status
                 FROM `students_table`, `enrollment_history_table`
                 WHERE students_table.lrn = enrollment_history_table.student_lrn
