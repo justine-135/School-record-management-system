@@ -19,15 +19,55 @@ class Subjects extends \Dbh{
         }
     }
 
-    protected function index(){
+    protected function index($level, $offset, $total_records_per_page){
         try {
-            $sql = "SELECT * FROM `operations_subjects_table`;";
-            $stmt = $this->connection()->prepare($sql);
-            $stmt->execute();
-    
-            $results = $stmt->fetchAll();
-            return $results;
+            if (!empty($level)) {
+                $sql = "SELECT * FROM `operations_subjects_table`
+                WHERE `grade_level` = ?
+                ORDER BY `grade_level` ASC, `subject` ASC
+                LIMIT $offset, $total_records_per_page
+                ;";
+                $stmt = $this->connection()->prepare($sql);
+                $stmt->execute([$level]);
+        
+                $results = $stmt->fetchAll();
+                return $results;
+            }
+            else{
+                $sql = "SELECT * FROM `operations_subjects_table`
+                ORDER BY `grade_level` ASC, `subject` ASC
+                LIMIT $offset, $total_records_per_page
+                ;";
+                $stmt = $this->connection()->prepare($sql);
+                $stmt->execute();
+        
+                $results = $stmt->fetchAll();
+                return $results;
+            }
 
+        } catch(PDOException $e) {
+            echo "Error: " . $e->getMessage();
+        }
+    }
+
+    protected function subjectsCount($level){
+        try {
+            if (!empty($level)) {
+                $sql = "SELECT * FROM `operations_subjects_table` WHERE `grade_level` = ?;";
+                $stmt = $this->connection()->prepare($sql);
+                $stmt->execute([$level]);
+        
+                $results = $stmt->fetchAll();
+                return $results;
+            }else{
+                $sql = "SELECT * FROM `operations_subjects_table`;";
+                $stmt = $this->connection()->prepare($sql);
+                $stmt->execute();
+        
+                $results = $stmt->fetchAll();
+                return $results;
+            }
+            
         } catch(PDOException $e) {
             echo "Error: " . $e->getMessage();
         }
@@ -48,5 +88,14 @@ class Subjects extends \Dbh{
         $conn = null;
     }
 
+    protected function destroy($id){
+        try {
+            $sql = "DELETE FROM `operations_subjects_table` WHERE `id` = ?";
+            $stmt = $this->connection()->prepare($sql);
+            $stmt->execute([$id]);
 
+        } catch(PDOException $e) {
+            echo "Error: " . $e->getMessage();
+        }
+    }
 }
