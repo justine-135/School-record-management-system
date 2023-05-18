@@ -1,13 +1,17 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT'].'/sabanges/classes/Controllers/grade_levels.class.php';
 include_once $_SERVER['DOCUMENT_ROOT'].'/sabanges/classes/Controllers/subjects.class.php';
+include_once $_SERVER['DOCUMENT_ROOT'].'/sabanges/classes/Controllers/schedule.class.php';
 include_once $_SERVER['DOCUMENT_ROOT'].'/sabanges/classes/Views/grade_levels.class.php';
 include_once $_SERVER['DOCUMENT_ROOT'].'/sabanges/classes/Views/subjects.class.php';
+include_once $_SERVER['DOCUMENT_ROOT'].'/sabanges/classes/Views/schedule.class.php';
 
 use Controllers\GradeLevelsController;
 use Controllers\SubjectsController;
+use Controllers\ScheduleController;
 use Views\GradeLevelsView;
 use Views\SubjectsView;
+use Views\ScheduleView;
 
 // Functions
 function initCreateGrade($grade, $section){
@@ -45,6 +49,31 @@ function initIndexSelectNav($section_params){
     $obj->sectionLink($section_params);
 }
 
+function initDeleteGradeSection($id){
+    $obj = new GradeLevelsController();
+    $obj->initDestroy($id);
+}
+
+function initDeleteSubject($id){
+    $obj = new SubjectsController();
+    $obj->initDestroy($id);
+}
+
+function initIndexSchedule(){
+    $obj = new ScheduleView();
+    $obj->initIndex();
+}
+
+function initCreateSchedule($start, $end){
+    $obj = new ScheduleController();
+    $obj->initCreate($start, $end);
+}
+
+function initDeleteSchedule($id){
+    $obj = new ScheduleController();
+    $obj->initDestroy($id);
+}
+
 // Post requests
 if (isset($_POST['grade-level-submit'])) {
     $grade = $_POST['grade-lvl'];
@@ -70,19 +99,53 @@ if (isset($_GET['section_select'])) {
 
 if (isset($_GET['section_select_enrollment_edit'])) {
     $section_params = $_GET['section_select_enrollment_edit'];
-    echo $section_params;
     initIndexSelectEnrollmentEdit($section_params);
 }
 
-if (isset($_GET['grade_level_table'])) {
-    initIndexGradeLevels();
-}
+// if (isset($_GET['grade_level_table'])) {
+//     initIndexGradeLevels();
+// }
 
-if (isset($_GET['sections_table'])) {
-    initIndexSections();
+if (isset($view)) {
+    if ($view == 'operations_subjects') {
+        initIndexSections();
+    }
+    elseif ($view == 'operations_sections') {
+        initIndexGradeLevels();
+    }
+    elseif ($view == 'operations_grading') {
+        initIndexSchedule();
+    }
 }
 
 if (isset($sections) || isset($_GET['level'])) {
-    $section_params = isset($_GET['level']) ? $_GET['level'] : '';
-    initIndexSelectNav($section_params);
+    if ($view !== 'operations_subjects' && $view !== 'operations_sections' && $view !== 'operations_grading') {
+        $section_params = isset($_GET['level']) ? $_GET['level'] : '';
+        initIndexSelectNav($section_params);
+    }
+}
+
+if (isset($_POST['delete-section'])) {
+    $id = $_POST['id'];
+
+    initDeleteGradeSection($id);
+}
+
+if (isset($_POST['delete-subject'])) {
+    $id = $_POST['id'];
+
+    initDeleteSubject($id);
+}
+
+if (isset($_POST['delete-schedule'])) {
+    $id = $_POST['id'];
+
+    initDeleteSchedule($id);
+}
+
+if (isset($_POST['schedule-submit'])) {
+    $start = $_POST['start'];
+    $end = $_POST['end'];
+
+    initCreateSchedule($start, $end);
 }

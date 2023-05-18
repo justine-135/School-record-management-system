@@ -95,11 +95,10 @@ elseif (isset($_POST['add-enrollment-history'])) {
     $to_sy = $_POST['to-sy'];
     $grade_lvl = $_POST['grade-lvl'];
     $section = $_POST['section'];
-    $old_grade_lvl = $_POST['old-grade-lvl'];
     $status = 'Completed';
 
     $enrollment_history_check_obj = new EnrollmentHistoryController();
-    $enrollment_history_validation_result = $enrollment_history_check_obj->checkValidationHistory($id, $lrn, $from_sy, $to_sy, $old_grade_lvl, $grade_lvl, $section, $status);
+    $enrollment_history_validation_result = $enrollment_history_check_obj->checkValidationHistory($id, $lrn, $from_sy, $to_sy, $grade_lvl, $section, $status);
 }
 elseif (isset($_POST['update'])) {
     // Student information
@@ -158,7 +157,6 @@ elseif (isset($_POST['update'])) {
     $father_education_textbox = null; 
     $mother_education_textbox = null;
     $guardian_education_textbox = null;
-    var_dump($guardian_employment);
 
     // Check inputs
     $enrollment_check_obj = new EnrollmentController();
