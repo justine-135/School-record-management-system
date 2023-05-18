@@ -7,7 +7,7 @@ use DateTime;
 include $_SERVER['DOCUMENT_ROOT'].'/sabanges/classes/Models/enrollment_history.class.php';
 
 class EnrollmentHistoryController extends \Models\EnrollmentHistory{
-    public function checkValidationHistory($id, $lrn, $from_sy, $to_sy, $old_grade_lvl, $grade_lvl, $section, $status){
+    public function checkValidationHistory($id, $lrn, $from_sy, $to_sy, $grade_lvl, $section, $status){
         if ($this->emptyInputs($lrn, $from_sy, $to_sy, $grade_lvl, $status) !== false) {
             header("Location: ../student_informations.php?id=" . $id . "&history&error&empty");
             die();
@@ -20,7 +20,7 @@ class EnrollmentHistoryController extends \Models\EnrollmentHistory{
             header("Location: ../student_informations.php?id=" . $id . "&history&error&sy");
             die();
         }
-        elseif ($this->invalidGradeLevel($old_grade_lvl, $grade_lvl) !== false) {
+        elseif ($this->invalidGradeLevel($lrn, $grade_lvl) !== false) {
             header("Location: ../student_informations.php?id=" . $id . "&history&error&level");
             die();
         }
@@ -56,14 +56,18 @@ class EnrollmentHistoryController extends \Models\EnrollmentHistory{
         return $result;
     }
 
-    protected function invalidGradeLevel($old_grade_lvl, $grade_lvl){
+    protected function invalidGradeLevel($lrn, $grade_lvl){
         $result = false;
-        if ($old_grade_lvl == "Kindergarten") {
-            $result = true;
-        }
-        else{
-            if (intval($grade_lvl) > intval($old_grade_lvl)) {
-                $result = true;
+        $i = 0;
+        $previous_grade_levels = $this->isHigherLevel($lrn);
+        foreach ($previous_grade_levels as $previous_grade_level) {
+            $i++;
+            if ($i == count($previous_grade_levels)) {
+
+                if ($grade_lvl > $previous_grade_level['grade_level']) {
+                    $result = true;
+                }
+                break;
             }
         }
         return $result;
