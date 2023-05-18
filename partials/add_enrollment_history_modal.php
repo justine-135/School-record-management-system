@@ -7,10 +7,10 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <?php foreach ($result as $row) {
-          $id = $row['id'];
-          $lrn = $row['lrn'];
-        } ?>
+        <?php 
+        $id = $result[0]['student_id'];
+        $lrn = $result[0]['lrn'];
+        ?>
         <div class="mb-3">
           <label for="lrn-input" class="form-label">LRN</label>
           <input type="text" class="form-control" name="lrn" id="lrn-input" value="<?= $lrn ?>" hidden>
@@ -38,12 +38,10 @@
               <option value="5">Grade 5</option>
               <option value="6">Grade 6</option>
             </select>
-            <input type="text" name="old-grade-lvl" id="old-grade-lvl" value="<?= $grade_lvl ?>" hidden>
         </div>
         <div class="mb-3">
           <label for="section-select" class="form-label">Section</label>
             <select class="form-select section-select" id="section-select" aria-label="Default select example" name="section"></select>
-            <input type="text" name="old-grade-lvl" id="old-grade-lvl" value="<?= $grade_lvl ?>" hidden>
         </div>
         <!-- <div class="mb-3">
           <label for="status-select" class="form-label">Status</label>

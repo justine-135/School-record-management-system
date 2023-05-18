@@ -18,6 +18,6 @@
     <a class="nav-link <?= $header === "/accounts" ? "active" : "" ?>" href="accounts.php">Accounts</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link <?= $header === "/operations" ? "active" : "" ?>" href="operations.php">Operations</a>
+    <a class="nav-link <?= $header === "/operations_subjects" ? "active" : "" ?>" href="operations_subjects.php">Operations</a>
   </li>
 </ul>

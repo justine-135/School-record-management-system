@@ -47,20 +47,20 @@ $section = isset($_GET['section']) ? $_GET['section'] : "";
                 <button class="btn btn-white dropdown-toggle btn-sm" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                     Grade level
                     <span class="fw-semibold">
-                        <?= isset($_GET['level']) ? ucfirst($_GET['level']) : "All" ?>
+                        <?= isset($_GET['level']) ? (empty($level) ? "All" : ucfirst($_GET['level'])) : 'All' ?>
                     </span>
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                     <li><a class="dropdown-item" href="?row=<?= $row ?>&page_no=<?= 1 ?>&status=<?= $status ?>">All</a></li>
                     <?php if ($view !== 'grading') { ?>
-                    <li><a class="dropdown-item" href="?row=<?= $row ?>&page_no=<?= 1 ?>&status=<?= $status ?>&level=Kindergarten&section=None">Kindergarten</a></li>
+                    <li><a class="dropdown-item" href="?row=<?= $row ?>&page_no=<?= 1 ?>&status=<?= $status ?>&level=Kindergarten&section=">Kindergarten</a></li>
                     <?php } ?>
-                    <li><a class="dropdown-item" href="?row=<?= $row ?>&page_no=<?= 1 ?>&status=<?= $status ?>&level=1&section=None">1</a></li>
-                    <li><a class="dropdown-item" href="?row=<?= $row ?>&page_no=<?= 1 ?>&status=<?= $status ?>&level=2&section=None">2</a></li>
-                    <li><a class="dropdown-item" href="?row=<?= $row ?>&page_no=<?= 1 ?>&status=<?= $status ?>&level=3&section=None">3</a></li>
-                    <li><a class="dropdown-item" href="?row=<?= $row ?>&page_no=<?= 1 ?>&status=<?= $status ?>&level=4&section=None">4</a></li>
-                    <li><a class="dropdown-item" href="?row=<?= $row ?>&page_no=<?= 1 ?>&status=<?= $status ?>&level=5&section=None">5</a></li>
-                    <li><a class="dropdown-item" href="?row=<?= $row ?>&page_no=<?= 1 ?>&status=<?= $status ?>&level=6&section=None">6</a></li>
+                    <li><a class="dropdown-item" href="?row=<?= $row ?>&page_no=<?= 1 ?>&status=<?= $status ?>&level=1&section=">1</a></li>
+                    <li><a class="dropdown-item" href="?row=<?= $row ?>&page_no=<?= 1 ?>&status=<?= $status ?>&level=2&section=">2</a></li>
+                    <li><a class="dropdown-item" href="?row=<?= $row ?>&page_no=<?= 1 ?>&status=<?= $status ?>&level=3&section=">3</a></li>
+                    <li><a class="dropdown-item" href="?row=<?= $row ?>&page_no=<?= 1 ?>&status=<?= $status ?>&level=4&section=">4</a></li>
+                    <li><a class="dropdown-item" href="?row=<?= $row ?>&page_no=<?= 1 ?>&status=<?= $status ?>&level=5&section=">5</a></li>
+                    <li><a class="dropdown-item" href="?row=<?= $row ?>&page_no=<?= 1 ?>&status=<?= $status ?>&level=6&section=">6</a></li>
                 </ul>
             </div>
         </div>
@@ -71,7 +71,7 @@ $section = isset($_GET['section']) ? $_GET['section'] : "";
                 <button class="btn btn-white dropdown-toggle btn-sm" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                     Section
                     <span class="fw-semibold">
-                        <?= isset($_GET['section']) ? ucfirst($_GET['section']) : "None" ?>
+                        <?= isset($_GET['section']) ? (empty($section) ? "All" : ucfirst($_GET['section'])) : 'All' ?>
                     </span>
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
