@@ -31,12 +31,6 @@
                 </div>
                 <div class="mb-3 quarters-select">
                     <label for="exampleInputEmail1" class="form-label">Subject quarter availability</label>
-                    <!-- <select class="form-select quarters-select" id="quarter" aria-label="Default select example" name="quarter">
-                        <option value="1">1 quarter</option>
-                        <option value="2">2 quarters</option>
-                        <option value="3">3 quarters</option>
-                        <option value="4">4 quarters</option>
-                    </select> -->
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" value="1" name="quarter1" id="quarter1" checked>
                         <label class="form-check-label" for="quarter1">
