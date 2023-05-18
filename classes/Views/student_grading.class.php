@@ -58,7 +58,6 @@ class StudentGradingView extends \Models\StudentGrading{
         $this->validateRequest($rows, $offset, $page_no, $status, $query, $level, $section);
 
         $results = $this->index($status, $offset, $total_records_per_page, $query, $level, $section);
-        var_dump($records);
         ?>
 
         <form class="" action="./includes/grades.inc.php" method="post" enctype="multipart/form-data">

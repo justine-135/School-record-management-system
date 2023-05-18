@@ -41,11 +41,7 @@ class GradesView extends \Models\Grades{
                         $grade_lvl = 6;
                         $result = $this->index($lrn, $grade_lvl);
                     }  
-                    // elseif ($i == 6){
-                    //     $grade_lvl = 6;
-                    //     $result = $this->index($lrn, $grade_lvl);
-                    // }
-                    
+
                     if (count($result) > 0) {
                     ?>
                     <div class="table-responsive">
@@ -58,10 +54,12 @@ class GradesView extends \Models\Grades{
                                     <th>3rd quarter</th>
                                     <th>4th quarter</th>
                                     <th>Final</th>
+                                    <th>Remarks</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php
+
                                 foreach ($result as $row) { 
                                     $number_col = 4;
                                     $final = 0;
@@ -82,7 +80,9 @@ class GradesView extends \Models\Grades{
                                     }
                                     else{
                                         $final = (number_format((float)$row['first_quarter'], 2, '.', '') + number_format((float)$row['second_quarter'], 2, '.', '') + number_format((float)$row['third_quarter'], 2, '.', '') + number_format((float)$row['fourth_quarter'], 2, '.', '')) / $number_col;
+                                        $i++;
                                     }
+                                    
                                 ?>
                                 <tr>
                                     <td><input class="form-control" type="text" name="" id="" value="<?= $row['subject'] ?>" readonly></td>
@@ -91,9 +91,19 @@ class GradesView extends \Models\Grades{
                                     <td><input class="form-control" type="text" name="" id="" value="<?= (strtoupper($row['third_quarter']) == 'N/A' ? 'N/A' : (strtoupper($row['third_quarter']) == 'INC' ? 'INC' : number_format((float)$row['third_quarter'], 2, '.', ''))) ?>" <?= strtoupper($row['third_quarter']) == 'N/A' ? 'disabled' : 'readonly'?>></td>
                                     <td><input class="form-control" type="text" name="" id="" value="<?= (strtoupper($row['fourth_quarter']) == 'N/A' ? 'N/A' : (strtoupper($row['fourth_quarter']) == 'INC' ? 'INC' : number_format((float)$row['fourth_quarter'], 2, '.', ''))) ?>" <?= strtoupper($row['fourth_quarter']) == 'N/A' ? 'disabled' : 'readonly'?>></td>
                                     <td><input class="form-control final-grade-display" type="text" name="" id="" value="<?= number_format((float)$final, 2, '.', '')?>" readonly></td>
+                                    <td><input class="form-control" type="text" name="" id="" value="<?= $final > 74 ? 'PASSED' : 'FAILED' ?>" readonly></td>
                                 </tr>   
                                 <?php } ?>
                             </tbody>
+                            <tfoot>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><input type="text"></td>
+                                <td><input type="text"></td>
+                            </tfoot>
                         </table>
                     </div>
                         <?php } else { ?>

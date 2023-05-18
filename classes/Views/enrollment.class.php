@@ -62,8 +62,6 @@ class EnrollmentView extends \Models\Enrollment{
         $this->validateRequest($rows, $offset, $page_no, $status, $query, $level, $section);
 
         $results = $this->index($status, $offset, $total_records_per_page, $query, $level, $section);
-
-        var_dump($results);
         ?>
 
         <div class="d-flex align-items-center mb-2">
