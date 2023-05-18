@@ -63,8 +63,6 @@ class Grades extends \Dbh{
 
     protected function gradesExists($lrn, $grade_level, $section, $subjects){
         try{
-            // var_dump($subjects);
-            // $sql = "SELECT * FROM `student_grades_table` WHERE `student_lrn` = ? AND `grade_level` = ? AND `subjects` = ? `first_quarter` = ? AND `second_quarter` = ? AND `third_quarter` = ? AND `fourth_quarter` = ?";
             $sql = "SELECT * FROM `student_grades_table` WHERE `student_lrn` = ? AND `grade_level` = ? AND `subject` = ?";
             $stmt = $this->connection()->prepare($sql);
 
@@ -104,6 +102,20 @@ class Grades extends \Dbh{
             $sql = "SELECT `email`, `username`, `grade_level`, `section` FROM `teachers_advisory_table` WHERE `email` = ? AND `username` = ? AND `grade_level` = ? AND `section` = ?;";
             $stmt = $this->connection()->prepare($sql);
             $stmt->execute([$email, $username, $grade_level, $section]);
+    
+            $results = $stmt->fetchAll();
+            return $results;
+
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+        } 
+    }
+
+    protected function gradingPeriod(){
+        try {
+            $sql = "SELECT `from`, `to` FROM `schedule_table`;";
+            $stmt = $this->connection()->prepare($sql);
+            $stmt->execute();
     
             $results = $stmt->fetchAll();
             return $results;
