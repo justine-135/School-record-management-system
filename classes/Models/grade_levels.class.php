@@ -33,14 +33,66 @@ class GradeLevels extends \Dbh{
         }
     }
 
-    protected function index(){
+    protected function index($level, $offset, $total_records_per_page){
         try {
-            $sql = "SELECT * FROM `grade_levels_table`;";
+            if (!empty($level)) {
+                $sql = "SELECT * FROM `grade_levels_table`
+                WHERE `grade` = ?
+                ORDER BY `grade` ASC, `section` ASC
+                LIMIT $offset, $total_records_per_page
+                ;";
+                $stmt = $this->connection()->prepare($sql);
+                $stmt->execute([$level]);
+        
+                $results = $stmt->fetchAll();
+                return $results;
+            }
+            else{
+                $sql = "SELECT * FROM `grade_levels_table`
+                ORDER BY `grade` ASC
+                LIMIT $offset, $total_records_per_page
+                ;";
+                $stmt = $this->connection()->prepare($sql);
+                $stmt->execute();
+        
+                $results = $stmt->fetchAll();
+                return $results;
+            }
+
+
+        } catch(PDOException $e) {
+            echo "Error: " . $e->getMessage();
+        }
+    }
+
+    protected function sectionsCount($level){
+        try {
+            if (!empty($level)) {
+                $sql = "SELECT * FROM `grade_levels_table` WHERE `grade` = ?;";
+                $stmt = $this->connection()->prepare($sql);
+                $stmt->execute([$level]);
+        
+                $results = $stmt->fetchAll();
+                return $results;
+            }else{
+                $sql = "SELECT * FROM `grade_levels_table`;";
+                $stmt = $this->connection()->prepare($sql);
+                $stmt->execute();
+        
+                $results = $stmt->fetchAll();
+                return $results;
+            }
+            
+        } catch(PDOException $e) {
+            echo "Error: " . $e->getMessage();
+        }
+    }
+
+    protected function destroy($id){
+        try {
+            $sql = "DELETE FROM `grade_levels_table` WHERE `id` = ?";
             $stmt = $this->connection()->prepare($sql);
-            $stmt->execute();
-    
-            $results = $stmt->fetchAll();
-            return $results;
+            $stmt->execute([$id]);
 
         } catch(PDOException $e) {
             echo "Error: " . $e->getMessage();
