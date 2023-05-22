@@ -8,7 +8,12 @@ use Views\StudentInformationView;
 // Functions
 function index($view){
     $obj = new StudentView();
-    $obj->initIndex($view);
+    $obj->initMasterlist($view);
+}
+
+function index2($view){
+    $obj = new StudentView();
+    $obj->initStudentRecords($view);
 }
 
 function singleIndex($id){
@@ -41,6 +46,9 @@ if (isset($view)) {
     elseif ($view == 'batch_enrollment') {
         index($view);
     }
+    elseif ($view === 'all_students') {
+        index2($view);
+    }
 }
 
 if (isset($_POST['search'])) {
@@ -51,7 +59,9 @@ if (isset($_POST['search'])) {
     $level = $_POST['level'];
     $section = $_POST['section'];
     
-    header("Location: ../masterlist.php?row={$row}&page_no={$page_no}&status={$status}&level={$level}&section={$section}&query={$query}");
+    header('Location: ' . $_SERVER['HTTP_REFERER'] . "?row={$row}&page_no={$page_no}&status={$status}&level={$level}&section={$section}&query={$query}");
+    die();
+    // header("Location: ../masterlist.php?row={$row}&page_no={$page_no}&status={$status}&level={$level}&section={$section}&query={$query}");
 }
 
 if (isset($_GET['id'])) {
@@ -64,11 +74,3 @@ if (isset($_GET['grade_level'])) {
     $lrn = $_GET['lrn'];
     initAddGradeTable($grade_level, $lrn);
 }
-
-// if (isset($_GET['add_grade'])) {
-//     $lrn = $_GET['lrn'];
-//     $grade_level = $_GET['grade_level'];
-//     $section = $_GET['section'];
-//     initAddGradeModal($lrn, $grade_level, $section);
-
-// }
