@@ -1,11 +1,11 @@
 <?php include "partials/header.php"; ?>
 
 <?php $header = "/grading"; ?>
-<?php $view="grading"; ?>
-<?php $h4="Grading"; ?>
+<?php $view = "grading"; ?>
 
 <?php include "partials/nav.php"; ?>
-<?php include 'partials/alert.php'; ?>
+
+<?php include './partials/alert.php'; ?>
 
 <?php
 if (empty($_SESSION['username']) && empty($_SESSION['account_id'])) {
@@ -13,20 +13,19 @@ if (empty($_SESSION['username']) && empty($_SESSION['account_id'])) {
 }
 ?>
 
-<main class="container-fluid w-90 border mt-4 p-0 bg-white <?= $view ?>">
-  <div>
+<main class="container-fluid w-90 mt-4 ">
+  <?php include './partials/nav_records_tabs.php'; ?>
+  <div class="p-2 border border-top-0">
+    <div class="d-flex align-items-center justify-content-between">
+      <h5>Grading</h5>              
+    </div>
     <div>
-      <h5 class="border-bottom p-3 mb-0">Enrolled</h5>
+      <?php include './partials/nav_filter_student.php'; ?>
     </div>
-  </div>
-    <div class="p-2 d-flex align-items-center">
-      <?php require $_SERVER['DOCUMENT_ROOT'].'/sabanges/partials/nav_filter_student.php'; ?>
-    </div>
-    <div class="px-2 table-responsive <?= $view ?>-table min-vh-100">
-      <?php
+    <?php
       require $_SERVER['DOCUMENT_ROOT'].'/sabanges/includes/student_grading.inc.php';
       ?>
-    </div>
+  </div>
 </main>
 
 <script src="js/grading.js"></script>
