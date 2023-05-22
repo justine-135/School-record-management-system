@@ -3,13 +3,7 @@
     <a class="nav-link <?= $header === "/" ? "active" : "" ?>" aria-current="page" href="index.php">Home</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link <?= $header === "/masterlist" || $header === "/student_informations" ? "active" : "" ?>" href="masterlist.php">Masterlist</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link <?= $header === "/grading" ? "active" : "" ?>" href="grading.php">Grading</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link <?= $header === "/promotion" ? "active" : "" ?>" href="promotion.php">Promotion and retention</a>
+    <a class="nav-link <?= $header === "/masterlist" || $header === "/all_students" || $header === "/student_informations" || $header === "/grading" || $header === "/promotion" ? "active" : "" ?>" href="masterlist.php">Records</a>
   </li>
   <li class="nav-item">
     <a class="nav-link <?= $header === "/enrollment" ? "active" : "" ?>" href="enrollment.php">Enrollment</a>
