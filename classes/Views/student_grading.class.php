@@ -72,7 +72,7 @@ class StudentGradingView extends \Models\StudentGrading{
                 </div>
             </div>
         </form>
-        <table class="table table-hover mb-0 border-top table-bordered student-table">
+        <table class="table table-hover mb-0 mt-2 border-top table-bordered student-table">
             <thead>
                 <tr>
                     <th scope="col">     
@@ -159,7 +159,7 @@ class StudentGradingView extends \Models\StudentGrading{
                 ?>
             </tbody>
         </table>
-        <nav class="m-2">
+        <nav class="mt-2">
             <ul class="pagination">
                 <li class="page-item">
                     

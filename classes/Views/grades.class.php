@@ -7,7 +7,12 @@ class GradesView extends \Models\Grades{
     public function loadGrades($lrn){
         ?>
         <div class="accordion" id="accordionPanelsStayOpenExample">
-            <?php for ($i=1; $i <= 6; $i++) { ?>
+            <?php 
+            $failed = 0;
+
+            for ($i=1; $i <= 6; $i++)
+
+            { ?>
             <div class="accordion-item  border border-top-0">
                 <h2 class="accordion-header" id="panelsStayOpen-<?= $i ?>">
                 <button class="accordion-button border-top" type="button" data-bs-toggle="collapse" data-bs-target="#grade-table-<?= $i ?>" aria-expanded="false" aria-controls="panelsStayOpen-<?= $i ?>collapseOne">
@@ -59,20 +64,21 @@ class GradesView extends \Models\Grades{
                             </thead>
                             <tbody>
                                 <?php
-
+                                $final_avg = 0;
+                                $j = 0;
                                 foreach ($result as $row) { 
                                     $number_col = 4;
                                     $final = 0;
-                                    if (strtoupper($row['first_quarter']) == 'N/A' || strtoupper($row['first_quarter']) == 'INC') {
+                                    if (strtoupper($row['first_quarter']) == 'N/A' ) {
                                         $number_col = $number_col - 1;
                                     }
-                                    if (strtoupper($row['second_quarter']) == 'N/A' || strtoupper($row['second_quarter']) == 'INC') {
+                                    if (strtoupper($row['second_quarter']) == 'N/A') {
                                         $number_col = $number_col - 1;
                                     }
-                                    if (strtoupper($row['third_quarter']) == 'N/A' || strtoupper($row['third_quarter']) == 'INC') {
+                                    if (strtoupper($row['third_quarter']) == 'N/A' ) {
                                         $number_col = $number_col - 1;
                                     }
-                                    if (strtoupper($row['fourth_quarter']) == 'N/A' || strtoupper($row['fourth_quarter']) == 'INC') {
+                                    if (strtoupper($row['fourth_quarter']) == 'N/A' ) {
                                         $number_col = $number_col - 1;
                                     }
                                     if ($number_col == 0) {
@@ -80,9 +86,14 @@ class GradesView extends \Models\Grades{
                                     }
                                     else{
                                         $final = (number_format((float)$row['first_quarter'], 2, '.', '') + number_format((float)$row['second_quarter'], 2, '.', '') + number_format((float)$row['third_quarter'], 2, '.', '') + number_format((float)$row['fourth_quarter'], 2, '.', '')) / $number_col;
-                                        $i++;
                                     }
-                                    
+                                    $final_avg += $final;
+                                    $j++;
+
+                                    if ($final < 75) {
+                                        $failed++;
+                                    }
+                                    // $failed = $final < 75 ? $failed++ : 0;
                                 ?>
                                 <tr>
                                     <td><input class="form-control" type="text" name="" id="" value="<?= $row['subject'] ?>" readonly></td>
@@ -93,7 +104,9 @@ class GradesView extends \Models\Grades{
                                     <td><input class="form-control final-grade-display" type="text" name="" id="" value="<?= number_format((float)$final, 2, '.', '')?>" readonly></td>
                                     <td><input class="form-control" type="text" name="" id="" value="<?= $final > 74 ? 'PASSED' : 'FAILED' ?>" readonly></td>
                                 </tr>   
-                                <?php } ?>
+                                <?php }
+                                $final_avg = $final_avg / $j;
+                                ?>
                             </tbody>
                             <tfoot>
                                 <td></td>
@@ -101,8 +114,8 @@ class GradesView extends \Models\Grades{
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td><input type="text"></td>
-                                <td><input type="text"></td>
+                                <td><input class="form-control" type="text" value="<?= number_format((float)$final_avg, 2, '.', '') ?>"></td>
+                                <td><input class="form-control" type="text" value="<?= $failed > 0 && $failed <= 2 ? 'CONDITIONALLY PROMOTED' : ($failed >= 3 ? 'RETAINED' : 'PROMOTED') ?>"></td>
                             </tfoot>
                         </table>
                     </div>

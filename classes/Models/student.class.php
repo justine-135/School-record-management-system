@@ -5,8 +5,9 @@ namespace Models;
 include_once $_SERVER['DOCUMENT_ROOT'].'/sabanges/classes/Database/dbh.class.php';
 
 class Student extends \Dbh{
-    protected function index($status, $offset, $total_records_per_page, $query, $level, $section){
+    protected function indexEnrollmentHistory($offset, $total_records_per_page, $query, $level, $section){
         try{
+            $status = 'Active';
             if (!empty($query) && empty($level) && empty($section)) {
                 $sql = "SELECT enrollment_history_table.enrollment_id, students_table.student_id, students_table.lrn, students_table.surname, students_table.first_name, students_table.middle_name, students_table.ext, enrollment_history_table.enrolled_at, enrollment_history_table.grade_level, enrollment_history_table.section,  students_table.gender, enrollment_history_table.student_lrn, enrollment_history_table.status, enrollment_history_table.promotion_status 
                 FROM `students_table`, `enrollment_history_table`
@@ -38,7 +39,7 @@ class Student extends \Dbh{
                 $stmt->execute([$query, $status, $level, $section]);        
                 $results = $stmt->fetchAll();
             }
-            elseif (!empty($level) && $section == 'None') {
+            elseif (!empty($level) && $section == '') {
                 $sql = "SELECT enrollment_history_table.enrollment_id, students_table.student_id, students_table.lrn, students_table.surname, students_table.first_name, students_table.middle_name, students_table.ext, enrollment_history_table.enrolled_at, enrollment_history_table.grade_level, enrollment_history_table.section, students_table.gender, enrollment_history_table.student_lrn, enrollment_history_table.status, enrollment_history_table.promotion_status
                 FROM `students_table`, `enrollment_history_table`
                 WHERE students_table.lrn = enrollment_history_table.student_lrn
@@ -86,7 +87,41 @@ class Student extends \Dbh{
             echo "Error: " . $e->getMessage();
         }
         $conn = null;
+    }
 
+    protected function indexStudents($offset, $total_records_per_page, $query){
+        try{
+            if (!empty($query)) {
+                $sql = "SELECT *
+                FROM `students_table`
+                WHERE ? in (student_id, lrn, surname, first_name, middle_name, ext)
+                LIMIT $offset, $total_records_per_page
+                ";
+                
+                $stmt = $this->connection()->prepare($sql);
+                $stmt->execute([$query]);        
+                $results = $stmt->fetchAll();
+            
+                return $results;
+            }
+            else{
+                $sql = "SELECT *
+                FROM `students_table`
+                LIMIT $offset, $total_records_per_page
+                ";
+                
+                $stmt = $this->connection()->prepare($sql);
+                $stmt->execute();        
+                $results = $stmt->fetchAll();
+            
+                return $results;
+            }
+
+        }
+        catch(PDOException $e) {
+            echo "Error: " . $e->getMessage();
+        }
+        $conn = null;
     }
 
     protected function create($sname, $fname, $mname, $extname, $lrn, $sy, $grade_lvl, $bdate, $gender, $religion, $house_street, $subdivision, $barangay, $city, $province, $region){
@@ -208,9 +243,9 @@ class Student extends \Dbh{
         $conn = null;
     }
 
-    protected function studentCount($status, $level, $section){
+    protected function enrollmentHistoryCount($level, $section){
         try{
-
+            $status = 'Active';
             if (empty($level) || empty($section)) {
                 $sql = "SELECT `enrollment_id` FROM `enrollment_history_table` 
                 WHERE `status` = ?";
@@ -230,6 +265,21 @@ class Student extends \Dbh{
                 $stmt = $this->connection()->prepare($sql);
                 $stmt->execute([$status, $level]);
             }
+
+            $results = $stmt->fetchAll();
+            return $results;
+        }
+        catch(PDOException $e) {
+            echo "Error: " . $e->getMessage();
+        }
+        $conn = null;
+    }
+
+    protected function studentCount(){
+        try{
+            $sql = "SELECT `student_id` FROM `students_table`";
+            $stmt = $this->connection()->prepare($sql);
+            $stmt->execute();
 
             $results = $stmt->fetchAll();
             return $results;

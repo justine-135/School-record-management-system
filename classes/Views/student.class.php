@@ -4,7 +4,7 @@ namespace Views;
 include $_SERVER['DOCUMENT_ROOT'].'/sabanges/classes/Models/student.class.php';
 
 class StudentView extends \Models\Student{
-    protected function validateRequest($rows, $offset, $page_no, $status, $query, $level, $section){
+    protected function validateRequest($rows, $offset, $page_no, $query, $level, $section){
         if (!preg_match("/^[0-9]*$/", $rows)) {
             echo "<p class='ms-2'>Invalid parameters</p>";
             die();
@@ -14,10 +14,6 @@ class StudentView extends \Models\Student{
             die();
         }
         elseif (!preg_match("/^[0-9]*$/", $page_no)) {
-            echo "<p class='ms-2'>Invalid parameters</p>";
-            die();
-        }
-        elseif (!preg_match("/^[a-zA-Z]*$/", $status)) {
             echo "<p class='ms-2'>Invalid parameters</p>";
             die();
         }
@@ -38,10 +34,9 @@ class StudentView extends \Models\Student{
         }
     }
 
-    public function initIndex($view){
+    public function initMasterlist($view){
         $rows = isset($_GET['row']) ? $_GET['row'] : '10';
         $page_no = isset($_GET['page_no']) ? $_GET['page_no'] : '1';
-        $status = isset($_GET['status']) ? $_GET['status'] : 'active';
         $query = isset($_GET['query']) ? $_GET['query'] : '';
         $level = isset($_GET['level']) ? $_GET['level'] : "";
         $section = isset($_GET['section']) ? $_GET['section'] : "";
@@ -52,17 +47,17 @@ class StudentView extends \Models\Student{
         $previous_page = $page_no - 1;
         $next_page = $page_no + 1;
 
-        $result_count = $this->studentCount($status, $level, $section);
+        $result_count = $this->enrollmentHistoryCount($level, $section);
         $records = count($result_count);
         $total_no_page = ceil($records / intval($total_records_per_page));
 
-        $this->validateRequest($rows, $offset, $page_no, $status, $query, $level, $section);
+        $this->validateRequest($rows, $offset, $page_no, $query, $level, $section);
 
-        $results = $this->index($status, $offset, $total_records_per_page, $query, $level, $section);
+        $results = $this->indexEnrollmentHistory($offset, $total_records_per_page, $query, $level, $section);
 
         ?>
 
-        <table class="table table-hover mb-0 border-top table-bordered student-table">
+        <table class="table table-hover mt-2 mb-0 border-top table-bordered student-table">
             <thead>
                 <tr>
                     <th scope="col">     
@@ -189,33 +184,133 @@ class StudentView extends \Models\Student{
                 ?>
             </tbody>
         </table>
-        <nav class="m-2">
+        <nav class="m-2 ms-0">
             <ul class="pagination">
                 <li class="page-item">
                     
-                    <a class="page-link previous-btn <?= $page_no <= 1 ? 'disabled' : '' ?>" href="?row=<?= $rows ?>&page_no=<?= $previous_page ?>&status=<?= $status ?>&level=<?= $level ?>&section=<?= $section ?>&query=<?= $query ?>">Previous</a>
+                    <a class="page-link previous-btn <?= $page_no <= 1 ? 'disabled' : '' ?>" href="?row=<?= $rows ?>&page_no=<?= $previous_page ?>&level=<?= $level ?>&section=<?= $section ?>&query=<?= $query ?>">Previous</a>
                 </li>
                 <?php for ($i=0; $i < $total_no_page; $i++) { ?>
 
                 <li class="page-item">
-                    <a class="page-link page-number <?= $page_no !== $i + 1 ? '' : 'active'?>" href="?row=<?= $rows ?>&page_no=<?= $i + 1 ?>&status=<?= $status ?>&level=<?= $level ?>&section=<?= $section ?>&query=<?= $query ?>"><?= $i + 1?></a>
+                    <a class="page-link page-number <?= $page_no !== $i + 1 ? '' : 'active'?>" href="?row=<?= $rows ?>&page_no=<?= $i + 1 ?>&level=<?= $level ?>&section=<?= $section ?>&query=<?= $query ?>"><?= $i + 1?></a>
                 </li>
                
                 <?php } ?>
                 <li class="page-item">
-                    <a class="page-link next-btn <?= $page_no >= $total_no_page ? 'disabled' : '' ?>" href="?row=<?= $rows ?>&page_no=<?= $next_page ?>status=<?= $status ?>&level=<?= $level ?>&section=<?= $section ?>&query=<?= $query ?>">Next</a>
+                    <a class="page-link next-btn <?= $page_no >= $total_no_page ? 'disabled' : '' ?>" href="?row=<?= $rows ?>&page_no=<?= $next_page ?>&level=<?= $level ?>&section=<?= $section ?>&query=<?= $query ?>">Next</a>
                 </li>
             </ul>
             <span class="fw-semibold">Page <?= $page_no ?> out of <?= $total_no_page ?></span>
-        </nav>
-        
+        </nav>        
         <?php
-            
+    }
+
+    public function initStudentRecords($view){
+        $rows = isset($_GET['row']) ? $_GET['row'] : '10';
+        $page_no = isset($_GET['page_no']) ? $_GET['page_no'] : '1';
+        $query = isset($_GET['query']) ? $_GET['query'] : '';
+
+        $page_no = intval($page_no);
+        $total_records_per_page = $rows;
+        $offset = ($page_no - 1) * intval($total_records_per_page);
+        $previous_page = $page_no - 1;
+        $next_page = $page_no + 1;
+
+        $result_count = $this->studentCount();
+        $records = count($result_count);
+        $total_no_page = ceil($records / intval($total_records_per_page));
+
+        $results = $this->indexStudents($offset, $total_records_per_page, $query);
+
+        ?>
+
+        <table class="table table-hover mt-2 mb-0 border-top table-bordered student-table">
+            <thead>
+                <tr>
+                    <th scope="col">     
+                        <div class="d-flex">
+                            <span class="me-2">#</span>      
+                            
+                        </div>
+                    </th>
+                    <th scope="col">LRN</th>
+                    <th scope="col">Student</th>
+                    <th scope="col">Date recorded</th>
+                    <th scope="col">Gender</th>
+                    <th scope="col">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php
+                foreach ($results as $row) {
+                ?>
+                    <tr>
+                        <td>
+                            <div class="d-flex">
+                                <span class="me-2">
+                                <?= $row['student_id'] ?>
+                                </span>
+                               
+                            </div>
+                        </td>
+                        <td><?= $row['lrn'] ?></td>
+                        <td><?= strtoupper($row['surname']) . ', ' . strtoupper($row['first_name']) . ' ' . strtoupper($row['middle_name'])  ?> <?= strtoupper($row['ext']) == 'NONE' ? '' : strtoupper($row['ext']) ?></td>
+                        <td><?= $row['enrolled_at'] ?></td>
+                        <td><?= $row['gender'] ?></td>
+                        <td>
+                            <div class="dropdown ml-auto">
+                                <a
+                                class="btn dropdown-toggle btn-primary"
+                                href="#"
+                                role="button"
+                                id="dropdownMenuLink"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false"
+                                >
+                                View
+                                </a>
+                                
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <input class="student-id" type="hidden" name="id" id="id" value="<?= $row['student_id'] ?>" >
+                                    <li><a class="dropdown-item" href="../sabanges/student_informations.php?id=<?= $row['student_id']?>">Informations</a></li>
+                                    <li><a class="dropdown-item" href="../sabanges/student_informations.php?id=<?= $row['student_id']?>#grades-section">Grades</a></li>
+                                </ul>
+                            </div>
+                            
+                        </td>
+                    </tr>
+                    <?php
+                
+            }
+
+                ?>
+            </tbody>
+        </table>
+        <nav class="m-2 ms-0">
+            <ul class="pagination">
+                <li class="page-item">
+                    
+                    <a class="page-link previous-btn <?= $page_no <= 1 ? 'disabled' : '' ?>" href="?row=<?= $rows ?>&page_no=<?= $previous_page ?>&level=<?= $level ?>&section=<?= $section ?>&query=<?= $query ?>">Previous</a>
+                </li>
+                <?php for ($i=0; $i < $total_no_page; $i++) { ?>
+
+                <li class="page-item">
+                    <a class="page-link page-number <?= $page_no !== $i + 1 ? '' : 'active'?>" href="?row=<?= $rows ?>&page_no=<?= $i + 1 ?>&level=<?= $level ?>&section=<?= $section ?>&query=<?= $query ?>"><?= $i + 1?></a>
+                </li>
+               
+                <?php } ?>
+                <li class="page-item">
+                    <a class="page-link next-btn <?= $page_no >= $total_no_page ? 'disabled' : '' ?>" href="?row=<?= $rows ?>&page_no=<?= $next_page ?>&level=<?= $level ?>&section=<?= $section ?>&query=<?= $query ?>">Next</a>
+                </li>
+            </ul>
+            <span class="fw-semibold">Page <?= $page_no ?> out of <?= $total_no_page ?></span>
+        </nav>        
+        <?php
     }
 
     public function initGradeModal($lrn, $grade_level, $section){
         ?>
-
         <div class="d-flex justify-content-between w-50">
             <div>
             <label class="form-check-label" for="lrn">Learner reference number</label>

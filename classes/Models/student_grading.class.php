@@ -13,14 +13,12 @@ class StudentGrading extends \Dbh{
                 WHERE ? in (students_table.student_id, students_table.lrn, students_table.surname, students_table.first_name, students_table.middle_name, students_table.ext, enrollment_history_table.enrolled_at, enrollment_history_table.grade_level, enrollment_history_table.section, students_table.gender, enrollment_history_table.student_lrn)
                 AND enrollment_history_table.student_lrn = students_table.lrn
                 AND (enrollment_history_table.promotion_status IS NULL OR enrollment_history_table.promotion_status = 'Retention')
-
-                AND enrollment_history_table.status = ?
                 ORDER BY `grade_level` ASC, `surname` ASC
                 LIMIT $offset, $total_records_per_page
                 ";
 
                 $stmt = $this->connection()->prepare($sql);
-                $stmt->execute([$query, $status]);
+                $stmt->execute([$query]);
         
                 $results = $stmt->fetchAll();
             }
@@ -29,7 +27,6 @@ class StudentGrading extends \Dbh{
                 FROM `students_table`, `enrollment_history_table`
                 WHERE ? in (students_table.student_id, students_table.lrn, students_table.surname, students_table.first_name, students_table.middle_name, students_table.ext, enrollment_history_table.enrolled_at, enrollment_history_table.grade_level, enrollment_history_table.section, students_table.gender, enrollment_history_table.student_lrn)
                 AND students_table.lrn = enrollment_history_table.student_lrn
-                AND enrollment_history_table.status = ?
                 AND enrollment_history_table.grade_level = ?
                 AND enrollment_history_table.section = ?
                 AND (enrollment_history_table.promotion_status IS NULL OR enrollment_history_table.promotion_status = 'Retention')
@@ -39,14 +36,13 @@ class StudentGrading extends \Dbh{
                 ";
 
                 $stmt = $this->connection()->prepare($sql);
-                $stmt->execute([$query, $status, $level, $section]);        
+                $stmt->execute([$query, $level, $section]);        
                 $results = $stmt->fetchAll();
             }
             elseif (!empty($level) && $section == 'None') {
                 $sql = "SELECT enrollment_history_table.enrollment_id, students_table.student_id, students_table.lrn, students_table.surname, students_table.first_name, students_table.middle_name, students_table.ext, enrollment_history_table.enrolled_at, enrollment_history_table.grade_level, enrollment_history_table.section, students_table.gender, enrollment_history_table.student_lrn, enrollment_history_table.status, enrollment_history_table.promotion_status
                 FROM `students_table`, `enrollment_history_table`
                 WHERE students_table.lrn = enrollment_history_table.student_lrn
-                AND enrollment_history_table.status = ?
                 AND enrollment_history_table.grade_level = ?
                 AND (enrollment_history_table.promotion_status IS NULL OR enrollment_history_table.promotion_status = 'Retention')
 
@@ -55,14 +51,13 @@ class StudentGrading extends \Dbh{
                 ";
 
                 $stmt = $this->connection()->prepare($sql);
-                $stmt->execute([$status, $level]);        
+                $stmt->execute([$level]);        
                 $results = $stmt->fetchAll();
             }
             elseif (!empty($level) && !empty($section) && empty($query)) {
                 $sql = "SELECT enrollment_history_table.enrollment_id, students_table.student_id, students_table.lrn, students_table.surname, students_table.first_name, students_table.middle_name, students_table.ext, enrollment_history_table.enrolled_at, enrollment_history_table.grade_level, enrollment_history_table.section, students_table.gender, enrollment_history_table.student_lrn, enrollment_history_table.status, enrollment_history_table.promotion_status
                 FROM `students_table`, `enrollment_history_table`
                 WHERE students_table.lrn = enrollment_history_table.student_lrn
-                AND enrollment_history_table.status = ?
                 AND enrollment_history_table.grade_level = ?
                 AND enrollment_history_table.section = ?
                 AND (enrollment_history_table.promotion_status IS NULL OR enrollment_history_table.promotion_status = 'Retention')
@@ -72,14 +67,13 @@ class StudentGrading extends \Dbh{
                 ";
 
                 $stmt = $this->connection()->prepare($sql);
-                $stmt->execute([$status, $level, $section]);        
+                $stmt->execute([$level, $section]);        
                 $results = $stmt->fetchAll();
             }
             else{
                 $sql = "SELECT enrollment_history_table.enrollment_id, students_table.student_id, students_table.lrn, students_table.surname, students_table.first_name, students_table.middle_name, students_table.ext, enrollment_history_table.enrolled_at, enrollment_history_table.grade_level, enrollment_history_table.section, students_table.gender, enrollment_history_table.student_lrn, enrollment_history_table.status, enrollment_history_table.promotion_status
                 FROM `students_table`, `enrollment_history_table`
                 WHERE students_table.lrn = enrollment_history_table.student_lrn
-                AND enrollment_history_table.status = ?
                 AND (enrollment_history_table.promotion_status IS NULL OR enrollment_history_table.promotion_status = 'Retention')
                 -- OR enrollment_history_table.promotion_status IS NULL
                 -- OR enrollment_history_table.promotion_status = 'Retained'
@@ -88,7 +82,7 @@ class StudentGrading extends \Dbh{
                 ";
                 
                 $stmt = $this->connection()->prepare($sql);
-                $stmt->execute([$status]);        
+                $stmt->execute();        
                 $results = $stmt->fetchAll();
             }
             return $results;

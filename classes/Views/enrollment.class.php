@@ -87,14 +87,10 @@ class EnrollmentView extends \Models\Enrollment{
                     </th>
                     <th scope="col">LRN</th>
                     <th scope="col">Student</th>
-                    <?php if ($view !== 'grading') { ?>
-                    <th scope="col">Enrolled at</th>
-                    <?php } ?>
+                    <th scope="col">Recorded at</th>
                     <th scope="col">Gender</th>
-                    <th scope="col">Class</th>
-                    <?php if ($view !== 'grading') { ?>
+                    <th scope="col">Grade level</th>
                     <th scope="col">Status</th>
-                    <?php } ?>
                     
                 </tr>
                 </thead>
@@ -116,18 +112,10 @@ class EnrollmentView extends \Models\Enrollment{
                         </td>
                         <td><?= $row['lrn'] ?></td>
                         <td><?= strtoupper($row['surname']) . ', ' . strtoupper($row['first_name']) . ' ' . strtoupper($row['middle_name'])  ?> <?= strtoupper($row['ext']) == 'NONE' ? '' : strtoupper($row['ext']) ?></td>
-                        <?php if ($view !== 'grading') { ?>
                         <td><?= $row['enrolled_at'] ?></td>
-                        <?php } ?>
                         <td><?= $row['gender'] ?></td>
-                        <td><?= ($row['grade_level'] !== 'Kindergarten' ? 'Grade ' : '') . $row['grade_level'] . " - " . $row['section'] ?></td>
-                        <?php if ($view !== 'grading') { ?>
-                        <td>
-                            <p>
-                                <?= $row['status'] ?>
-                            </p>
-                        </td>
-                        <?php } ?>
+                        <td><?= $row['grade_level'] ?></td>
+                        <td><?= $row['status'] ?></td>
                     </tr>
                     <?php
                     }
@@ -136,7 +124,7 @@ class EnrollmentView extends \Models\Enrollment{
                 ?>
             </tbody>
         </table>
-        <nav class="m-2">
+        <nav class="mt-2">
             <ul class="pagination">
                 <li class="page-item">
                     

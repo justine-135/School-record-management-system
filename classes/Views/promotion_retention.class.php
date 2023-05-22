@@ -60,19 +60,7 @@ class PromotionRetentionView extends \Models\PromotionRetention{
         $results = $this->index($status, $offset, $total_records_per_page, $query, $level, $section);
         ?>
 
-        <form class="" action="./includes/grades.inc.php" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="rows" value="<?= $rows ?>">
-            <input type="hidden" name="status" value="<?= $status ?>">
-            <input type="hidden" name="page-no" value="<?= $page_no ?>">
-            <div class="modal fade add-grade-form" id="add-grade-modal" aria-hidden="true" aria-labelledby="add-grade-modalLabel" tabindex="-1">
-                <div class="modal-dialog modal-fullscreen modal-dialog-centered">
-                    <div class="modal-content grading-modal-body">
-                        
-                    </div>
-                </div>
-            </div>
-        </form>
-        <table class="table table-hover mb-0 border-top table-bordered student-table">
+        <table class="table table-hover mb-0 mt-2 border-top table-bordered student-table">
             <thead>
                 <tr>
                     <th scope="col">     
@@ -160,7 +148,7 @@ class PromotionRetentionView extends \Models\PromotionRetention{
                 ?>
             </tbody>
         </table>
-        <nav class="m-2">
+        <nav class="mt-2">
             <ul class="pagination">
                 <li class="page-item">
                     
