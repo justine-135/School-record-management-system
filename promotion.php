@@ -1,16 +1,11 @@
-<?php 
-// if (empty($_SESSION['username'])) {
-//   header("Location: ./login.php");
-// }
-?>
-
 <?php include "partials/header.php"; ?>
 
 <?php $header = "/promotion"; ?>
-<?php $view="promotion"; ?>
-<?php $h4="Promotion"; ?>
+<?php $view = "promotion"; ?>
 
 <?php include "partials/nav.php"; ?>
+
+<?php include './partials/alert.php'; ?>
 
 <?php
 if (empty($_SESSION['username']) && empty($_SESSION['account_id'])) {
@@ -18,26 +13,20 @@ if (empty($_SESSION['username']) && empty($_SESSION['account_id'])) {
 }
 ?>
 
-<main class="container-fluid w-90 border mt-4 p-0 bg-white <?= $view ?>">
-<div>
-    <div>
-        <h5 class="border-bottom p-3 mb-0">Enrolled</h5>
+<main class="container-fluid w-90 mt-4 ">
+  <?php include './partials/nav_records_tabs.php'; ?>
+  <div class="p-2 border border-top-0">
+    <div class="d-flex align-items-center justify-content-between">
+      <h5>Promotion and retention</h5>              
     </div>
-</div>
-<form action="../sabanges/includes/promotion_retention.inc.php" method="post" enctype="multipart/form-data">
-    <div class="p-2 d-flex align-items-center">
-    <?php require $_SERVER['DOCUMENT_ROOT'].'/sabanges/partials/nav_filter_student.php'; ?>
-    </div>
-    <div class="px-2 table-responsive <?= $view ?>-table min-vh-100">
-    <?php
-    require $_SERVER['DOCUMENT_ROOT'].'/sabanges/includes/promotion_retention.inc.php';
-    ?>
-    </div>
-</form>
-
-
+    <form action="../sabanges/includes/promotion_retention.inc.php" method="post" enctype="multipart/form-data">
+        <div>
+        <?php include './partials/nav_filter_student.php'; ?>
+        </div>
+        <?php
+        require $_SERVER['DOCUMENT_ROOT'].'/sabanges/includes/promotion_retention.inc.php';
+        ?>
+    </form>
 </main>
 
-<?php require $_SERVER['DOCUMENT_ROOT'].'/sabanges/partials/footer.php'; ?>
-
-<script src="js/promotion.js"></script>
+<script src="js/grading.js"></script>
