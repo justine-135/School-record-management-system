@@ -8,9 +8,9 @@
 <?php include './partials/alert.php'; ?>
 
 <?php
-if (empty($_SESSION['username']) && empty($_SESSION['account_id'])) {
-  header("Location: ./login.php");
-}
+$_SESSION['page_permission'] = 'admin';
+include './includes/session.inc.php';
+include './includes/permission.inc.php';
 ?>
 
 <form class="container-fluid w-90 border mt-4 p-4 bg-white mb-3" action="./includes/teachers.inc.php" method="post" enctype="multipart/form-data">
@@ -161,6 +161,7 @@ if (empty($_SESSION['username']) && empty($_SESSION['account_id'])) {
         <div class="row g-1 p-3">
           <div class="col-md-4 pe-5">
             <div id="emailHelp" class="form-text ps-3">*Add advisory classes to the user. Skip if not applicable.</div>
+            <div id="emailHelp" class="form-text ps-3">*Teacher can only add grade to the sections added.</div>
           </div>
           <div class="col-md-4">
             <div class="d-flex align-items-end justify-content-between w-100">
@@ -205,123 +206,46 @@ if (empty($_SESSION['username']) && empty($_SESSION['account_id'])) {
           <div class="col-md-4"></div>
         </div>
         <h5 class="border-bottom border-top p-3">Permission</h5>
-        <div id="emailHelp" class="form-text ps-3">*Add page permissions to the user.</div>
-        <div class="row g-3 p-3">
+        <div class="row g-1 p-3">
           <div class="col-md-4">
-            <h6>Masterlist</h6>
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="masterlist-view" value="1" id="masterlist-view" <?= isset($_GET['permission_1']) ? 'checked' : '' ?>>
-              <label class="form-check-label" for="masterlist-view">
-                View
+              <input class="form-check-input role-radio-input" type="radio" name="role" id="flexRadioDefault1" value='teacher' checked>
+              <label class="form-check-label" for="flexRadioDefault1">
+                Teacher
               </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="masterlist-promotion-retention" value="1" id="masterlist-promotion-retention" <?= isset($_GET['permission_2']) ? 'checked' : '' ?>>
-              <label class="form-check-label" for="masterlist-promotion-retention">
-                Promotion and Retention
-              </label>
+              <div id="emailHelp" class="form-text ps-3">*View students and informations.</div>
+              <div id="emailHelp" class="form-text ps-3">*Upload grades of learners.</div>
             </div>
           </div>
           <div class="col-md-4">
-            <h6>Student information</h6>
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="student-view" value="1" id="student-view" <?= isset($_GET['permission_3']) ? 'checked' : '' ?>>
-              <label class="form-check-label" for="student-view">
-                View
+              <input class="form-check-input role-radio-input" type="radio" name="role" id="flexRadioDefault2" value='admin'>
+              <label class="form-check-label" for="flexRadioDefault2">
+                Admin
               </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="student-edit" value="1" id="student-edit" <?= isset($_GET['permission_4']) ? 'checked' : '' ?>>
-              <label class="form-check-label" for="student-edit">
-                Edit information
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="student-history" value="1" id="student-history" <?= isset($_GET['permission_5']) ? 'checked' : '' ?>>
-              <label class="form-check-label" for="student-history">
-                Add Enrollment History
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="student-grades" value="1" id="student-grades" <?= isset($_GET['permission_6']) ? 'checked' : '' ?>>
-              <label class="form-check-label" for="student-grades">
-                Add Grades
-              </label>
+              <div id="emailHelp" class="form-text ps-3">*Manage user accounts.</div>
+              <div id="emailHelp" class="form-text ps-3">*Assign role and permissions to accounts.</div>
             </div>
           </div>
           <div class="col-md-4">
-            <h6>Enrollment</h6>
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="enrollment-view" value="1" id="enrollment-view" <?= isset($_GET['permission_7']) ? 'checked' : '' ?>>
-              <label class="form-check-label" for="enrollment-view">
-                View
+              <input class="form-check-input role-radio-input" type="radio" name="role" id="flexRadioDefault3" value='guidance'>
+              <label class="form-check-label" for="flexRadioDefault3">
+                Guidance
               </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="enrollment-add" value="1" id="enrollment-add" <?= isset($_GET['permission_8']) ? 'checked' : '' ?>>
-              <label class="form-check-label" for="enrollment-add">
-                Enroll Student
-              </label>
+              <div id="emailHelp" class="form-text ps-3">*Enroll learners.</div>
+              <div id="emailHelp" class="form-text ps-3">*Promotes and retain learners.</div>
             </div>
           </div>
         </div>
-
-        <div class="row g-5 p-3">
+        <div class="row g-1 p-3">
           <div class="col-md-4">
-            <h6>Teachers</h6>
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="teachers-view" value="1" id="teachers-view" <?= isset($_GET['permission_9']) ? 'checked' : '' ?>>
-              <label class="form-check-label" for="teachers-view">
-                View
+              <input class="form-check-input role-radio-input" type="radio" name="role" id="flexRadioDefault4" value='author'>
+              <label class="form-check-label" for="flexRadioDefault4">
+                Author
               </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="teachers-add" value="1" id="teachers-add" <?= isset($_GET['permission_10']) ? 'checked' : '' ?>>
-              <label class="form-check-label" for="teachers-add">
-                Add User
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="teachers-edit" value="1" id="teachers-edit" <?= isset($_GET['permission_11']) ? 'checked' : '' ?>>
-              <label class="form-check-label" for="teachers-edit">
-                Edit Information
-              </label>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <h6>Teacher information</h6>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="teacher-view" value="1" id="teacher-view" <?= isset($_GET['permission_12']) ? 'checked' : '' ?>>
-              <label class="form-check-label" for="teacher-view">
-                View
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="teacher-edit" value="1" id="teacher-edit" <?= isset($_GET['permission_13']) ? 'checked' : '' ?>>
-              <label class="form-check-label" for="teacher-edit">
-                Edit information
-              </label>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <h6>Operations</h6>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="operations-view" value="1" id="operations-view" <?= isset($_GET['permission_14']) ? 'checked' : '' ?>>
-              <label class="form-check-label" for="operations-view">
-                View
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="operations-add" value="1" id="operations-add"  <?= isset($_GET['permission_15']) ? 'checked' : '' ?>>
-              <label class="form-check-label" for="operations-add">
-                Add Subjects and Sections
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="operations-edit" value="1" id="operations-edit" <?= isset($_GET['permission_16']) ? 'checked' : '' ?>>
-              <label class="form-check-label" for="operations-edit">
-                Edit Information
-              </label>
+              <div id="emailHelp" class="form-text ps-3">*Manage grades levels, sections, and subjects.</div>
             </div>
           </div>
         </div>
