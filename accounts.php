@@ -7,9 +7,9 @@
 <?php include "partials/nav.php"; ?>
 
 <?php
-if (empty($_SESSION['username']) && empty($_SESSION['account_id'])) {
-  header("Location: ./login.php");
-}
+$_SESSION['page_permission'] = 'admin';
+include './includes/session.inc.php';
+include './includes/permission.inc.php';
 ?>
 
 <main class="container-fluid w-90 border mt-4 p-0 bg-white <?= $view ?>">
