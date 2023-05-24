@@ -90,3 +90,8 @@ const removeAdvisory = (btn) => {
     btn.parentElement.parentElement.remove();
   });
 };
+
+const roleRadioInputs = document.querySelectorAll(".role-radio-input");
+roleRadioInputs.forEach((roleRadioInput) => {
+  console.log(roleRadioInput);
+});
