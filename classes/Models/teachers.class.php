@@ -7,11 +7,38 @@ include_once $_SERVER['DOCUMENT_ROOT'].'/sabanges/classes/Database/dbh.class.php
 class Teachers extends \Dbh{
     protected function create($surname, $first_name, $middle_name, $ext_name, $birth_date, $gender, $contact, $religion, 
     $house_street, $subdivision, $barangay, $city, $province, $region, $email, $file,
-    $permission_1, $permission_2, $permission_3, $permission_4, $permission_5,
-    $permission_6, $permission_7, $permission_8, $permission_9, $permission_10, $permission_11,
-    $permission_12, $permission_13, $permission_14, $permission_15, $permission_16, 
-    $grade_level, $section){
+    $permission, $grade_level, $section){
         try{
+            switch ($permission) {
+                case 'teacher':
+                    $teacher = 1;
+                    $admin = 0;
+                    $guidance = 0;
+                    $author = 0;
+                    break;
+                case 'admin':
+                    $teacher = 0;
+                    $admin = 1;
+                    $guidance = 0;
+                    $author = 0;
+                    break;
+                case 'guidance':
+                    $teacher = 0;
+                    $admin = 0;
+                    $guidance = 1;
+                    $author = 0;
+                    break;
+                case 'author':
+                    $teacher = 0;
+                    $admin = 0;
+                    $guidance = 0;
+                    $author = 1;
+                    break;
+                
+                default:
+                    # code...
+                    break;
+            }
             $username = "SABANGES" . strtoupper($surname);
             $password = strtoupper($surname) . "12345";
             // Hash the password
@@ -20,16 +47,13 @@ class Teachers extends \Dbh{
             $image = $file['tmp_name'];
             $base64_image = base64_encode(file_get_contents(addslashes($image)));
 
-            $sql = "INSERT INTO `teachers_account_table` (`username`, `email`, `password`, `image`, `status`, `masterlist_view`, `masterlist_promotion_retention`, `student_info_view`, `student_info_edit`, `student_info_add_history`, `student_info_add_grades`, `enrollment_view`, `enrollment_add`, `users_view`, `users_add`, `users_edit`, `teacher_info_view`, `teacher_info_edit`, `operations_view`, `operations_add`, `operations_edit`) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+            $sql = "INSERT INTO `teachers_account_table` (`username`, `email`, `password`, `image`, `status`, `superadmin`, `admin`, `teacher`, `author`, `guidance`) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
             INSERT INTO `teachers_table` (`surname`, `first_name`, `middle_name`, `ext_name`, `birth_date`, `religion`, `gender`, `contact`, `house_street`, `subdivision`, `barangay`, `city`, `province`, `region`) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $this->connection()->prepare($sql);
-            $stmt->execute([$username, $email, $hashed_password, $base64_image, 1, 
-            $permission_1, $permission_2, $permission_3, $permission_4, $permission_5,
-            $permission_6, $permission_7, $permission_8, $permission_9, $permission_10, $permission_11,
-            $permission_12, $permission_13, $permission_14, $permission_15, $permission_16,
-            $surname, $first_name, $middle_name, $ext_name, $birth_date,
+            $stmt->execute([$username, $email, $hashed_password, $base64_image, 1, 0, 
+            $admin, $teacher, $author, $guidance, $surname, $first_name, $middle_name, $ext_name, $birth_date,
             $religion, $gender, $contact, $house_street, $subdivision, $barangay, $city, $province, $region]);
 
             $stmt = null;
@@ -184,9 +208,9 @@ class Teachers extends \Dbh{
 
     protected function login($username, $password){
         try{
-            $sql = "SELECT `account_id`, `username`, `email`, `password`, `superadmin`, `masterlist_view`, `masterlist_promotion_retention`, `student_info_view`, `student_info_edit`, `student_info_add_history`, `student_info_add_grades`, `enrollment_view`, `enrollment_add`, `users_view`, `users_add`, `users_edit`, `teacher_info_view`, `teacher_info_edit`, `operations_view`, `operations_add`, `operations_edit`
-             FROM `teachers_account_table` 
-             WHERE username = ? OR email = ? ";
+            $sql = "SELECT teachers_account_table.password
+            FROM `teachers_account_table` 
+            WHERE teachers_account_table.username = ? OR teachers_account_table.email = ? ";
 
             $stmt = $this->connection()->prepare($sql);
             $stmt->execute([$username, $username]);
@@ -194,9 +218,26 @@ class Teachers extends \Dbh{
             $hashed_password = $stmt->fetchAll();
             $check_password = password_verify($password, $hashed_password[0]["password"]);
 
-            $login_res = array($hashed_password, $check_password);
-            
-            return $login_res;
+            $stmt = null;
+
+            if ($check_password) {
+                $sql = "SELECT teachers_account_table.account_id, teachers_account_table.username, teachers_account_table.email, teachers_account_table.password, teachers_account_table.superadmin, teachers_account_table.admin, teachers_account_table.teacher, teachers_account_table.author, teachers_account_table.guidance,
+                teachers_table.teacher_id, teachers_table.surname, teachers_table.first_name, teachers_table.middle_name, teachers_table.ext_name
+                FROM `teachers_account_table`, `teachers_table` 
+                WHERE teachers_account_table.username = ? OR teachers_account_table.email = ?
+                AND teachers_account_table.account_id = teachers_table.teacher_id";
+
+                $stmt = $this->connection()->prepare($sql);
+                $stmt->execute([$username, $username]);
+
+                $result = $stmt->fetchAll();
+            }
+            else{
+                $result = [];
+            }
+
+            return $result;
+
         }
         catch(PDOException $e) {
             echo "Error: " . $e->getMessage();

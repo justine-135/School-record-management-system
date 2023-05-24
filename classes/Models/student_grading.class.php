@@ -13,6 +13,7 @@ class StudentGrading extends \Dbh{
                 WHERE ? in (students_table.student_id, students_table.lrn, students_table.surname, students_table.first_name, students_table.middle_name, students_table.ext, enrollment_history_table.enrolled_at, enrollment_history_table.grade_level, enrollment_history_table.section, students_table.gender, enrollment_history_table.student_lrn)
                 AND enrollment_history_table.student_lrn = students_table.lrn
                 AND (enrollment_history_table.promotion_status IS NULL OR enrollment_history_table.promotion_status = 'Retention')
+                AND enrollment_history_table.status <> 'Unenrolled'
                 ORDER BY `grade_level` ASC, `surname` ASC
                 LIMIT $offset, $total_records_per_page
                 ";
@@ -30,6 +31,7 @@ class StudentGrading extends \Dbh{
                 AND enrollment_history_table.grade_level = ?
                 AND enrollment_history_table.section = ?
                 AND (enrollment_history_table.promotion_status IS NULL OR enrollment_history_table.promotion_status = 'Retention')
+                AND enrollment_history_table.status <> 'Unenrolled'
 
                 ORDER BY `grade_level` ASC, `surname` ASC
                 LIMIT $offset, $total_records_per_page
@@ -39,12 +41,13 @@ class StudentGrading extends \Dbh{
                 $stmt->execute([$query, $level, $section]);        
                 $results = $stmt->fetchAll();
             }
-            elseif (!empty($level) && $section == 'None') {
+            elseif (!empty($level) && $section == '') {
                 $sql = "SELECT enrollment_history_table.enrollment_id, students_table.student_id, students_table.lrn, students_table.surname, students_table.first_name, students_table.middle_name, students_table.ext, enrollment_history_table.enrolled_at, enrollment_history_table.grade_level, enrollment_history_table.section, students_table.gender, enrollment_history_table.student_lrn, enrollment_history_table.status, enrollment_history_table.promotion_status
                 FROM `students_table`, `enrollment_history_table`
                 WHERE students_table.lrn = enrollment_history_table.student_lrn
                 AND enrollment_history_table.grade_level = ?
                 AND (enrollment_history_table.promotion_status IS NULL OR enrollment_history_table.promotion_status = 'Retention')
+                AND enrollment_history_table.status <> 'Unenrolled'
 
                 ORDER BY `grade_level` ASC, `surname` ASC
                 LIMIT $offset, $total_records_per_page
@@ -61,6 +64,7 @@ class StudentGrading extends \Dbh{
                 AND enrollment_history_table.grade_level = ?
                 AND enrollment_history_table.section = ?
                 AND (enrollment_history_table.promotion_status IS NULL OR enrollment_history_table.promotion_status = 'Retention')
+                AND enrollment_history_table.status <> 'Unenrolled'
 
                 ORDER BY `grade_level` ASC, `surname` ASC
                 LIMIT $offset, $total_records_per_page
@@ -77,6 +81,8 @@ class StudentGrading extends \Dbh{
                 AND (enrollment_history_table.promotion_status IS NULL OR enrollment_history_table.promotion_status = 'Retention')
                 -- OR enrollment_history_table.promotion_status IS NULL
                 -- OR enrollment_history_table.promotion_status = 'Retained'
+                AND enrollment_history_table.status <> 'Unenrolled'
+
                 ORDER BY `grade_level` ASC, `surname` ASC
                 LIMIT $offset, $total_records_per_page
                 ";
@@ -129,6 +135,7 @@ class StudentGrading extends \Dbh{
         }
         $conn = null;
     }
+    
     protected function gradesSubmitted($grade_level, $lrn){
         try{
             $sql = "SELECT `subject`, `first_quarter`, `second_quarter`, `third_quarter`, `fourth_quarter` FROM `student_grades_table` WHERE `student_lrn` = ? AND `grade_level` = ?";
@@ -142,5 +149,19 @@ class StudentGrading extends \Dbh{
             echo "Error: " . $e->getMessage();
         }
         $conn = null;
+    }
+
+    protected function gradingPeriod(){
+        try {
+            $sql = "SELECT `from`, `to` FROM `schedule_table`;";
+            $stmt = $this->connection()->prepare($sql);
+            $stmt->execute();
+    
+            $results = $stmt->fetchAll();
+            return $results;
+
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+        } 
     }
 }

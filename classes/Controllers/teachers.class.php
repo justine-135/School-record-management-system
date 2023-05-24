@@ -8,47 +8,41 @@ class TeachersController extends \Models\Teachers{
     // Login validation
     public function initLogin($username, $password){
         if ($this->loginEmptyInputs($username, $password) !== false) {
-            echo "empty";
+            header("Location: ../login.php?login&error&empty");
+            die();
         }
         elseif ($this->initValidateUser($username, $password) !== false) {
-            echo "user false";
+            header("Location: ../login.php?login&error&user");
+            die();
         }
         else{
             $result = $this->login($username, $password);
 
-            if ($result[1]) {
+            if (count($result) > 0) {
                 session_start();
 
-                $dateNow = date("Y-m-d h:i:s");
-                $_SESSION["last_login_datetime"] = $dateNow;
-                // setcookie("last_login_cookie", $dateNow, time() + (3600), "/");
-                $_SESSION['username'] = $result[0][0]['username'];
-                $_SESSION['account_id'] = $result[0][0]['account_id'];
-                $_SESSION['email'] = $result[0][0]['email'];
-                $_SESSION['is_superadmin'] = $result[0][0]['superadmin'];
-                $_SESSION['permission_1'] = $result[0][0]['masterlist_view'];
-                $_SESSION['permission_2'] = $result[0][0]['masterlist_promotion_retention'];
-                $_SESSION['permission_3'] = $result[0][0]['student_info_view'];
-                $_SESSION['permission_4'] = $result[0][0]['student_info_edit'];
-                $_SESSION['permission_5'] = $result[0][0]['student_info_add_history'];
-                $_SESSION['permission_6'] = $result[0][0]['student_info_add_grades'];
-                $_SESSION['permission_7'] = $result[0][0]['enrollment_view'];
-                $_SESSION['permission_8'] = $result[0][0]['enrollment_add'];
-                $_SESSION['permission_9'] = $result[0][0]['users_view'];
-                $_SESSION['permission_10'] = $result[0][0]['users_add'];
-                $_SESSION['permission_11'] = $result[0][0]['users_edit'];
-                $_SESSION['permission_12'] = $result[0][0]['teacher_info_view'];
-                $_SESSION['permission_13'] = $result[0][0]['teacher_info_edit'];
-                $_SESSION['permission_14'] = $result[0][0]['operations_view'];
-                $_SESSION['permission_15'] = $result[0][0]['operations_add'];
-                $_SESSION['permission_16'] = $result[0][0]['operations_edit'];
+                $_SESSION["last_login_timestamp"] = time();
+                $_SESSION['first_name'] = $result[0]['first_name'];
+                $_SESSION['middle_name'] = $result[0]['middle_name'];
+                $_SESSION['surname'] = $result[0]['surname'];
+                $_SESSION['ext_name'] = $result[0]['ext_name'];
+                $_SESSION['username'] = $result[0]['username'];
+                $_SESSION['account_id'] = $result[0]['account_id'];
+                $_SESSION['email'] = $result[0]['email'];
+                $_SESSION['is_superadmin'] = $result[0]['superadmin'];
+                $_SESSION['is_admin'] = $result[0]['admin'];
+                $_SESSION['is_guidance'] = $result[0]['guidance'];
+                $_SESSION['is_teacher'] = $result[0]['teacher'];
+                $_SESSION['is_author'] = $result[0]['author'];
 
+                // echo '<pre>' . var_dump($result) . "</pre>";
                 header("Location: ../index.php");
+                // var_dump($result[0]['first_name']);
                 die();
             }
             
             else{
-                header("Location: ../login.php?login&err");
+                header("Location: ../login.php?login&error&user");
                 die();
             }
             
@@ -136,32 +130,24 @@ class TeachersController extends \Models\Teachers{
     // Registration validation
     public function initCreate($surname, $first_name, $middle_name, $ext_name, $birth_date, $gender, $contact, 
     $religion, $house_street, $subdivision, $barangay, $city, $province, $region, $email, $file,
-    $permission_1, $permission_2, $permission_3, $permission_4, $permission_5,
-    $permission_6, $permission_7, $permission_8, $permission_9, $permission_10, $permission_11,
-    $permission_12, $permission_13, $permission_14, $permission_15, $permission_16, $grade_level, $section){
+    $permission, $grade_level, $section){
         if ($this->emptyInputs($surname, $first_name, $middle_name, $ext_name, $birth_date, $gender, $contact, $religion, $house_street, $subdivision, $barangay, $city, $province, $region, $email, $file) !== false) {
             $this->rejectData("error","empty",$surname, $first_name, $middle_name, $ext_name, $birth_date, $gender, $contact, 
             $religion, $house_street, $subdivision, $barangay, $city, $province, $region, $email, $file,
-            $permission_1, $permission_2, $permission_3, $permission_4, $permission_5,
-            $permission_6, $permission_7, $permission_8, $permission_9, $permission_10, $permission_11,
-            $permission_12, $permission_13, $permission_14, $permission_15, $permission_16    
+            $permission 
         );
             die();
         }
         elseif ($this->validateContact($contact) !== false) {
             $this->rejectData("error","contacterr",$surname, $first_name, $middle_name, $ext_name, $birth_date, $gender, $contact, 
             $religion, $house_street, $subdivision, $barangay, $city, $province, $region, $email, $file,
-            $permission_1, $permission_2, $permission_3, $permission_4, $permission_5,
-            $permission_6, $permission_7, $permission_8, $permission_9, $permission_10, $permission_11,
-            $permission_12, $permission_13, $permission_14, $permission_15, $permission_16);
+            $permission);
             die();
         }
         elseif ($this->validateSpecialChars($religion, $house_street, $subdivision, $barangay, $city, $province, $region, $surname, $first_name, $middle_name) !== false) {
             $this->rejectData("error","special",$surname, $first_name, $middle_name, $ext_name, $birth_date, $gender, $contact,
             $religion, $house_street, $subdivision, $barangay, $city, $province, $region, $email, $file,
-            $permission_1, $permission_2, $permission_3, $permission_4, $permission_5,
-            $permission_6, $permission_7, $permission_8, $permission_9, $permission_10, $permission_11,
-            $permission_12, $permission_13, $permission_14, $permission_15, $permission_16);
+            $permission);
             die();
         }
         // elseif ($this->validateTin($tin) !== false) {
@@ -174,9 +160,7 @@ class TeachersController extends \Models\Teachers{
         elseif ($this->validateImage($file) !== false) {
             $this->rejectData("error","filetype",$surname, $first_name, $middle_name, $ext_name, $birth_date, $gender, $contact, 
             $religion, $house_street, $subdivision, $barangay, $city, $province, $region, $email, $file,
-            $permission_1, $permission_2, $permission_3, $permission_4, $permission_5,
-            $permission_6, $permission_7, $permission_8, $permission_9, $permission_10, $permission_11,
-            $permission_12, $permission_13, $permission_14, $permission_15, $permission_16);
+            $permission);
             die();
         }
         // elseif ($this->validatePassword($password, $confirm_password) !== false) {
@@ -190,17 +174,13 @@ class TeachersController extends \Models\Teachers{
         elseif ($this->initTeacherExist($email) !== false) {
             $this->rejectData("error","exist",$surname, $first_name, $middle_name, $ext_name, $birth_date, $gender, $contact, 
             $religion, $house_street, $subdivision, $barangay, $city, $province, $region, $email, $file,
-            $permission_1, $permission_2, $permission_3, $permission_4, $permission_5,
-            $permission_6, $permission_7, $permission_8, $permission_9, $permission_10, $permission_11,
-            $permission_12, $permission_13, $permission_14, $permission_15, $permission_16);
+            $permission);
             die();
         }
         else{
             $this->create($surname, $first_name, $middle_name, $ext_name, $birth_date, $gender, $contact, 
             $religion, $house_street, $subdivision, $barangay, $city, $province, $region, $email, $file,
-            $permission_1, $permission_2, $permission_3, $permission_4, $permission_5,
-            $permission_6, $permission_7, $permission_8, $permission_9, $permission_10, $permission_11,
-            $permission_12, $permission_13, $permission_14, $permission_15, $permission_16, $grade_level, $section);
+            $permission, $grade_level, $section);
             header("Location: ../register.php?register&submitted");
             die();
         }
@@ -320,11 +300,8 @@ class TeachersController extends \Models\Teachers{
     }
 
     protected function rejectData($catch, $type, $surname, $first_name, $middle_name, $ext_name, $birth_date, $gender, $contact, $religion, 
-    $house_street, $subdivision, $barangay, $city, $province, $region, $email, $file,
-    $permission_1, $permission_2, $permission_3, $permission_4, $permission_5,
-    $permission_6, $permission_7, $permission_8, $permission_9, $permission_10, $permission_11,
-    $permission_12, $permission_13, $permission_14, $permission_15, $permission_16){
-        header("Location: ../register.php?register&{$catch}&{$type}&surname={$surname}&fname={$first_name}&mname={$middle_name}&extname={$ext_name}&bdate={$birth_date}&gender={$gender}&contact={$contact}&religion={$religion}&house_street={$house_street}&subd={$subdivision}&barangay={$barangay}&city={$city}&province={$province}&region={$region}&email={$email}&file={$file}&permission_1={$permission_1}&permission_2={$permission_2}&permission_3={$permission_3}&permission_4={$permission_4}&permission_5={$permission_5}&permission_6={$permission_6}&permission_7={$permission_7}&permission_8={$permission_8}&permission_9={$permission_9}&permission_10={$permission_10}&permission_11={$permission_11}&permission_12={$permission_12}&permission_13={$permission_13}&permission_14={$permission_14}&permission_15={$permission_15}&permission_16={$permission_16}");
+    $house_street, $subdivision, $barangay, $city, $province, $region, $email, $file, $permission){
+        header("Location: ../register.php?register&{$catch}&{$type}&surname={$surname}&fname={$first_name}&mname={$middle_name}&extname={$ext_name}&bdate={$birth_date}&gender={$gender}&contact={$contact}&religion={$religion}&house_street={$house_street}&subd={$subdivision}&barangay={$barangay}&city={$city}&province={$province}&region={$region}&email={$email}&file={$file}&permission={$permission}");
         die();
     }
 }

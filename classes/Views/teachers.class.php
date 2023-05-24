@@ -267,9 +267,9 @@ class TeacherInformationView extends \Models\Teachers{
                         </a>
                     </div>
                     <?php foreach($advisories as $advisory){ ?>
-                    <form action="./includes/advisory.inc.php" method="post" enctype="multipart/form-data">
-                        <div class="w-100 py-2 px-3 border-bottom">
-                            <div class="d-flex">
+                    <form class="px-0" action="./includes/advisory.inc.php" method="post" enctype="multipart/form-data">
+                        <div class="w-100 py-2 border-bottom">
+                            <div class="d-flex px-2">
                                 <div class="d-flex flex-column  justify-content-between">
                                     <span class="fw-semibold">Grade level :</span>
                                     <span><?= $advisory['grade_level'] ?></span>

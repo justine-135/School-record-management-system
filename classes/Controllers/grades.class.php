@@ -174,6 +174,10 @@ class GradesController extends \Models\Grades{
         $presentDate = date('Y-m-d');
         $presentDate = date('Y-m-d', strtotime($presentDate));
         
+        if (count($schedules) == 0) {
+            $result = true;
+        }
+
         foreach ($schedules as $schedule) {
             $start_period = $schedule['from'];
             $end_period = $schedule['to'];
@@ -185,7 +189,7 @@ class GradesController extends \Models\Grades{
                 $result = true;
             }
         }
-        
+
         return $result;
     }
 }

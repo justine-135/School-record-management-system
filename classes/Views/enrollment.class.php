@@ -42,7 +42,7 @@ class EnrollmentView extends \Models\Enrollment{
         $page_no = isset($_GET['page_no']) ? $_GET['page_no'] : '1';
         $status = isset($_GET['status']) ? $_GET['status'] : 'active';
         $query = isset($_GET['query']) ? $_GET['query'] : '';
-        $level = isset($_GET['level']) ? $_GET['level'] : "";
+        $level = isset($_GET['level']) ? $_GET['level'] : "all";
         $section = isset($_GET['section']) ? $_GET['section'] : "";
 
         $page_no = intval($page_no);

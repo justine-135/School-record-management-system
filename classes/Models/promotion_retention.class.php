@@ -177,9 +177,9 @@ class PromotionRetention extends \Dbh{
         try {
             $status = 'Completed';
             $promotion_status = 'Promoted';
-            $sql = "UPDATE `enrollment_history_table` SET `status` = ?, `promotion_status` = ? WHERE `enrollment_id` = ? AND `student_lrn` = ? AND `grade_level` = ?;";
+            $sql = "UPDATE `enrollment_history_table` SET `status` = ?, `promotion_status` = ?, `transfer` = ? WHERE `enrollment_id` = ? AND `student_lrn` = ? AND `grade_level` = ?;";
             $stmt = $this->connection()->prepare($sql);
-            $stmt->execute([$status, $promotion_status, $id, $lrn, $grade_level]);
+            $stmt->execute([$status, $promotion_status, '1', $id, $lrn, $grade_level]);
             $results = $stmt->fetchAll();
             $stmt = null;
 

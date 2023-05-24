@@ -7,7 +7,7 @@ include_once $_SERVER['DOCUMENT_ROOT'].'/sabanges/classes/Database/dbh.class.php
 class Grades extends \Dbh{
     protected function index($lrn, $grade_level){
         try {
-            $sql = "SELECT * FROM `student_grades_table` WHERE `student_lrn` = ? AND `grade_level` = ?;";
+            $sql = "SELECT * FROM `student_grades_table` WHERE `student_lrn` = ? AND `grade_level` = ? ORDER BY `subject` ASC;";
             $stmt = $this->connection()->prepare($sql);
             $stmt->execute([$lrn, $grade_level]);
     
@@ -42,6 +42,10 @@ class Grades extends \Dbh{
 
     protected function update($id, $lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter, $remark){
         try {
+            var_dump($first_quarter);
+            var_dump($second_quarter);
+            var_dump($third_quarter);
+            var_dump($fourth_quarter);
             $sql = "UPDATE `student_grades_table` 
             SET `first_quarter` = ?, `second_quarter` = ?, `third_quarter` = ?, `fourth_quarter` = ?
             WHERE `student_lrn` = ? AND `grade_level` = ? AND `section` = ? AND `subject` = ?;";

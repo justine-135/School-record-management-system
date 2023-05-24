@@ -180,7 +180,7 @@ class Student extends \Dbh{
 
     protected function subjectIndex($grade_lvl){
         try{
-            $sql = "SELECT * FROM `operations_subjects_table` WHERE `grade_level` = ?";
+            $sql = "SELECT * FROM `operations_subjects_table` WHERE `grade_level` = ? ORDER BY `subject` ASC";
             $stmt = $this->connection()->prepare($sql);
             $stmt->execute([$grade_lvl]);
     
@@ -199,7 +199,9 @@ class Student extends \Dbh{
             students_table.surname, students_table.first_name, students_table.middle_name, students_table.ext 
             FROM `enrollment_history_table`, `students_table` 
             WHERE enrollment_history_table.student_lrn = ? AND enrollment_history_table.grade_level = ?
-            AND enrollment_history_table.student_lrn = students_table.lrn";
+            AND enrollment_history_table.student_lrn = students_table.lrn
+            AND enrollment_history_table.status <> 'Retained'
+            ";
             $stmt = $this->connection()->prepare($sql);
             $stmt->execute([$lrn, $grade_level]);
     
@@ -292,7 +294,12 @@ class Student extends \Dbh{
 
     protected function gradesSubmitted($grade_level, $lrn){
         try{
-            $sql = "SELECT `subject`, `first_quarter`, `second_quarter`, `third_quarter`, `fourth_quarter` FROM `student_grades_table` WHERE `student_lrn` = ? AND `grade_level` = ?";
+            $sql = "SELECT `subject`, `first_quarter`, `second_quarter`, `third_quarter`, `fourth_quarter` 
+            FROM `student_grades_table` 
+            WHERE `student_lrn` = ? 
+            AND `grade_level` = ?
+            ORDER BY `subject` ASC";
+            
             $stmt = $this->connection()->prepare($sql);
             $stmt->execute([$lrn, $grade_level]);
     

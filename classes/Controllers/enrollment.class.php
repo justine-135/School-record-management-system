@@ -183,28 +183,34 @@ class EnrollmentController extends \Models\Enrollment{
 
     public function batchEnroll($ids, $lrns, $grade_levels, $section){
         if (count($ids) == 0 || $section == null) {
-            echo 'missingi nputs';
+            header("Location: ../batch_enrollment.php?enrollment&error&empty");
+            die();
         }
         else{
             for ($i=0; $i < count($ids); $i++) { 
                 $this->batchCreate($ids[$i], $lrns[$i], $grade_levels[$i], $section);
             }
+            header("Location: ../batch_enrollment.php?enrollment&submitted");
+            die();
         }
     }
 
     public function initSearchLrn($lrn){
         if ($this->invalidLRN($lrn) !== false) {
-            header("Location: ../returnee.php?returnee&err&lrn");
+            header("Location: ../returnee.php?returnee&error&lrn");
             die();
         }
         elseif ($this->initHasActiveHistory($lrn) !== false) {
-            header("Location: ../returnee.php?returnee&err&active");
+            header("Location: ../returnee.php?returnee&error&active");
+            die();
         }
         elseif ($this->lrnExist($lrn) !== false) {
             header("Location: ../returnee.php?lrn=" . $lrn);
+            die();
         }
         else{
-            header("Location: ../returnee.php?returnee&err&exist");
+            header("Location: ../returnee.php?returnee&error&exist");
+            die();
         }
     }
 
@@ -222,19 +228,19 @@ class EnrollmentController extends \Models\Enrollment{
             die();
         }
         elseif ($this->invalidLRN($lrn)) {
-            header("Location: ../returnee.php?returnee&err&lrn");
+            header("Location: ../returnee.php?returnee&error&lrn");
             die();
         }
         elseif ($this->invalidGradeLevel($lrn, $grade_level)) {
-            header("Location: ../returnee.php?returnee&err&gradelevel");
+            header("Location: ../returnee.php?returnee&error&gradelevel");
             die();
         }
         elseif ($this->initLevelCurrentlyEnrolled($lrn, $grade_level)) {
-            header("Location: ../returnee.php?returnee&err&enrolled");
+            header("Location: ../returnee.php?returnee&error&enrolled");
             die();
         }
         elseif ($this->initHasTransferred($lrn)) {
-            header("Location: ../returnee.php?returnee&err&transferree");
+            header("Location: ../returnee.php?returnee&error&transferree");
             die();
         }
         else{

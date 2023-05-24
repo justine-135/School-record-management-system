@@ -37,27 +37,64 @@ class StudentGradingView extends \Models\StudentGrading{
             return;
         }
     }
+
+    protected function initGradingPeriod(){
+        $result = false;
+
+        $schedules = $this->gradingPeriod();
+
+        $presentDate = date('Y-m-d');
+        $presentDate = date('Y-m-d', strtotime($presentDate));
+        
+        if (count($schedules) == 0) {
+            $result = true;
+        }
+
+        foreach ($schedules as $schedule) {
+            $start_period = $schedule['from'];
+            $end_period = $schedule['to'];
+
+            if (($presentDate >= $start_period) && ($presentDate <= $end_period)){
+                $result = false;
+                break;
+            }else{
+                $result = true;
+            }
+        }
+
+        return $result;
+    }
+
     public function initIndex($view){
-        $rows = isset($_GET['row']) ? $_GET['row'] : '10';
-        $page_no = isset($_GET['page_no']) ? $_GET['page_no'] : '1';
-        $status = isset($_GET['status']) ? $_GET['status'] : 'active';
-        $query = isset($_GET['query']) ? $_GET['query'] : '';
-        $level = isset($_GET['level']) ? $_GET['level'] : "";
-        $section = isset($_GET['section']) ? $_GET['section'] : "";
+        $grading_period_open = $this->initGradingPeriod();
 
-        $page_no = intval($page_no);
-        $total_records_per_page = $rows;
-        $offset = ($page_no - 1) * intval($total_records_per_page);
-        $previous_page = $page_no - 1;
-        $next_page = $page_no + 1;
+        if ($grading_period_open) {
+            echo "<div class='my-2 py-3 text-center bg-secondary text-white'><strong>GRADING PERIOD IS CLOSED</strong></div>";
+        }
+        else{
+            $rows = isset($_GET['row']) ? $_GET['row'] : '10';
+            $page_no = isset($_GET['page_no']) ? $_GET['page_no'] : '1';
+            $status = isset($_GET['status']) ? $_GET['status'] : 'active';
+            $query = isset($_GET['query']) ? $_GET['query'] : '';
+            $level = isset($_GET['level']) ? $_GET['level'] : "";
+            $section = isset($_GET['section']) ? $_GET['section'] : "";
 
-        $result_count = $this->studentCount($status, $level, $section);
-        $records = count($result_count);
-        $total_no_page = ceil($records / intval($total_records_per_page));
+            $page_no = intval($page_no);
+            $total_records_per_page = $rows;
+            $offset = ($page_no - 1) * intval($total_records_per_page);
+            $previous_page = $page_no - 1;
+            $next_page = $page_no + 1;
 
-        $this->validateRequest($rows, $offset, $page_no, $status, $query, $level, $section);
+            $result_count = $this->studentCount($status, $level, $section);
+            $records = count($result_count);
+            $total_no_page = ceil($records / intval($total_records_per_page));
 
-        $results = $this->index($status, $offset, $total_records_per_page, $query, $level, $section);
+
+
+            $this->validateRequest($rows, $offset, $page_no, $status, $query, $level, $section);
+
+            $results = $this->index($status, $offset, $total_records_per_page, $query, $level, $section);
+
         ?>
 
         <form class="" action="./includes/grades.inc.php" method="post" enctype="multipart/form-data">
@@ -78,9 +115,6 @@ class StudentGradingView extends \Models\StudentGrading{
                     <th scope="col">     
                         <div class="d-flex">
                             <span class="me-2">#</span>      
-                            <div class="form-check">
-                                <input class="form-check-input masterlist-chkbox-all" type="checkbox" value="" id="flexCheckDefault">
-                            </div>
                         </div>
                     </th>
                     <th scope="col">LRN</th>
@@ -178,7 +212,7 @@ class StudentGradingView extends \Models\StudentGrading{
             </ul>
             <span class="fw-semibold">Page <?= $page_no ?> out of <?= $total_no_page ?></span>
         </nav>
-        <?php
+        <?php }
     }
         
 }
