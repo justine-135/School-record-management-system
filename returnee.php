@@ -8,9 +8,9 @@
 <?php include './partials/alert.php'; ?>
 
 <?php
-if (empty($_SESSION['username']) && empty($_SESSION['account_id'])) {
-  header("Location: ./login.php");
-}
+$_SESSION['page_permission'] = 'guidance';
+include './includes/session.inc.php';
+include './includes/permission.inc.php';
 ?>
 
 <main class="container-fluid w-90 mt-4 ">
