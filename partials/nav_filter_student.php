@@ -27,26 +27,48 @@ $section = isset($_GET['section']) ? $_GET['section'] : "";
 
         <?php if ($view !== 'all_students') { ?>
         <div class="<?= $view == 'batch_enrollment' ? 'col-md-4' : 'col-md-3' ?> p-0">
-            <div class="dropdown border">
-                <button class="btn btn-white dropdown-toggle btn-sm" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                    Grade level
-                    <span class="fw-semibold">
-                        <?= isset($_GET['level']) ? (empty($level) ? "All" : ucfirst($_GET['level'])) : 'All' ?>
-                    </span>
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                    <li><a class="dropdown-item" href="?row=<?= $row ?>&page_no=<?= 1 ?>">All</a></li>
-                    <?php if ($view !== 'grading') { ?>
-                    <li><a class="dropdown-item" href="?row=<?= $row ?>&page_no=<?= 1 ?>&level=Kindergarten&section=">Kindergarten</a></li>
-                    <?php } ?>
-                    <li><a class="dropdown-item" href="?row=<?= $row ?>&page_no=<?= 1 ?>&level=1&section=">1</a></li>
-                    <li><a class="dropdown-item" href="?row=<?= $row ?>&page_no=<?= 1 ?>&level=2&section=">2</a></li>
-                    <li><a class="dropdown-item" href="?row=<?= $row ?>&page_no=<?= 1 ?>&level=3&section=">3</a></li>
-                    <li><a class="dropdown-item" href="?row=<?= $row ?>&page_no=<?= 1 ?>&level=4&section=">4</a></li>
-                    <li><a class="dropdown-item" href="?row=<?= $row ?>&page_no=<?= 1 ?>&level=5&section=">5</a></li>
-                    <li><a class="dropdown-item" href="?row=<?= $row ?>&page_no=<?= 1 ?>&level=6&section=">6</a></li>
-                </ul>
-            </div>
+            <?php if ($view == 'batch_enrollment') { ?>
+                <div class="dropdown border">
+                    <button class="btn btn-white dropdown-toggle btn-sm" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                        Grade level
+                        <span class="fw-semibold">
+                            <?= isset($_GET['level']) ? (empty($level) ? "Select" : ucfirst($_GET['level'])) : 'Select' ?>
+                        </span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <?php if ($view !== 'grading') { ?>
+                        <li><a class="dropdown-item" href="?row=<?= $row ?>&page_no=<?= 1 ?>&level=Kindergarten&section=">Kindergarten</a></li>
+                        <?php } ?>
+                        <li><a class="dropdown-item" href="?row=<?= $row ?>&page_no=<?= 1 ?>&level=1&section=">1</a></li>
+                        <li><a class="dropdown-item" href="?row=<?= $row ?>&page_no=<?= 1 ?>&level=2&section=">2</a></li>
+                        <li><a class="dropdown-item" href="?row=<?= $row ?>&page_no=<?= 1 ?>&level=3&section=">3</a></li>
+                        <li><a class="dropdown-item" href="?row=<?= $row ?>&page_no=<?= 1 ?>&level=4&section=">4</a></li>
+                        <li><a class="dropdown-item" href="?row=<?= $row ?>&page_no=<?= 1 ?>&level=5&section=">5</a></li>
+                        <li><a class="dropdown-item" href="?row=<?= $row ?>&page_no=<?= 1 ?>&level=6&section=">6</a></li>
+                    </ul>
+                </div>
+            <?php } else { ?>
+                <div class="dropdown border">
+                    <button class="btn btn-white dropdown-toggle btn-sm" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                        Grade level
+                        <span class="fw-semibold">
+                            <?= isset($_GET['level']) ? (empty($level) ? "All" : ucfirst($_GET['level'])) : 'All' ?>
+                        </span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <li><a class="dropdown-item" href="?row=<?= $row ?>&page_no=<?= 1 ?>">All</a></li>
+                        <?php if ($view !== 'grading') { ?>
+                        <li><a class="dropdown-item" href="?row=<?= $row ?>&page_no=<?= 1 ?>&level=Kindergarten&section=">Kindergarten</a></li>
+                        <?php } ?>
+                        <li><a class="dropdown-item" href="?row=<?= $row ?>&page_no=<?= 1 ?>&level=1&section=">1</a></li>
+                        <li><a class="dropdown-item" href="?row=<?= $row ?>&page_no=<?= 1 ?>&level=2&section=">2</a></li>
+                        <li><a class="dropdown-item" href="?row=<?= $row ?>&page_no=<?= 1 ?>&level=3&section=">3</a></li>
+                        <li><a class="dropdown-item" href="?row=<?= $row ?>&page_no=<?= 1 ?>&level=4&section=">4</a></li>
+                        <li><a class="dropdown-item" href="?row=<?= $row ?>&page_no=<?= 1 ?>&level=5&section=">5</a></li>
+                        <li><a class="dropdown-item" href="?row=<?= $row ?>&page_no=<?= 1 ?>&level=6&section=">6</a></li>
+                    </ul>
+                </div>
+            <?php } ?>
         </div>
         <?php } ?>
 
