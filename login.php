@@ -5,6 +5,7 @@ if (!empty($_SESSION['username']) && !empty($_SESSION['account_id'])) {
   header("Location: ./index.php");
 }
 ?>
+<?php include './partials/alert.php'; ?>
 
 <div class="d-flex align-items-center justify-content-center">
     <div class="bg-white border mt-4 w-25">
