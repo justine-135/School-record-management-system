@@ -109,11 +109,6 @@ elseif (isset($_POST['update'])) {
     $fname = $_POST['fname'];
     $mname = $_POST['mname'];
     $extname = $_POST['extname'];
-    $lrn = $_POST['lrn'];
-    $from_sy = $_POST['from-sy'];
-    $to_sy = $_POST['to-sy'];
-    $grade_lvl = $_POST['grade-lvl'];
-    $section = $_POST['section'];
     $file = $_FILES['file'];
     $bdate = $_POST['birth-date'];
     $gender = $_POST['gender'];
@@ -161,7 +156,7 @@ elseif (isset($_POST['update'])) {
     // Check inputs
     $enrollment_check_obj = new EnrollmentController();
     $enrollment_validation_result = $enrollment_check_obj->initUpdate(
-    $curr_lrn, $student_id, $sname, $fname, $mname, $extname, $lrn, $from_sy, $to_sy, $grade_lvl, $section, $file, $bdate, $gender, $religion, 
+    $curr_lrn, $student_id, $sname, $fname, $mname, $extname, $file, $bdate, $gender, $religion, 
     $house_street, $subdivision, $barangay, $city, $province, $region,
     $father_surname, $father_fname, $father_mname, $father_education, $father_employment, $father_contact, 
     $mother_surname, $mother_fname, $mother_mname, $mother_education, $mother_employment, $mother_contact,
