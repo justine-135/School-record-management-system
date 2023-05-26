@@ -18,7 +18,7 @@ if (!empty($_SESSION['username']) && !empty($_SESSION['account_id'])) {
             <div class="mb-3 px-3">
                 <label for="password" class="form-label fw-semibold">Password</label>
                 <input type="password" class="form-control" name="password" id="password" placeholder="Enter password ...">
-                <div id="emailHelp" class="form-text">*Default password is: (SURNAME12345).</div>
+                <div id="emailHelp" class="form-text">Default password is: (SURNAME12345).</div>
             </div>
             <hr>
             <div class="mb-3 px-3">
