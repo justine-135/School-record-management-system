@@ -95,7 +95,7 @@ class Teachers extends \Dbh{
             $status = $status == 'active' ? 1 : 0;
 
             if (!empty($query)) {
-                $sql = "SELECT teachers_account_table.account_id, teachers_account_table.added_at, teachers_account_table.username, teachers_account_table.email, 
+                $sql = "SELECT teachers_account_table.account_id, teachers_account_table.added_at, teachers_account_table.username, teachers_account_table.email, teachers_account_table.image, teachers_account_table.superadmin, teachers_account_table.admin, teachers_account_table.teacher, teachers_account_table.guidance, teachers_account_table.author,
                 teachers_table.teacher_id, teachers_table.surname, teachers_table.first_name, teachers_table.middle_name, teachers_table.ext_name, teachers_table.gender, teachers_table.contact
                 FROM teachers_account_table, teachers_table
                 WHERE ? in (teachers_account_table.account_id, teachers_account_table.added_at, teachers_account_table.username, teachers_account_table.email, 
@@ -108,7 +108,7 @@ class Teachers extends \Dbh{
                 $stmt->execute([$query, $status]);
             }
             else{
-                $sql = "SELECT teachers_account_table.account_id, teachers_account_table.added_at, teachers_account_table.username, teachers_account_table.email, 
+                $sql = "SELECT teachers_account_table.account_id, teachers_account_table.added_at, teachers_account_table.username, teachers_account_table.email, teachers_account_table.image, teachers_account_table.superadmin, teachers_account_table.admin, teachers_account_table.teacher, teachers_account_table.guidance, teachers_account_table.author,
                 teachers_table.teacher_id, teachers_table.surname, teachers_table.first_name, teachers_table.middle_name, teachers_table.ext_name, teachers_table.gender, teachers_table.contact
                 FROM teachers_account_table, teachers_table
                 WHERE teachers_account_table.account_id = teachers_table.teacher_id
@@ -148,12 +148,12 @@ class Teachers extends \Dbh{
 
     protected function singleIndex($id){
         try{
-            $sql = "SELECT teachers_account_table.account_id, teachers_account_table.added_at, teachers_account_table.username, teachers_account_table.email, teachers_account_table.image,
-            teachers_table.teacher_id, teachers_table.surname, teachers_table.first_name, teachers_table.middle_name, teachers_table.ext_name, teachers_table.birth_date, teachers_table.gender, teachers_table.contact, teachers_table.religion,
-            teachers_table.house_street, teachers_table.subdivision, teachers_table.barangay, teachers_table.city, teachers_table.province, teachers_table.province, teachers_table.region
+            $sql = "SELECT acc.account_id, acc.added_at, acc.username, acc.email, acc.superadmin, acc.admin, acc.teacher, acc.author, acc.guidance, acc.image, acc.superadmin, acc.admin, acc.teacher, acc.guidance, acc.author,
+            teachers.teacher_id, teachers.surname, teachers.first_name, teachers.middle_name, teachers.ext_name, teachers.birth_date, teachers.gender, teachers.contact, teachers.religion,
+            teachers.house_street, teachers.subdivision, teachers.barangay, teachers.city, teachers.province, teachers.province, teachers.region
 
-            FROM teachers_table, teachers_account_table
-            WHERE teachers_account_table.account_id = teachers_table.teacher_id
+            FROM teachers_table as teachers, teachers_account_table as acc
+            WHERE acc.account_id = teachers.teacher_id
             AND teacher_id = ?";
 
             $stmt = $this->connection()->prepare($sql);
@@ -259,13 +259,68 @@ class Teachers extends \Dbh{
     }
 
     protected function changePassword($username ,$newpass){
-        
         try {
             $hashed_password = password_hash($newpass, PASSWORD_DEFAULT);
             
             $sql = "UPDATE `teachers_account_table` SET `password` = ? WHERE `email` = ? OR `username` = ?;";
             $stmt = $this->connection()->prepare($sql);
             $stmt->execute([$hashed_password, $username, $username]);
+
+            $results = $stmt->fetchAll();
+            return $results;
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+        }
+    }
+
+    protected function indexDashboard($grade_level, $section){
+        try {
+            $sql = "SELECT history.enrollment_id, history.student_lrn, history.grade_level, history.section, history.status,
+            student.student_id, student.lrn, student.image, student.first_name, student.middle_name, student.surname, student.ext, student.gender   
+            FROM enrollment_history_table as history, students_table as student 
+            WHERE history.status = ? 
+            AND history.grade_level = ? 
+            AND history.section = ?
+            AND history.student_lrn = student.lrn";
+            
+            $stmt = $this->connection()->prepare($sql);
+            $stmt->execute(['Active', $grade_level, $section]);
+    
+            $results = $stmt->fetchAll();
+
+            return $results;
+
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+        }
+    }
+
+    protected function editPermission($id, $permission){
+        try {     
+            $sql = "UPDATE `teachers_account_table` SET `superadmin` = ?, `admin` = ?, `teacher` = ?, `guidance` = ?, `author` = ? WHERE `account_id` = ?;";
+            $stmt = $this->connection()->prepare($sql);
+
+            switch ($permission) {
+                case 'teacher':
+                    $stmt->execute([0, 0, 1, 0, 0, $id]);
+                    break;
+                
+                case 'admin':
+                    $stmt->execute([0, 1, 0, 0, 0, $id]);
+                    break;
+                
+                case 'guidance':
+                    $stmt->execute([0, 0, 0, 1, 0, $id]);
+                    break;
+                
+                case 'author':
+                    $stmt->execute([0, 0, 0, 0, 1, $id]);
+                    break;
+                
+                default:
+                    break;
+            }
+
 
             $results = $stmt->fetchAll();
             return $results;
