@@ -140,7 +140,7 @@ class Enrollment extends \Dbh{
         $conn = null;
     }
 
-    protected function update($curr_lrn, $enrollment_id, $student_id, $sname, $fname, $mname, $extname, $lrn, $from_sy, $to_sy, $grade_lvl, $section, $file, $bdate, $gender, $religion, 
+    protected function update($curr_lrn, $student_id, $sname, $fname, $mname, $extname, $file, $bdate, $gender, $religion, 
     $house_street, $subdivision, $barangay, $city, $province, $region,
     $father_surname, $father_fname, $father_mname, $father_education, 
     $father_employment, $father_contact, $mother_surname, $mother_fname, 
@@ -148,6 +148,7 @@ class Enrollment extends \Dbh{
     $guardian_surname, $guardian_fname, $guardian_mname, $guardian_education, 
     $guardian_employment, $guardian_contact, $is_beneficiary,
     $father_education_textbox, $mother_education_textbox, $guardian_education_textbox){
+
         try{
             $image = $file['tmp_name'];
             $base64_image = base64_encode(file_get_contents(addslashes($image)));
@@ -168,25 +169,23 @@ class Enrollment extends \Dbh{
             }
             // Query
             $sql = 
-            "UPDATE `students_table` SET enrolled_at = enrolled_at, surname = ?, first_name = ?, middle_name = ?, ext = ?, `image` = ?, lrn = ?, birth_date = ?, gender = ?, religion = ?, house_street = ?, subdivision = ?, barangay = ?, city = ?, province = ?, region = ?
+            "UPDATE `students_table` SET enrolled_at = enrolled_at, surname = ?, first_name = ?, middle_name = ?, ext = ?, `image` = ?, birth_date = ?, gender = ?, religion = ?, house_street = ?, subdivision = ?, barangay = ?, city = ?, province = ?, region = ?
             WHERE `student_id` = ?;
-            UPDATE `fathers_table` SET student_lrn = ?, father_surname = ?, father_first_name = ?, father_middle_name = ?, father_education = ?, father_employment = ?, father_contact_number = ?, is_beneficiary = ?
+            UPDATE `fathers_table` SET father_surname = ?, father_first_name = ?, father_middle_name = ?, father_education = ?, father_employment = ?, father_contact_number = ?, is_beneficiary = ?
             WHERE `student_lrn` = ?;
-            UPDATE `mothers_table` SET student_lrn = ?, mother_surname = ?, mother_first_name = ?, mother_middle_name = ?, mother_education = ?, mother_employment = ?, mother_contact_number = ?, is_beneficiary = ?
+            UPDATE `mothers_table` SET mother_surname = ?, mother_first_name = ?, mother_middle_name = ?, mother_education = ?, mother_employment = ?, mother_contact_number = ?, is_beneficiary = ?
             WHERE `student_lrn` = ?;
-            UPDATE `guardians_table` SET student_lrn = ?, guardian_surname = ?, guardian_first_name = ?, guardian_middle_name = ?, guardian_education = ?, guardian_employment = ?, guardian_contact_number = ?, is_beneficiary = ?
-            WHERE `student_lrn` = ?;
-            UPDATE `enrollment_history_table` SET student_lrn = ?, from_sy = ?, to_sy = ?, school = ?, grade_level = ?, section = ?, `status` = ?
-            WHERE `enrollment_id` = ?;
+            UPDATE `guardians_table` SET guardian_surname = ?, guardian_first_name = ?, guardian_middle_name = ?, guardian_education = ?, guardian_employment = ?, guardian_contact_number = ?, is_beneficiary = ?
+            WHERE `student_lrn` = ?;;
 
             ";
             // Execute
             $stmt = $this->connection()->prepare($sql);
-            $stmt->execute([$sname, $fname, $mname, $extname, $base64_image, $lrn, $bdate, $gender, $religion, $house_street, $subdivision, $barangay, $city, $province, $region, $student_id,
-            $lrn, $father_surname, $father_fname, $father_mname, $father_education, $father_employment, $father_contact, $is_beneficiary, $curr_lrn,
-            $lrn, $mother_surname, $mother_fname, $mother_mname, $mother_education, $mother_employment, $mother_contact, $is_beneficiary, $curr_lrn,
-            $lrn, $guardian_surname, $guardian_fname, $guardian_mname, $guardian_education, $guardian_employment, $guardian_contact, $is_beneficiary, $curr_lrn,
-            $lrn, $from_sy, $to_sy, $school, $grade_lvl, $section, $status, $enrollment_id]);
+            $stmt->execute([$sname, $fname, $mname, $extname, $base64_image, $bdate, $gender, $religion, $house_street, $subdivision, $barangay, $city, $province, $region, $student_id,
+            $father_surname, $father_fname, $father_mname, $father_education, $father_employment, $father_contact, $is_beneficiary, $curr_lrn,
+            $mother_surname, $mother_fname, $mother_mname, $mother_education, $mother_employment, $mother_contact, $is_beneficiary, $curr_lrn,
+            $guardian_surname, $guardian_fname, $guardian_mname, $guardian_education, $guardian_employment, $guardian_contact, $is_beneficiary, $curr_lrn,
+            ]);
             $stmt = null;
 
         }

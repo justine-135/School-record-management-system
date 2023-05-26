@@ -72,6 +72,7 @@ class PromotionRetentionView extends \Models\PromotionRetention{
                         </div>
                     </th>
                     <th scope="col">LRN</th>
+                    <th scope="col">Image</th>
                     <th scope="col">Student</th>
                     <?php if ($view !== 'grading') { ?>
                     <th scope="col">Enrolled at</th>
@@ -104,6 +105,7 @@ class PromotionRetentionView extends \Models\PromotionRetention{
                             </div>
                         </td>
                         <td><?= $row['lrn'] ?></td>
+                        <td class="d-flex align-items-center justify-content-center"><img class="rounded-circle" style="object-fit: cover;" width=50px height=50px src=data:image;base64,<?= $row['image'] ?>></td>
                         <td><?= strtoupper($row['surname']) . ', ' . strtoupper($row['first_name']) . ' ' . strtoupper($row['middle_name'])  ?> <?= strtoupper($row['ext']) == 'NONE' ? '' : strtoupper($row['ext']) ?></td>
                         <?php if ($view !== 'grading') { ?>
                         <td><?= $row['enrolled_at'] ?></td>

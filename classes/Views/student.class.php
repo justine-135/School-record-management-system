@@ -71,6 +71,7 @@ class StudentView extends \Models\Student{
                         </div>
                     </th>
                     <th scope="col">LRN</th>
+                    <th scope="col">Image</th>
                     <th scope="col">Student</th>
                     <?php if ($view !== 'grading') { ?>
                     <th scope="col">Enrolled at</th>
@@ -109,6 +110,7 @@ class StudentView extends \Models\Student{
                             </div>
                         </td>
                         <td><?= $row['lrn'] ?></td>
+                        <td class="d-flex align-items-center justify-content-center border-0"><img class="rounded-circle" style="object-fit: cover;" width=50px height=50px src=data:image;base64,<?= $row['image'] ?>></td>
                         <td><?= strtoupper($row['surname']) . ', ' . strtoupper($row['first_name']) . ' ' . strtoupper($row['middle_name'])  ?> <?= strtoupper($row['ext']) == 'NONE' ? '' : strtoupper($row['ext']) ?></td>
                         <?php if ($view !== 'grading') { ?>
                         <td><?= $row['enrolled_at'] ?></td>
@@ -235,6 +237,7 @@ class StudentView extends \Models\Student{
                         </div>
                     </th>
                     <th scope="col">LRN</th>
+                    <th scole='col'>Image</th>
                     <th scope="col">Student</th>
                     <th scope="col">Date recorded</th>
                     <th scope="col">Gender</th>
@@ -255,6 +258,7 @@ class StudentView extends \Models\Student{
                             </div>
                         </td>
                         <td><?= $row['lrn'] ?></td>
+                        <td class="d-flex align-items-center justify-content-center border-0"><img class="rounded-circle" style="object-fit: cover;" width=50px height=50px src=data:image;base64,<?= $row['image'] ?>></td>
                         <td><?= strtoupper($row['surname']) . ', ' . strtoupper($row['first_name']) . ' ' . strtoupper($row['middle_name'])  ?> <?= strtoupper($row['ext']) == 'NONE' ? '' : strtoupper($row['ext']) ?></td>
                         <td><?= $row['enrolled_at'] ?></td>
                         <td><?= $row['gender'] ?></td>

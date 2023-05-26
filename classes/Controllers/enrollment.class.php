@@ -92,14 +92,14 @@ class EnrollmentController extends \Models\Enrollment{
         }
     }
 
-    public function initUpdate($curr_lrn, $student_id, $sname, $fname, $mname, $extname, $lrn, $from_sy, $to_sy, $grade_lvl, $section, $file, $bdate, $gender, $religion, 
+    public function initUpdate($curr_lrn, $student_id, $sname, $fname, $mname, $extname, $file, $bdate, $gender, $religion, 
     $house_street, $subdivision, $barangay, $city, $province, $region,
     $father_surname, $father_fname, $father_mname, $father_education, $father_employment, $father_contact, 
     $mother_surname, $mother_fname, $mother_mname, $mother_education, $mother_employment, $mother_contact,
     $guardian_surname, $guardian_fname, $guardian_mname, $guardian_education, $guardian_employment, $guardian_contact, 
     $is_beneficiary, $father_education_textbox, $mother_education_textbox, $guardian_education_textbox)
     {
-        if ($this->emptyInputs(
+        if ($this->emptyInputsUpdate(
             $sname, $fname, $mname, $extname, $bdate, $gender, $religion, 
             $house_street, $subdivision, $barangay, $city, $province, $region,
             $father_surname, $father_fname, $father_mname, $father_education, $father_employment, $father_contact, 
@@ -121,23 +121,6 @@ class EnrollmentController extends \Models\Enrollment{
             die();
         }
 
-        elseif ($this->invalidLRN($lrn) !== false) 
-        {
-            header("Location: ../student_informations.php?id={$student_id}&edit_enrollment&error&lrnerr");
-            die();
-        }
-
-        elseif ($this->lrnExist2($lrn) !== false) 
-        {
-            header("Location: ../student_informations.php?id={$student_id}&edit_enrollment&error&lrnexist");
-            die();
-        }
-
-        elseif ($this->invalidSchoolYear($from_sy, $to_sy) !== false) 
-        {
-            header("Location: ../student_informations.php?id={$student_id}&edit_enrollment&error&sy");
-            die();
-        }
 
         elseif ($this->invalidFile($file) !== false) {
             header("Location: ../student_informations.php?id={$student_id}&edit_enrollment&error&filesize");
@@ -167,7 +150,7 @@ class EnrollmentController extends \Models\Enrollment{
         // }
 
         else{
-            $this->update($curr_lrn, $enrollment_id, $student_id, $sname, $fname, $mname, $extname, $lrn, $from_sy, $to_sy, $grade_lvl, $section, $file, $bdate, $gender, $religion, 
+            $this->update($curr_lrn, $student_id, $sname, $fname, $mname, $extname, $file, $bdate, $gender, $religion, 
             $house_street, $subdivision, $barangay, $city, $province, $region,
             $father_surname, $father_fname, $father_mname, $father_education, 
             $father_employment, $father_contact, $mother_surname, $mother_fname, 
@@ -176,7 +159,7 @@ class EnrollmentController extends \Models\Enrollment{
             $guardian_employment, $guardian_contact, $is_beneficiary,
             $father_education_textbox, $mother_education_textbox, $guardian_education_textbox);
 
-            header("Location: ../student_informations.php?id={$enrollment_id}&edit_enrollment&submitted");
+            header("Location: ../student_informations.php?id={$student_id}&edit_enrollment&submitted");
             die();
         }
     }
@@ -290,7 +273,7 @@ class EnrollmentController extends \Models\Enrollment{
         return $result;
     }
 
-    protected function emptyInputs($sname, $fname, $mname, $extname, $lrn, $from_sy, $to_sy, $grade_lvl, $section, $bdate, 
+    protected function emptyInputs($sname, $fname, $mname, $extname, $lrn, $from_sy, $to_sy, $grade_lvl, $section, $bdate,
         $gender, $religion, $house_street, $subdivision, $barangay, $city, $province, $region,
         $father_surname, $father_fname, $father_mname, $father_contact, $father_education,
         $mother_surname, $mother_fname, $mother_mname, $mother_contact, $mother_education,
@@ -300,7 +283,45 @@ class EnrollmentController extends \Models\Enrollment{
         {
         $result = false;
         if (empty($sname) || empty($fname) || empty($mname) || empty($extname) || empty($lrn) || 
-        empty($from_sy) || empty($to_sy) || empty($grade_lvl) || empty($bdate) || 
+        empty($from_sy) || empty($to_sy) || empty($grade_lvl) || empty($section) || empty($bdate) || 
+        empty($religion) || empty($house_street) || empty($subdivision) || empty($barangay) || 
+        empty($city) || empty($province) || empty($region) || 
+        empty($father_surname) || empty($father_fname) || empty($father_mname) || empty($father_contact) || empty($father_education) ||
+        empty($mother_surname) || empty($mother_fname) || empty($mother_mname) || empty($mother_contact) || empty($mother_education) ||
+        empty($guardian_surname) || empty($guardian_fname) || empty($guardian_mname) || empty($guardian_contact) || 
+        empty($guardian_education)
+        ) 
+        {
+            $result = true;
+        }
+        if ($father_education === "Others") {
+            if (empty($father_education_textbox)) {
+                $result = true;
+            }
+        }
+        if ($mother_education === "Others") {
+            if (empty($mother_education_textbox)) {
+                $result = true;
+            }
+        }
+        if ($guardian_education === "Others") {
+            if (empty($guardian_education_textbox)) {
+                $result = true;
+            }
+        }
+        return $result;
+    }
+
+    protected function emptyInputsUpdate($sname, $fname, $mname, $extname, $bdate, 
+        $gender, $religion, $house_street, $subdivision, $barangay, $city, $province, $region,
+        $father_surname, $father_fname, $father_mname, $father_contact, $father_education,
+        $mother_surname, $mother_fname, $mother_mname, $mother_contact, $mother_education,
+        $guardian_surname, $guardian_fname, $guardian_mname, $guardian_contact, $guardian_education,
+        $father_education_textbox, $mother_education_textbox, $guardian_education_textbox
+        )
+        {
+        $result = false;
+        if (empty($sname) || empty($fname) || empty($mname) || empty($extname) || empty($bdate) || 
         empty($religion) || empty($house_street) || empty($subdivision) || empty($barangay) || 
         empty($city) || empty($province) || empty($region) || 
         empty($father_surname) || empty($father_fname) || empty($father_mname) || empty($father_contact) || empty($father_education) ||

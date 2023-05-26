@@ -36,6 +36,7 @@ class TeachersView extends \Models\Teachers{
                     <th>Email</th>
                     <th>Contact</th>
                     <th>Gender</th>
+                    <th>Role</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -54,6 +55,7 @@ class TeachersView extends \Models\Teachers{
                     <td><?= $row['email'] ?></td>
                     <td><?= $row['contact'] ?></td>
                     <td><?= $row['gender'] ?></td>
+                    <td><?= $row['superadmin'] == 1 ? 'Superadmin' : ($row['admin'] == 1 ? 'Admin' : ($row['teacher'] == 1 ? 'Teacher' : ($row['guidance'] == 1 ? 'Guidance' : ($row['author'] == 1 ? 'Author' : 'None')))) ?></td>
                     <td>
                         <div class="dropdown ml-auto">
                             <a
@@ -129,6 +131,7 @@ class TeacherInformationView extends \Models\Teachers{
     public function initSingleIndex($id){
         $result = $this->singleIndex($id);
         $advisories = $this->getAdvisories($result[0]['email'], $result[0]['username']);
+        $role = $result[0]['superadmin'] == 1 ? 'superadmin' : ($result[0]['admin'] == 1 ? 'admin' : ($result[0]['teacher'] == 1 ? 'teacher':($result[0]['guidance'] == 1 ? 'guidance' : ($result[0]['author'] == 1 ? 'author' : ''))));
         ?>
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
            <form class="submit-advisory-form" action="./includes/advisory.inc.php" method="post" enctype="multipart/form-data"> 
@@ -194,8 +197,8 @@ class TeacherInformationView extends \Models\Teachers{
             </form>
         </div>
         <div class="row gap-3">
-            <div class="border col-md">
-                <div class="row ">
+            <div class="col-md">
+                <div class="row border ">
                     <div class="d-flex align-items-center justify-content-between py-3 px-3 border-bottom">
                         <h5>Information</h5>
                         <a href="../sabanges/enrollment.php">
@@ -209,14 +212,16 @@ class TeacherInformationView extends \Models\Teachers{
                         </div>
                         <div class="ms-3 py-1 w-75">
                             <h2 class="text-end"><?= strtoupper($row['surname']) . ", " . strtoupper($row['first_name']) . " " . strtoupper($row['middle_name']) ?></h2>
-                            <span class="d-block text-end"></span>
-                            <span class="d-block text-end"></span>
+                            <span class="d-block text-end"><?= $row['admin'] == 1 ? 'Admin' : ($row['superadmin'] == 1 ? 'Superadmin' : ($row['teacher'] == 1 ? 'Teacher' : ($row['guidance'] == 1 ? 'Guidance' : ($row['author'] == 1 ? 'Author' : 'No role')))); ?></span>
                         </div>
                     <?php } ?>
                     </div>
                     <div class="px-0">
+                        <div class="py-2 px-2 border-top border-bottom">
+                                <h6 class="m-0">Account information</h6>
+                            </div>
                         <?php foreach($result as $row){ ?>
-                        <div class="border-top py-2 px-2">
+                        <div class="py-2 px-2">
                             <div class="row">
                                 <div class="col-md-4 py-1">
                                     <span class="fw-semibold">Surname :</span>
@@ -256,7 +261,66 @@ class TeacherInformationView extends \Models\Teachers{
                         <?php } ?>
                     </div>
                 </div>
+
+                <form action="./includes/teachers.inc.php" method="post" enctype="multipart/form-data">
+
+                <div class="row mt-3 border">
+                    <div class="py-2 px-2 border-bottom">
+                        <h6 class="m-0">Permission</h6>
+                    </div>
+                    <div class="col-md">
+                            <input type="text" name="curr_role" value="<?= $role ?>" hidden>
+                            <input type="text" name="id" value="<?= $result[0]['account_id'] ?>" hidden>
+                            <div class="row p-3">
+                                <div class="col-md">
+                                    <div class="form-check">
+                                        <input class="form-check-input role-radio-input" type="radio" name="role" id="flexRadioDefault1" value='teacher' <?= $result[0]['teacher'] == 1 ? 'checked' : '' ?>>
+                                        <label class="form-check-label" for="flexRadioDefault1">
+                                            Teacher
+                                        </label>
+                                        <div id="emailHelp" class="form-text">View students and informations.</div>
+                                        <div id="emailHelp" class="form-text">Upload grades of learners.</div>
+                                    </div>
+                                </div>
+                                <div class="col-md">
+                                    <div class="form-check">
+                                        <input class="form-check-input role-radio-input" type="radio" name="role" id="flexRadioDefault2" value='admin' <?= $result[0]['admin'] == 1 ? 'checked' : '' ?>>
+                                        <label class="form-check-label" for="flexRadioDefault2">
+                                            Admin
+                                        </label>
+                                        <div id="emailHelp" class="form-text ">Manage user accounts.</div>
+                                        <div id="emailHelp" class="form-text ">Assign role and permissions to accounts.</div>
+                                    </div>
+                                </div>
+                                <div class="col-md">
+                                    <div class="form-check">
+                                        <input class="form-check-input role-radio-input" type="radio" name="role" id="flexRadioDefault3" value='guidance' <?= $result[0]['guidance'] == 1 ? 'checked' : '' ?>>
+                                        <label class="form-check-label" for="flexRadioDefault3">
+                                            Guidance
+                                        </label>
+                                        <div id="emailHelp" class="form-text">Enroll learners.</div>
+                                        <div id="emailHelp" class="form-text">Promotes and retain learners.</div>
+                                    </div>
+                                </div>
+                                <div class="col-md">
+                                    <div class="form-check">
+                                        <input class="form-check-input role-radio-input" type="radio" name="role" id="flexRadioDefault4" value='author' <?= $result[0]['author'] == 1 ? 'checked' : '' ?>>
+                                        <label class="form-check-label" for="flexRadioDefault4">
+                                            Author
+                                        </label>
+                                    <div id="emailHelp" class="form-text ">Manage grades levels, sections, and subjects.</div>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+                <div class="d-flex border-top py-2">
+                    <button class="btn btn-primary ms-auto" type="submit" name="submit-permission">Submit</button>
+                </div>
+                </form>
+
             </div>
+        </div>
+
             <div class="border col-md-4" id="history-section">
                 <div class="row">
                     <div class="d-flex align-items-center justify-content-between py-3 px-3 border-bottom">
@@ -288,6 +352,161 @@ class TeacherInformationView extends \Models\Teachers{
                 </div>
             </div>
         </div>
+        <?php
+    }
+
+    public function initSingleIndexHome(){
+        $id = $_SESSION['account_id'];
+        $result = $this->singleIndex($id);
+        $advisories = $this->getAdvisories($result[0]['email'], $result[0]['username']);
+        ?>
+    
+        <div class="container my-3">
+            <div class="row">
+                <div class="col-md-3">
+                    <img class="rounded" style="object-fit: cover;" width=250px height=300px src=data:image;base64,<?= $result[0]['image'] ?>>
+                    <div class="mt-2">
+                        <div class="fw-semibold fs-5">
+                            <?= ucfirst($result[0]['surname']) . ', ' . ucfirst($result[0]['first_name']) . ' ' . ucfirst($result[0]['middle_name']) ?> <?= $result[0]['ext_name'] == 'None' ? '' : $result[0]['ext_name'] ?>
+                        </div>
+                        <div>
+                            
+                        </div>
+                    </div>
+                </div>
+                <main class="col-md">
+                    <div class="d-flex align-items-center border p-2">
+                        <div class="me-2 text-nowrap">My advisory</div>
+                        <?php if (count($advisories) == 0) { ?>
+                        <select class="form-select form-select-sm class-select" name="class-form-select" id="">
+                            <option value=",">None</option>
+                        </select>
+                        <?php } else { ?>
+                        <select class="form-select form-select-sm class-select" name="class-form-select" id="">
+                            <?php foreach ($advisories as $advisory) { 
+                                ?>
+                                <option value="<?= $advisory['grade_level'] ?>,<?= $advisory['section'] ?>"><?= $advisory['grade_level'] . ' - ' . $advisory['section'] ?></option>
+                            <?php } ?>
+                        </select>
+                        <?php } ?>
+                    </div>
+                    <div class="student-dashboard mt-2"></div>
+                </main>
+            </div>
+        </div> 
+        <?php
+    }
+
+    public function initIndexStudentDashboard($grade_level, $section){
+        $dashboards = $this->indexDashboard($grade_level, $section);
+        $total_student_count = count($dashboards);
+        $total_male_count = 0;
+        $total_female_count = 0;
+        foreach ($dashboards as $dashboard) {
+            if ($dashboard['gender'] == 'Male') {
+                $total_male_count++;
+            }
+            else{
+                $total_female_count++;
+            }
+        }
+        ?>
+        <div class="container border">
+            <div class="row gap-0">
+                <div class="col-md p-0">
+                    <div class="d-flex flex-column align-items-center p-5 text-center">
+                        <span class='fw-bold fs-4'>
+                        <?= $total_student_count ?>
+
+                        </span>
+                        <span class="text-secondary">
+                            Total students
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md p-0">
+                    <div class="d-flex flex-column align-items-center p-5 text-center">
+                        <span class='fw-bold fs-4'>
+                        <?= $total_male_count ?>
+
+                        </span>
+                        <span class="text-secondary">
+                            Male students
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md p-0">
+                    <div class="d-flex flex-column align-items-center p-5 text-center">
+                        <span class='fw-bold fs-4'>
+                        <?= $total_female_count ?>
+
+                        </span>
+                        <span class="text-secondary">
+                            Female students
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="p-0 mt-2">
+            <table class="table table-hover border-top table-bordered dashboard-table w-100">
+                <thead>
+                    <tr>
+                        <th>
+                            LRN
+                        </th>
+                        <th>
+                            Image
+                        </th>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Class
+                        </th>
+                        <th>
+                            Gender
+                        </th>
+                        <th>
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($dashboards as $dashboard) { ?>
+                    <tr>
+                        <td><?= $dashboard['lrn'] ?></td>
+                        <td class="d-flex align-items-center justify-content-center border-0"><img class="rounded-circle" style="object-fit: cover;" width=50px height=50px src=data:image;base64,<?= $dashboard['image'] ?>></td>
+                        <td><?= ucfirst($dashboard['surname']) . ', ' . ucfirst($dashboard['first_name']) . ' ' . ucfirst($dashboard['middle_name']) ?></td>
+                        <td><?= $dashboard['grade_level'] !== 'Kindergarten' ? 'Grade ' . $dashboard['grade_level'] : $dashboard['grade_level'] ?> - <?= $dashboard['section'] ?></td>
+                        <td><?= $dashboard['gender'] ?></td>
+                        <td>
+                            <div class="dropdown ml-auto">
+                                <a
+                                class="btn dropdown-toggle btn-primary"
+                                href="#"
+                                role="button"
+                                id="dropdownMenuLink"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false"
+                                >
+                                View
+                                </a>
+                                
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <input class="student-id" type="hidden" name="id" id="id" value="<?= $dashboard['student_id'] ?>" >
+                                    <li><a class="dropdown-item" href="../sabanges/student_informations.php?id=<?= $dashboard['student_id']?>">Informations</a></li>
+                                    <li><a class="dropdown-item" href="../sabanges/student_informations.php?id=<?= $dashboard['student_id']?>#grades-section">Grades</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+        </div>
+        
         <?php
     }
 }
