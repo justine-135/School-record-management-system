@@ -2,10 +2,9 @@
 $row = isset($_GET['row']) ? $_GET['row'] : '10';
 $page_no = isset($_GET['page_no']) ? $_GET['page_no'] : '1';
 $level = isset($_GET['level']) ? $_GET['level'] : "" ;
-
 ?>
-<div class="d-flex w-100 justify-content-between align-items-center">
-    <div class="container row align-items-center w-75">
+<div class="container-fluid">
+    <div class="row">
         <div class="col-md-3 p-0">
             <div class="dropdown border">
                 <button class="btn btn-white dropdown-toggle btn-sm" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -23,9 +22,7 @@ $level = isset($_GET['level']) ? $_GET['level'] : "" ;
             </div>
         </div>
 
-        <?php
-        
-        if ($view !== 'operations_grading') { ?>
+        <?php if ($view !== 'operations_grading') { ?>
         <div class="col-md-3 p-0">
             <div class="dropdown border">
                 <button class="btn btn-white dropdown-toggle btn-sm" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -46,7 +43,26 @@ $level = isset($_GET['level']) ? $_GET['level'] : "" ;
             </div>
         </div>
         <?php } ?>
-        
+
+        <div class="col-md-3 p-0 ms-auto">
+            <?php if ($view == 'operations_subjects') { ?>
+            <button type="button" class="btn btn-primary d-flex align-items-center ms-auto" data-bs-toggle="modal" data-bs-target="#subjectsModal">
+                Add
+            <?php require './partials/add_icon.php' ?>
+            </button>  
+            <?php } ?>
+            <?php if ($view == 'operations_grading') { ?>
+            <button type="button" class="btn btn-primary d-flex align-items-center ms-auto" data-bs-toggle="modal" data-bs-target="#scheduleModal">
+            Schedule
+            <?php require './partials/add_icon.php' ?>
+            </button>   
+            <?php } ?>
+            <?php if ($view == 'operations_sections') { ?>
+            <button type="button" class="btn btn-primary d-flex align-items-center ms-auto" data-bs-toggle="modal" data-bs-target="#gradeLevelsModal">
+            Add
+            <?php require './partials/add_icon.php' ?>
+            </button> 
+            <?php } ?>
+        </div>
     </div>
 </div>
-
