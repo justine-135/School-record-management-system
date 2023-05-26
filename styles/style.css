@@ -74,3 +74,14 @@ body {
 .filter-students-status {
   width: 250px;
 }
+
+.toast-container {
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.toast-body {
+  overflow: auto;
+  max-height: 200px;
+}
