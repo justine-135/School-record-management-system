@@ -69,6 +69,12 @@ class TeachersController extends \Models\Teachers{
         }
     }
 
+    public function initEditPermission($id, $permission){
+        $this->editPermission($id, $permission);
+        header("Location: ../account_informations.php?id={$id}&permission&submitted");
+        die();
+    }
+
     protected function loginEmptyInputs($username, $password){
         $result = false;
         if (empty($username) || empty($password)) {
