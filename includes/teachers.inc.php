@@ -78,6 +78,22 @@ function initAdvisories($email, $username){
     $obj->manageAdvisories($email, $username);
 }
 
+function initSingleIndex(){
+    $obj = new TeacherInformationView();
+    $obj->initSingleIndexHome();
+}
+
+function initIndexStudentDashboard($grade_level, $section){
+    $obj = new TeacherInformationView();
+    $obj->initIndexStudentDashboard($grade_level, $section);
+}
+
+function initPermission($id, $permission){
+    $obj = new TeachersController();
+    $obj->initEditPermission($id, $permission);
+}
+
+// Requests
 if (isset($accounts)) {
     index();
 }
@@ -116,8 +132,32 @@ if (isset($_POST['change'])) {
     initChangePassword($username,$oldpass,$newpass,$retypepass);
 }
 
+if (isset($view)) {
+    if ($view == 'index') {
+        initSingleIndex();
+    }
+}
+
+if (isset($_GET['index'])) {
+    $grade_level = $_GET['class'];
+    $section = $_GET['section'];
+    initIndexStudentDashboard($grade_level, $section);
+}
 // if (isset($_GET['advisories'])) {
 //     $username = $_GET['username'];
 //     $email = $_GET['email'];
 //     initAdvisories($email, $username);
 // }
+
+if (isset($_POST['submit-permission'])) {
+    $id = $_POST['id'];
+    $permission = $_POST['role'];
+    $curr_role = $_POST['curr_role'];
+
+    if ($curr_role == 'superadmin') {
+        header("Location: ../account_informations.php?id={$id}&permissionedit&error&superadmin");
+        die();
+    }
+
+    initPermission($id, $permission);
+}
