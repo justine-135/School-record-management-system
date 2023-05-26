@@ -213,8 +213,8 @@ include './includes/permission.inc.php';
               <label class="form-check-label" for="flexRadioDefault1">
                 Teacher
               </label>
-              <div id="emailHelp" class="form-text ps-3">*View students and informations.</div>
-              <div id="emailHelp" class="form-text ps-3">*Upload grades of learners.</div>
+              <div id="emailHelp" class="form-text ps-3">View students and informations.</div>
+              <div id="emailHelp" class="form-text ps-3">Upload grades of learners.</div>
             </div>
           </div>
           <div class="col-md-4">
@@ -223,8 +223,8 @@ include './includes/permission.inc.php';
               <label class="form-check-label" for="flexRadioDefault2">
                 Admin
               </label>
-              <div id="emailHelp" class="form-text ps-3">*Manage user accounts.</div>
-              <div id="emailHelp" class="form-text ps-3">*Assign role and permissions to accounts.</div>
+              <div id="emailHelp" class="form-text ps-3">Manage user accounts.</div>
+              <div id="emailHelp" class="form-text ps-3">Assign role and permissions to accounts.</div>
             </div>
           </div>
           <div class="col-md-4">
@@ -233,8 +233,8 @@ include './includes/permission.inc.php';
               <label class="form-check-label" for="flexRadioDefault3">
                 Guidance
               </label>
-              <div id="emailHelp" class="form-text ps-3">*Enroll learners.</div>
-              <div id="emailHelp" class="form-text ps-3">*Promotes and retain learners.</div>
+              <div id="emailHelp" class="form-text ps-3">Enroll learners.</div>
+              <div id="emailHelp" class="form-text ps-3">Promotes and retain learners.</div>
             </div>
           </div>
         </div>
@@ -245,7 +245,7 @@ include './includes/permission.inc.php';
               <label class="form-check-label" for="flexRadioDefault4">
                 Author
               </label>
-              <div id="emailHelp" class="form-text ps-3">*Manage grades levels, sections, and subjects.</div>
+              <div id="emailHelp" class="form-text ps-3">Manage grades levels, sections, and subjects.</div>
             </div>
           </div>
         </div>
