@@ -1,18 +1,42 @@
 <?php 
 
-if (isset($_GET['enrollment'])) {
+if (isset($_GET['edit_profile']) && isset($_GET['profile'])) {
   ?>
   <div class="alert alert-<?= isset($_GET['error']) ? 'danger' : (isset($_GET['submitted']) ? 'success' : '')  ?> d-flex align-items-center alert-dismissible fade show" role="alert">
   <?php require isset($_GET['error']) ? 'danger_icon.php' : (isset($_GET['submitted']) ? 'success_icon.php' : '') ?>
     <div>
-      <?= isset($_GET['lrnexist']) ? 'LRN exists already.' : (isset($_GET['empty']) ? 'Fill up all input.' : (isset($_GET['sy']) ? 'Invalid school year.' : (isset($_GET['nameerr']) ? 'Text fields cannot contain special characters.' : (isset($_GET['lrnerr']) ? 'Invalid LRN.' : (isset($_GET['bdateerr']) ? 'Cannot enroll students below 5 years old.' : (isset($_GET['contacterr']) ? 'Invalid contact number.' : 'Successfully enrolled student.'))))))?>
+      <?= isset($_GET['lrnexist']) ? 'LRN exists already.' : (isset($_GET['empty']) ? 'Fill up all input.' : (isset($_GET['sy']) ? 'Invalid school year.' : (isset($_GET['specialchars']) ? 'Text fields cannot contain special characters.' : (isset($_GET['lrnerr']) ? 'Invalid LRN.' : (isset($_GET['emailexist']) ? 'Email already taken.' : (isset($_GET['contact']) ? 'Invalid contact number.' : (isset($_GET['file']) ? 'Select valid file for upload.' : 'Successfully updated profile.')))))))?>
     </div>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
   <?php
 }
 
-if (isset($_GET['edit_enrollment'])) {
+if (isset($_GET['edit_account']) && isset($_GET['account'])) {
+  ?>
+  <div class="alert alert-<?= isset($_GET['error']) ? 'danger' : (isset($_GET['submitted']) ? 'success' : '')  ?> d-flex align-items-center alert-dismissible fade show" role="alert">
+  <?php require isset($_GET['error']) ? 'danger_icon.php' : (isset($_GET['submitted']) ? 'success_icon.php' : '') ?>
+    <div>
+      <?= isset($_GET['lrnexist']) ? 'LRN exists already.' : (isset($_GET['empty']) ? 'Fill up all input.' : (isset($_GET['sy']) ? 'Invalid school year.' : (isset($_GET['specialchars']) ? 'Text fields cannot contain special characters.' : (isset($_GET['pwdsame']) ? 'Passwords are not same.' : (isset($_GET['emailexist']) ? 'Email already taken.' : (isset($_GET['exist']) ? 'Username already taken.' : (isset($_GET['notfound']) ? 'Incorrect old password.' : 'Successfully updated account.')))))))?>
+    </div>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  <?php
+}
+
+if (isset($_GET['enrollment'])) {
+  ?>
+  <div class="alert alert-<?= isset($_GET['error']) ? 'danger' : (isset($_GET['submitted']) ? 'success' : '')  ?> d-flex align-items-center alert-dismissible fade show" role="alert">
+  <?php require isset($_GET['error']) ? 'danger_icon.php' : (isset($_GET['submitted']) ? 'success_icon.php' : '') ?>
+    <div>
+      <?= isset($_GET['lrnexist']) ? 'LRN exists already.' : (isset($_GET['empty']) ? 'Fill up all input.' : (isset($_GET['sy']) ? 'Invalid school year.' : (isset($_GET['nameerr']) ? 'Text fields cannot contain special characters.' : (isset($_GET['lrnerr']) ? 'Invalid LRN.' : (isset($_GET['bdateerr']) ? 'Cannot enroll students below 5 years old.' : (isset($_GET['contacterr']) ? 'Invalid contact number.' : (isset($_GET['file']) ? 'Select valid file for upload.' : 'Successfully enrolled student.')))))))?>
+    </div>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  <?php
+}
+
+if (isset($_GET['edit_enrollment']) && isset($_GET['edit'])) {
   ?>
   <div class="alert alert-<?= isset($_GET['error']) ? 'danger' : (isset($_GET['submitted']) ? 'success' : '')  ?> d-flex align-items-center alert-dismissible fade show" role="alert">
   <?php require isset($_GET['error']) ? 'danger_icon.php' : (isset($_GET['submitted']) ? 'success_icon.php' : '') ?>
@@ -65,7 +89,7 @@ if (isset($_GET['login'])) {
   <div class="alert alert-<?= isset($_GET['error']) ? 'danger' : (isset($_GET['submitted']) ? 'success' : '')  ?> d-flex align-items-center alert-dismissible fade show" role="alert">
   <?php require isset($_GET['error']) ? 'danger_icon.php' : (isset($_GET['submitted']) ? 'success_icon.php' : '') ?>
     <div>
-      <?= isset($_GET['user']) ? 'Incorrect username or password.' : (isset($_GET['empty']) ? 'Fill up all input.' : '' )?>
+      <?= isset($_GET['user']) ? 'Incorrect username or password.' : (isset($_GET['empty']) ? 'Fill up all input.' : (isset($_GET['status']) ? 'This account is marked inactive.' : ''))?>
     </div>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
@@ -84,7 +108,6 @@ if (isset($_GET['returnee'])) {
   </div>
   <?php
 }
-
 ?>
 
 <?php if (isset($_GET['permission']) && isset($_GET['error'])) { ?>
@@ -99,4 +122,30 @@ if (isset($_GET['returnee'])) {
     </div>
   </div>
 </div>
-<?php } ?>
+<?php }
+
+
+if (isset($_GET['reset_password'])) {
+  ?>
+  <div class="alert alert-<?= isset($_GET['error']) ? 'danger' : (isset($_GET['submitted']) ? 'success' : '')  ?> d-flex align-items-center alert-dismissible fade show" role="alert">
+  <?php require isset($_GET['error']) ? 'danger_icon.php' : (isset($_GET['submitted']) ? 'success_icon.php' : '') ?>
+    <div>
+      <?= isset($_GET['submitted']) ? 'Password is resetted for user #' . $_GET['acc'] : ''?>
+    </div>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  <?php
+}
+
+if (isset($_GET['update_status'])) {
+  ?>
+  <div class="alert alert-<?= isset($_GET['error']) ? 'danger' : (isset($_GET['submitted']) ? 'success' : '')  ?> d-flex align-items-center alert-dismissible fade show" role="alert">
+  <?php require isset($_GET['error']) ? 'danger_icon.php' : (isset($_GET['submitted']) ? 'success_icon.php' : '') ?>
+    <div>
+      <?= isset($_GET['submitted']) ? 'Changed status for user #' . $_GET['acc'] . '.' : ''?>
+    </div>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  <?php
+}
+?>

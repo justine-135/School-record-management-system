@@ -118,7 +118,7 @@ $section = isset($_GET['section']) ? $_GET['section'] : "";
             <option value="2">Promote and transfer</option>
             <option value="3">Retain</option>
         </select>
-        <button type="submit" value="promote" name="promote" class="btn btn-primary">Promote</button>
+        <button type="submit" value="promote" name="promote" class="btn btn-primary">Submit</button>
     </div>
     <?php } ?>
 </div>

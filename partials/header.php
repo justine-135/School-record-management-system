@@ -32,7 +32,9 @@
           >
           <img
               class="img-round"
-              src="images/profile.png"
+
+              style="object-fit: cover;"
+              src=<?= isset($_SESSION['image']) ? 'data:image;base64,' . $_SESSION['image'] : 'images/profile.png' ?>
               height="35px"
               width="35px"
               alt=""

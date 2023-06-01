@@ -22,6 +22,7 @@
             case 'operations_subjects': ?>
             <p>Insert subjects in this page.</p>
             <hr>
+            <span class="fw-semibold">Instruction:</span>
             <ol>
                 <li>Click the 'Add' button to open modal.</li>
                 <li>Select grade level who will take the subject.</li>
@@ -31,13 +32,14 @@
             </ol>
             <hr>
             <ul>
-                <li>Subjects ar show at a table.</li>
-                <li>Author can delete subjects.</li>
+                <li>Subjects are shown at a table.</li>
+                <li>Admin can delete subjects.</li>
             </ul>
                 <?php break;
             case 'operations_sections': ?>
             <p>Insert sections to grade levels in this page.</p>
             <hr>
+            <span class="fw-semibold">Instruction:</span>
             <ol>
                 <li>Click the 'Add' button to open modal.</li>
                 <li>Select grade level.</li>
@@ -47,22 +49,23 @@
             <hr>
             <ul>
                 <li>Grade levels and sections are shown at a table.</li>
-                <li>Author can delete sections.</li>
+                <li>Admin can delete sections.</li>
             </ul>
                 <?php break;
             
             default: ?>
             <p>Schedule grading period to this page.</p>
             <hr>
+            <span class="fw-semibold">Instruction:</span>
             <ol>
                 <li>Click the 'Schedule' button to open modal.</li>
                 <li>Select date of the starting period, and the end date of period.</li>
-                <li>Submit grade.</li>
+                <li>Submit schedule.</li>
             </ol>
             <hr>
             <ul>
                 <li>Schedules of grading periods are shown at a table.</li>
-                <li>Author can delete sections.</li>
+                <li>Admin can delete grading periods.</li>
             </ul>
                 <?php break;
         } ?>
