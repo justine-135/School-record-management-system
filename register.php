@@ -13,7 +13,7 @@ include './includes/session.inc.php';
 include './includes/permission.inc.php';
 ?>
 
-<form class="container-fluid w-90 border mt-4 p-4 bg-white mb-3" action="./includes/teachers.inc.php" method="post" enctype="multipart/form-data">
+<form class="container-fluid w-90 border mt-4 mb-5 p-4 bg-white mb-3" action="./includes/teachers.inc.php" method="post" enctype="multipart/form-data">
     <h4 class="">Registeration form</h4>
     <div class="border mt-3">
       <div>
@@ -27,7 +27,7 @@ include './includes/permission.inc.php';
           </div>
           <div class="col-md-4">
             <label for="file" class="form-label">Profile image</label>
-            <input type="file" class="form-control" id="file" name="file" accept="image/png, image/gif, image/jpeg" value="<?= isset($_GET['file']) ? $_GET['file'] : "" ?>" required>
+            <input type="file" class="form-control" id="file" name="file" accept="image/png, image/gif, image/jpeg" value="<?= isset($_GET['file']) ? $_GET['file'] : "" ?>">
             <div id="emailHelp" class="form-text ps-3" >*Choose jpeg/jpg, and png only.</div>
           </div>
         </div>
@@ -225,6 +225,7 @@ include './includes/permission.inc.php';
               </label>
               <div id="emailHelp" class="form-text ps-3">Manage user accounts.</div>
               <div id="emailHelp" class="form-text ps-3">Assign role and permissions to accounts.</div>
+              <div id="emailHelp" class="form-text ps-3">Manage grades levels, sections, and subjects.</div>
             </div>
           </div>
           <div class="col-md-4">
@@ -238,7 +239,7 @@ include './includes/permission.inc.php';
             </div>
           </div>
         </div>
-        <div class="row g-1 p-3">
+        <!-- <div class="row g-1 p-3">
           <div class="col-md-4">
             <div class="form-check">
               <input class="form-check-input role-radio-input" type="radio" name="role" id="flexRadioDefault4" value='author'>
@@ -248,7 +249,7 @@ include './includes/permission.inc.php';
               <div id="emailHelp" class="form-text ps-3">Manage grades levels, sections, and subjects.</div>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
 
