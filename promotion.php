@@ -13,7 +13,7 @@ include './includes/session.inc.php';
 include './includes/permission.inc.php';
 ?>
 
-<main class="container-fluid w-90 mt-4 ">
+<main class="container-fluid w-90 mt-4 mb-5 ">
   <?php include './partials/nav_records_tabs.php'; ?>
   <div class="p-2 border border-top-0">
     <form action="../sabanges/includes/promotion_retention.inc.php" method="post" enctype="multipart/form-data">
