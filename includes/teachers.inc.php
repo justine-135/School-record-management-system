@@ -28,8 +28,6 @@ function singleIndex($id){
 
 if (isset($_POST['register'])) {
     // Basic info
-    // $tin = $_POST['tin'];
-    // $gsisbp = $_POST['gsisbp'];
     $surname = $_POST['sname'];
     $first_name = $_POST['fname'];
     $middle_name = $_POST['mname'];
@@ -45,12 +43,9 @@ if (isset($_POST['register'])) {
     $city = $_POST['city-municipality'];
     $province = $_POST['province'];
     $region = $_POST['region'];
-    // Account ino
-    // $username = $_POST['username'];    
+  
     $email = $_POST['email'];    
     $file = $_FILES['file'];    
-    // $password = $_POST['password'];    
-    // $confirm_password = $_POST['confirm_password'];    
 
     $permission = $_POST['role'];
 
@@ -60,7 +55,6 @@ if (isset($_POST['register'])) {
     register($surname, $first_name, $middle_name, $ext_name, $birth_date, $gender, $contact, $religion, 
     $house_street, $subdivision, $barangay, $city, $province, $region, 
     $email, $file, $permission, $grade_level, $section);
-    // register($surname, $first_name, $middle_name, $ext_name, $birth_date, $gender, $contact, $religion, $house_street, $subdivision, $barangay, $city, $province, $region, $email, $file);
 }
 
 function initValidate($username, $password){
@@ -92,6 +86,29 @@ function initPermission($id, $permission){
     $obj = new TeachersController();
     $obj->initEditPermission($id, $permission);
 }
+
+function initUpdateProfile($surname, $first_name, $middle_name, $birth_date, $gender, $contact, $religion, $house_street,
+    $subdivision, $barangay, $city, $province, $region, $email, $file){
+    $obj = new TeachersController();
+    $obj->initEditProfile($surname, $first_name, $middle_name, $birth_date, $gender, $contact, $religion, $house_street,
+    $subdivision, $barangay, $city, $province, $region, $email, $file);
+}
+
+function initChangePasswordProfile($username,$oldpass,$newpass,$retypepass){
+    $obj = new TeachersController();
+    $obj->initChangePasswordProfile($username,$oldpass,$newpass,$retypepass);
+}
+
+function initResetPassword($id){
+    $obj = new TeachersController();
+    $obj->initResetPassword($id);
+}
+
+function initUpdateStatus($id){
+    $obj = new TeachersController();
+    $obj->initUpdateStatus($id);
+}
+
 
 // Requests
 if (isset($accounts)) {
@@ -160,4 +177,47 @@ if (isset($_POST['submit-permission'])) {
     }
 
     initPermission($id, $permission);
+}
+
+if (isset($_POST['edit-profile'])) {
+    $surname = $_POST['sname'];
+    $first_name = $_POST['fname'];
+    $middle_name = $_POST['mname'];
+    $birth_date = $_POST['birth-date'];
+    $gender = $_POST['gender'];
+    $contact = $_POST['contact'];
+    $religion = $_POST['religion'];
+    // Address
+    $house_street = $_POST['house-number-street'];
+    $subdivision = $_POST['subdv-village-zone'];
+    $barangay = $_POST['barangay'];
+    $city = $_POST['city-municipality'];
+    $province = $_POST['province'];
+    $region = $_POST['region'];
+  
+    $email = $_POST['email'];    
+    $file = $_FILES['file'];    
+
+    initUpdateProfile($surname, $first_name, $middle_name, $birth_date, $gender, $contact, $religion, $house_street,
+    $subdivision, $barangay, $city, $province, $region, $email, $file);
+}
+
+if (isset($_POST['edit-account'])) {
+    $username = $_POST['username'];
+    $oldpass = $_POST['old-password'];
+    $newpass = $_POST['new-password'];
+    $retypepass = $_POST['retype-password'];
+    initChangePasswordProfile($username,$oldpass,$newpass,$retypepass);
+}
+
+if (isset($_POST['reset'])){
+    $id = $_POST['id'];
+
+    initResetPassword($id);
+}
+
+if (isset($_POST['status'])){
+    $id = $_POST['id'];
+
+    initUpdateStatus($id);
 }

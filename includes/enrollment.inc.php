@@ -38,7 +38,7 @@ if (isset($_POST["enroll"])) {
     $city = $_POST['city-municipality'];
     $province = $_POST['province'];
     $region = $_POST['region'];
-    
+
     // Father information
     $father_surname = $_POST['f-surname'];
     $father_fname = $_POST['f-fname'];
