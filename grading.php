@@ -13,7 +13,7 @@ include './includes/session.inc.php';
 include './includes/permission.inc.php';
 ?>
 
-<main class="container-fluid w-90 mt-4 ">
+<main class="container-fluid w-90 mt-4 mb-5 ">
   
 <!-- <div class="toast-container position-absolute toast-grading">
   <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
