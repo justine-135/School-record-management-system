@@ -13,7 +13,7 @@ include './includes/session.inc.php';
 include './includes/permission.inc.php';
 ?>
 
-<main class="container-fluid w-90 mt-4 ">
+<main class="container-fluid w-90 mt-4 mb-5 ">
   <?php include './partials/nav_enrollment_tabs.php'; ?>
   <form class="border border-top-0 p-0 bg-white mb-3" action="./includes/enrollment.inc.php" method="post" enctype="multipart/form-data">
 
@@ -58,8 +58,10 @@ include './includes/permission.inc.php';
         </div>
         <div class="col-md-4">
           <label for="file" class="form-label">Upload student picture</label>
-          <input type="file" class="form-control" id="file" name="file" accept="image/png, image/gif, image/jpeg" value="<?= isset($_GET['file']) ? $_GET['file'] : "" ?>" required>
+          <input type="file" class="form-control" id="file" name="file" accept="image/png, image/gif, image/jpeg" value="<?= isset($_GET['file']) ? $_GET['file'] : "" ?>">
           <div id="emailHelp" class="form-text ps-3" >*Choose jpeg/jpg, and png only.</div>
+          <div id="emailHelp" class="form-text ps-3" >*Acceptable file size is 2mb.</div>
+          <div id="emailHelp" class="form-text ps-3" >*Ignore if not applicable.</div>
         </div>
       </div>
       <h5 class="border-top border-bottom p-3">Basic information</h5>
