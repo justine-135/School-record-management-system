@@ -6,13 +6,16 @@
 
 <?php include "partials/nav.php"; ?>
 
+<?php include './partials/alert.php'; ?>
+
+
 <?php
 $_SESSION['page_permission'] = 'admin';
 include './includes/session.inc.php';
 include './includes/permission.inc.php';
 ?>
 
-<main class="container-fluid w-90 border mt-4 p-0 bg-white <?= $view ?>">
+<main class="container-fluid w-90 border mt-4 mb-5 p-0 bg-white <?= $view ?>">
     <div>
         <div>
             <h5 class="border-bottom p-3 mb-0">Accounts</h5>
