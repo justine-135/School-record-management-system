@@ -15,6 +15,10 @@ class TeachersController extends \Models\Teachers{
             header("Location: ../login.php?login&error&user");
             die();
         }
+        elseif ($this->initValidateStatus($username) !== false) {
+            header("Location: ../login.php?login&error&status");
+            die();
+        }
         else{
             $result = $this->login($username, $password);
 
@@ -27,7 +31,10 @@ class TeachersController extends \Models\Teachers{
                 $_SESSION['surname'] = $result[0]['surname'];
                 $_SESSION['ext_name'] = $result[0]['ext_name'];
                 $_SESSION['username'] = $result[0]['username'];
+                $_SESSION['email'] = $result[0]['email'];
+                $_SESSION['image'] = $result[0]['image'];
                 $_SESSION['account_id'] = $result[0]['account_id'];
+                $_SESSION['teacher_id'] = $result[0]['teacher_id'];
                 $_SESSION['email'] = $result[0]['email'];
                 $_SESSION['is_superadmin'] = $result[0]['superadmin'];
                 $_SESSION['is_admin'] = $result[0]['admin'];
@@ -35,9 +42,7 @@ class TeachersController extends \Models\Teachers{
                 $_SESSION['is_teacher'] = $result[0]['teacher'];
                 $_SESSION['is_author'] = $result[0]['author'];
 
-                // echo '<pre>' . var_dump($result) . "</pre>";
                 header("Location: ../index.php");
-                // var_dump($result[0]['first_name']);
                 die();
             }
             
@@ -51,20 +56,53 @@ class TeachersController extends \Models\Teachers{
 
     public function initChangePassword($username,$oldpass,$newpass,$retypepass){
         if ($this->changePassEmptyInputs($username, $oldpass, $newpass, $retypepass) !== false) {
-            echo "empty";
+            header("Location: ../login.php?account_edit&error&empty");
+            die();
         }
         elseif ($this->changePassSpecialChars($username, $oldpass, $newpass, $retypepass) !== false) {
-            echo 'special';
+            header("Location: ../login.php?account_edit&error&special");
+            die();
         }
         elseif ($this->initValidateUserChangePass($username, $oldpass) !== true) {
-            echo "user false";
+            header("Location: ../login.php?account_edit&error&pwdfalse");
+            die();
         }
         elseif ($this->validatePassword($oldpass, $newpass, $retypepass) !== false) {
-            echo 'password not same';
+            header("Location: ../login.php?account_edit&error&pwdnotsame");
+            die();
         }
         else{
             $this->changePassword($username, $newpass);
+            $_SESSION['username'] = $result[0]['username'];
             header("Location: ../login.php?changepass&submitted");
+            die();
+        }
+    }
+
+    public function initChangePasswordProfile($username,$oldpass,$newpass,$retypepass){
+        session_start();
+        if ($this->changePassEmptyInputs($username, $oldpass, $newpass, $retypepass) !== false) {
+            header("Location: ../index.php?edit_account&account&error&empty");
+            die();
+        }
+        elseif ($this->changePassSpecialChars($username, $oldpass, $newpass, $retypepass) !== false) {
+            header("Location: ../index.php?edit_account&account&error&specialchars");
+        }
+        elseif ($this->validatePassword($oldpass, $newpass, $retypepass) !== false) {
+            header("Location: ../index.php?edit_account&account&error&pwdsame");
+        }
+        elseif ($this->initValidateUserChangePassProfile($oldpass) !== true) {
+            header("Location: ../index.php?edit_account&account&error&notfound");
+        }
+        elseif ($this->initUsernameExistUpdate($username) !== false) {
+            // header("Location: ../index.php?edit_profile&profile&error&emailexist");
+            header("Location: ../index.php?edit_account&account&error&exist");
+            die();
+        }
+        else{
+            $this->changePasswordProfile($newpass, $username);
+            $_SESSION['username'] = $username;
+            header("Location: ../index.php?edit_account&account&submitted");
             die();
         }
     }
@@ -73,6 +111,51 @@ class TeachersController extends \Models\Teachers{
         $this->editPermission($id, $permission);
         header("Location: ../account_informations.php?id={$id}&permission&submitted");
         die();
+    }
+
+    public function initEditProfile($surname, $first_name, $middle_name, $birth_date, $gender, $contact, $religion, $house_street,
+    $subdivision, $barangay, $city, $province, $region, $email, $file){
+        session_start();
+        if ($this->emptyInputsUpdate($surname, $first_name, $middle_name, $birth_date, $gender, $contact, $religion, $house_street,
+        $subdivision, $barangay, $city, $province, $region, $email, $file) !== false) {
+            header("Location: ../index.php?edit_profile&profile&error&empty");
+            die();
+        }
+        elseif ($this->validateContact($contact) !== false) {
+            header("Location: ../index.php?edit_profile&profile&error&contact");
+            die();
+        }
+        elseif ($this->validateSpecialChars($surname, $first_name, $middle_name, $religion, $house_street,
+        $subdivision, $barangay, $city, $province, $region) !== false) {
+            header("Location: ../index.php?edit_profile&profile&error&specialchars");
+            die();
+        }
+        elseif ($this->initTeacherExistUpdate($email) !== false) {
+            header("Location: ../index.php?edit_profile&profile&error&emailexist");
+            die();
+        }
+        elseif ($this->validateImage($file) !== false) {
+            header("Location: ../index.php?edit_profile&profile&error&file");
+            die();
+        }
+        else{
+            $this->editProfile($surname, $first_name, $middle_name, $birth_date, $gender, $contact, $religion, $house_street,
+            $subdivision, $barangay, $city, $province, $region, $email, $file);
+
+            header("Location: ../index.php?edit_profile&profile&submitted");
+            die();
+        }
+    }
+    
+    protected function initValidateStatus($username){
+        $result = false;
+        $status = $this->validateStatus($username);
+
+        if ($status[0]['status'] != 1) {
+            $result = true;
+        }
+
+        return $result;
     }
 
     protected function loginEmptyInputs($username, $password){
@@ -124,6 +207,12 @@ class TeachersController extends \Models\Teachers{
         return $result;
     }
 
+    protected function initValidateUserChangePassProfile($oldpass){
+        $result = $this->validateUserPassProfile($oldpass);
+  
+        return $result;
+    }
+
     protected function initValidateUser($username, $password){
         $result = false;
         $account = $this->validateUser($username, $password);
@@ -156,12 +245,6 @@ class TeachersController extends \Models\Teachers{
             $permission);
             die();
         }
-        // elseif ($this->validateTin($tin) !== false) {
-        //     echo "Invalid tin";
-        // }
-        // elseif ($this->validateGsisbp($gsisbp) !== false) {
-        //     echo "Invalid gsisbp";
-        // }
 
         elseif ($this->validateImage($file) !== false) {
             $this->rejectData("error","filetype",$surname, $first_name, $middle_name, $ext_name, $birth_date, $gender, $contact, 
@@ -192,9 +275,39 @@ class TeachersController extends \Models\Teachers{
         }
     }
 
+    public function initResetPassword($id){
+        $result = $this->resetPassword($id);
+        header("Location: ../accounts.php?reset_password&submitted&acc=" . $id);
+        die();
+    }
+
+    public function initUpdateStatus($id){
+        $result = $this->updateStatus($id);
+
+        if ($result == 1) {
+            header("Location: ../accounts.php?update_status&status=active&submitted&acc=" . $id);
+
+        }
+        else{
+            header("Location: ../accounts.php?update_status&status=inactive&submitted&acc=" . $id);
+
+        }
+        die();
+    }
+
     protected function emptyInputs($surname, $first_name, $middle_name, $ext_name, $birth_date, $gender, $religion, $house_street, $subdivision, $barangay, $city, $province, $region, $email, $file){
         $result = false;
         if (empty($surname) || empty($first_name) || empty($middle_name) || empty($ext_name) || empty($birth_date) || empty($gender) || empty($religion) || 
+        empty($house_street) || empty($subdivision) || empty($barangay) || empty($city) || empty($province) || empty($region) || 
+        empty($email) || empty($file)){
+            $result = true;
+        }
+        return $result;
+    }
+
+    protected function emptyInputsUpdate($surname, $first_name, $middle_name, $birth_date, $gender, $religion, $house_street, $subdivision, $barangay, $city, $province, $region, $email, $file){
+        $result = false;
+        if (empty($surname) || empty($first_name) || empty($middle_name) || empty($birth_date) || empty($gender) || empty($religion) || 
         empty($house_street) || empty($subdivision) || empty($barangay) || empty($city) || empty($province) || empty($region) || 
         empty($email) || empty($file)){
             $result = true;
@@ -221,71 +334,39 @@ class TeachersController extends \Models\Teachers{
         return $result;
     }
 
-    // protected function validateDigits($digit){
-    //     $result = false;
-    //     if (!preg_match("/^[0-9]*$/", $digit) || strlen($digit) !== 11) {
-    //         $result = true;
-    //     }
-    //     return $result;
-    // }
-
-    // protected function validateTin($tin){
-    //     $result = $this->validateDigits($tin);
-    //     return $result;
-    // }
-
-    // protected function validateGsisbp($gsisbp){
-    //     $result = $this->validateDigits($gsisbp);
-    //     return $result;
-    // }
-
     protected function validateImage($file){
         $result = false;
-        $fileinfo = $file["tmp_name"];
-        $width = $fileinfo[0];
-        $height = $fileinfo[1];
-        $allowed_image_extension = array(
-            "png",
-            "jpg",
-            "jpeg"
-        );
-        
-        // Get image file extension
-        $file_extension = pathinfo($file["name"], PATHINFO_EXTENSION);
-        
-        // Validate file input to check if is not empty
-        if (! file_exists($file["tmp_name"])) {
-            $result = true;
-        }    // Validate file input to check if is with valid extension
-        else if (! in_array($file_extension, $allowed_image_extension)) {
-            $result = true;
 
-        }    // Validate image file size
-        else if (($file["size"] > 2000000)) {
-            $result = true;
+        $result = false;
+        
+        if ($file['size'] !== 0) {
+            $fileinfo = $file["tmp_name"];
+            $width = $fileinfo[0];
+            $height = $fileinfo[1];
+            $allowed_image_extension = array(
+                "image/png",
+                "image/jpg",
+                "image/jpeg"
+            );
+            
+            // Get image file extension
+            $file_extension = $file['type'];
 
-        }    // Validate image file dimension
-        // else if ($width > "300" || $height > "200") {
-        //     $response = array(
-        //         "type" => "error",
-        //         "message" => "Image dimension should be within 300X200"
-        //     );
-        // } 
-        // else {
-        //     echo "upload";
-        //     // $target = "image/" . basename($file["name"]);
-        //     // if (move_uploaded_file($file["tmp_name"], $target)) {
-        //     //     $response = array(
-        //     //         "type" => "success",
-        //     //         "message" => "Image uploaded successfully."
-        //     //     );
-        //     // } else {
-        //     //     $response = array(
-        //     //         "type" => "error",
-        //     //         "message" => "Problem in uploading image files."
-        //     //     );
-        //     // }
-        // }
+            // Validate file input to check if is not empty
+            if (! file_exists($file["tmp_name"])) {
+                $result = true;
+            }    // Validate file input to check if is with valid extension
+            else if (!in_array($file_extension, $allowed_image_extension)) {
+                $result = true;
+            }    // Validate image file size
+            else if (($file["size"] > 2000000)) {
+                $result = true;
+            }
+        }else{
+            $result = false;
+        }
+              
+
         return $result;
     }
 
@@ -302,6 +383,34 @@ class TeachersController extends \Models\Teachers{
         if (count($this->teacherExist($email)) > 0) {
             $result = true;
         }
+        return $result;
+    }
+
+    protected function initTeacherExistUpdate($email){
+        $result = false;
+
+        $users = $this->emailExistUpdate();
+        foreach ($users as $user) {
+            if ($user['email'] == $email) {
+                $result = true;
+                break;
+            }
+        }
+
+        return $result;
+    }
+
+    protected function initUsernameExistUpdate($username){
+        $result = false;
+
+        $users = $this->usernameExistUpdate();
+        foreach ($users as $user) {
+            if ($user['username'] == $username) {
+                $result = true;
+                break;
+            }
+        }
+
         return $result;
     }
 

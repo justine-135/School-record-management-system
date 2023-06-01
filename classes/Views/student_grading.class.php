@@ -145,7 +145,13 @@ class StudentGradingView extends \Models\StudentGrading{
                             </div>
                         </td>
                         <td><?= $row['lrn'] ?></td>
-                        <td class="d-flex align-items-center justify-content-center"><img class="rounded-circle" style="object-fit: cover;" width=50px height=50px src=data:image;base64,<?= $row['image'] ?>></td>
+                        <td class="d-flex align-items-center justify-content-center border-0">
+                        <?php if ($row['image'] === null) { ?>
+                            <img class="rounded-circle" style="object-fit: cover;" width=50px height=50px src='./images/profile.jpg'>
+                            <?php } else { ?>
+                            <img class="rounded-circle" style="object-fit: cover;" width=50px height=50px src=data:image;base64,<?= $row['image'] ?>>
+                            <?php } ?>
+                        </td>
                         <td><?= strtoupper($row['surname']) . ', ' . strtoupper($row['first_name']) . ' ' . strtoupper($row['middle_name'])  ?> <?= strtoupper($row['ext']) == 'NONE' ? '' : strtoupper($row['ext']) ?></td>
                         <td><?= $row['enrolled_at'] ?></td>
                         <td><?= $row['gender'] ?></td>
@@ -158,20 +164,25 @@ class StudentGradingView extends \Models\StudentGrading{
                         <td>
                             <?php
                             $graded = $this->gradesSubmitted($row['grade_level'], $row['lrn']);
-                            if (count($graded) <= 0) {
-                                echo '<span class="">Ungraded</span>';
+                            if ($row['grade_level'] != 'Kindergarten') {
+                                if (count($graded) <= 0) {
+                                    echo '<span class="">Ungraded</span>';
+                                }
+                                else{
+                                    foreach ($graded as $grade) {
+                                        if (strtoupper($grade['first_quarter']) == 'INC' || strtoupper($grade['second_quarter']) == 'INC' || strtoupper($grade['third_quarter']) == 'INC' || strtoupper($grade['fourth_quarter']) == 'INC') {
+                                            echo '<span class="">Incomplete</span>';
+    
+                                        }
+                                        else{
+                                            echo '<span class="">Graded</span>';
+                                        }
+                                        break;
+                                    }
+                                }
                             }
                             else{
-                                foreach ($graded as $grade) {
-                                    if (strtoupper($grade['first_quarter']) == 'INC' || strtoupper($grade['second_quarter']) == 'INC' || strtoupper($grade['third_quarter']) == 'INC' || strtoupper($grade['fourth_quarter']) == 'INC') {
-                                        echo '<span class="">Incomplete</span>';
-
-                                    }
-                                    else{
-                                        echo '<span class="">Graded</span>';
-                                    }
-                                    break;
-                                }
+                                echo '<span class="">N/A</span>';
                             }
                             ?>
                         </td>

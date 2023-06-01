@@ -110,7 +110,14 @@ class StudentView extends \Models\Student{
                             </div>
                         </td>
                         <td><?= $row['lrn'] ?></td>
-                        <td class="d-flex align-items-center justify-content-center border-0"><img class="rounded-circle" style="object-fit: cover;" width=50px height=50px src=data:image;base64,<?= $row['image'] ?>></td>
+                        <td class="d-flex align-items-center justify-content-center border-0">
+                            <?php if ($row['image'] === null) { ?>
+                            <img class="rounded-circle" style="object-fit: cover;" width=50px height=50px src='./images/profile.jpg'>
+
+                            <?php } else { ?>
+                            <img class="rounded-circle" style="object-fit: cover;" width=50px height=50px src=data:image;base64,<?= $row['image'] ?>>
+
+                            <?php } ?>                        </td>
                         <td><?= strtoupper($row['surname']) . ', ' . strtoupper($row['first_name']) . ' ' . strtoupper($row['middle_name'])  ?> <?= strtoupper($row['ext']) == 'NONE' ? '' : strtoupper($row['ext']) ?></td>
                         <?php if ($view !== 'grading') { ?>
                         <td><?= $row['enrolled_at'] ?></td>
@@ -258,7 +265,15 @@ class StudentView extends \Models\Student{
                             </div>
                         </td>
                         <td><?= $row['lrn'] ?></td>
-                        <td class="d-flex align-items-center justify-content-center border-0"><img class="rounded-circle" style="object-fit: cover;" width=50px height=50px src=data:image;base64,<?= $row['image'] ?>></td>
+                        <td class="d-flex align-items-center justify-content-center border-0">
+                            <?php if ($row['image'] === null) { ?>
+                            <img class="rounded-circle" style="object-fit: cover;" width=50px height=50px src='./images/profile.jpg'>
+
+                            <?php } else { ?>
+                            <img class="rounded-circle" style="object-fit: cover;" width=50px height=50px src=data:image;base64,<?= $row['image'] ?>>
+
+                            <?php } ?>
+                        </td>
                         <td><?= strtoupper($row['surname']) . ', ' . strtoupper($row['first_name']) . ' ' . strtoupper($row['middle_name'])  ?> <?= strtoupper($row['ext']) == 'NONE' ? '' : strtoupper($row['ext']) ?></td>
                         <td><?= $row['enrolled_at'] ?></td>
                         <td><?= $row['gender'] ?></td>
@@ -374,7 +389,7 @@ class StudentInformationView extends \Models\Student{
                     <div class="d-flex align-items-center justify-content-between py-3 px-3">
                         <div>
                         <?php foreach($result as $row){ ?>
-                            <img class="rounded-circle" width=200px height=200px src=data:image;base64,<?= $row['image'] ?>>
+                            <img class="rounded-circle" style="object-fit: cover;" width=200px height=200px src=data:image;base64,<?= $row['image'] ?>>
                         <?php } ?>
                         </div>
                         <div class="ms-3 py-1 w-75">

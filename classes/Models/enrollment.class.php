@@ -8,7 +8,7 @@ class Enrollment extends \Dbh{
     protected function index($status, $offset, $total_records_per_page, $query, $level, $section){
         try{
             if (empty($level)) {
-                $sql = "SELECT enrollment_history_table.enrollment_id, students_table.student_id, students_table.lrn, students_table.surname, students_table.first_name, students_table.middle_name, students_table.ext, enrollment_history_table.enrolled_at, enrollment_history_table.grade_level, enrollment_history_table.section, students_table.gender, enrollment_history_table.student_lrn, enrollment_history_table.status, enrollment_history_table.promotion_status
+                $sql = "SELECT enrollment_history_table.enrollment_id, students_table.student_id, students_table.lrn, students_table.surname, students_table.first_name, students_table.middle_name, students_table.ext, enrollment_history_table.enrolled_at, enrollment_history_table.grade_level, enrollment_history_table.section, students_table.gender, students_table.image, enrollment_history_table.student_lrn, enrollment_history_table.status, enrollment_history_table.promotion_status
                 FROM `students_table`, `enrollment_history_table`
                 WHERE students_table.lrn = enrollment_history_table.student_lrn
                 AND enrollment_history_table.status = ?   
@@ -21,7 +21,7 @@ class Enrollment extends \Dbh{
                 $results = $stmt->fetchAll();
             }
             else{
-                $sql = "SELECT enrollment_history_table.enrollment_id, students_table.student_id, students_table.lrn, students_table.surname, students_table.first_name, students_table.middle_name, students_table.ext, enrollment_history_table.enrolled_at, enrollment_history_table.grade_level, enrollment_history_table.section, students_table.gender, enrollment_history_table.student_lrn, enrollment_history_table.status, enrollment_history_table.promotion_status
+                $sql = "SELECT enrollment_history_table.enrollment_id, students_table.student_id, students_table.lrn, students_table.surname, students_table.first_name, students_table.middle_name, students_table.ext, enrollment_history_table.enrolled_at, enrollment_history_table.grade_level, enrollment_history_table.section, students_table.gender, students_table.image, enrollment_history_table.student_lrn, enrollment_history_table.status, enrollment_history_table.promotion_status
                 FROM `students_table`, `enrollment_history_table`
                 WHERE students_table.lrn = enrollment_history_table.student_lrn
                 AND enrollment_history_table.status = ?   
@@ -94,7 +94,20 @@ class Enrollment extends \Dbh{
     {
         try{
             $image = $file['tmp_name'];
-            $base64_image = base64_encode(file_get_contents(addslashes($image)));
+
+            if (empty($image)) {
+                $base64_image = null;
+            }
+            else{
+                $base64_image = base64_encode(file_get_contents(addslashes($image)));
+            }
+
+            if ($grade_lvl !== 'Kindergarten') {
+                $promotion_status = null;
+            }
+            else{
+                $promotion_status = 'Promotion';
+            }
 
             $school = "Sabang Elementary School";
             $status = "Active";
@@ -121,8 +134,8 @@ class Enrollment extends \Dbh{
             VALUES (?, ?, ?, ?, ?, ?, ?, ?);
             INSERT INTO `guardians_table` (student_lrn, guardian_surname, guardian_first_name, guardian_middle_name, guardian_education, guardian_employment, guardian_contact_number, is_beneficiary)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?);
-            INSERT INTO `enrollment_history_table` (student_lrn, from_sy, to_sy, school, grade_level, section, `status`)
-            VALUES (?, ?, ?, ?, ?, ?, ?);
+            INSERT INTO `enrollment_history_table` (student_lrn, from_sy, to_sy, school, grade_level, section, `status`, `promotion_status`)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?);
             ";
             // Execute
             $stmt = $this->connection()->prepare($sql);
@@ -130,7 +143,7 @@ class Enrollment extends \Dbh{
             $lrn, $father_surname, $father_fname, $father_mname, $father_education, $father_employment, $father_contact, $is_beneficiary,
             $lrn, $mother_surname, $mother_fname, $mother_mname, $mother_education, $mother_employment, $mother_contact, $is_beneficiary,
             $lrn, $guardian_surname, $guardian_fname, $guardian_mname, $guardian_education, $guardian_employment, $guardian_contact, $is_beneficiary,
-            $lrn, $from_sy, $to_sy, $school, $grade_lvl, $section, $status]);
+            $lrn, $from_sy, $to_sy, $school, $grade_lvl, $section, $status, $promotion_status]);
             $stmt = null;
 
         }

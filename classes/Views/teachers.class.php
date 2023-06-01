@@ -31,6 +31,7 @@ class TeachersView extends \Models\Teachers{
                 <tr>
                     <th>#</th>
                     <th>Date registered</th>
+                    <th>Image</th>
                     <th>Name</th>
                     <th>Username</th>
                     <th>Email</th>
@@ -45,6 +46,15 @@ class TeachersView extends \Models\Teachers{
                 <tr>
                     <td><?= $row['account_id'] ?></td>
                     <td><?= $row['added_at'] ?></td>
+                    <td class="d-flex align-items-center justify-content-center border-0">
+                        <?php if ($row['image'] === null) { ?>
+                        <img class="rounded-circle" style="object-fit: cover;" width=50px height=50px src='./images/profile.jpg'>
+
+                        <?php } else { ?>
+                        <img class="rounded-circle" style="object-fit: cover;" width=50px height=50px src=data:image;base64,<?= $row['image'] ?>>
+
+                        <?php } ?>
+                    </td>
                     <td>
                         <?= 
                         $row['ext_name'] === "None" ? strtoupper($row['surname']) . ', ' . strtoupper($row['first_name']) . ' ' . strtoupper($row['middle_name']) :
@@ -69,16 +79,23 @@ class TeachersView extends \Models\Teachers{
                             View
                             </a>
                             
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <input class="student-id" type="hidden" name="id" id="id" value="<?= $row['teacher_id'] ?>" >
-                                <!-- <li><input type="submit" class="dropdown-item information-links" name="information" value="Information"></li> -->
-                                <li><a class="dropdown-item" href="../sabanges/account_informations.php?id=<?= $row['teacher_id']?>">Informations</a></li>
-                                <li>
-                                    <a type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                    Permission
-                                    </a>
-                                </li>
-                            </ul>
+                            <form class="action-form" action="./includes/teachers.inc.php" method="post" enctype="multipart/form-data">
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <input class="" type="hidden" name="id" id="id" value="<?= $row['account_id'] ?>" >
+                                    <!-- <li><input type="submit" class="dropdown-item information-links" name="information" value="Information"></li> -->
+                                    <li><a class="dropdown-item" href="../sabanges/account_informations.php?id=<?= $row['teacher_id']?>">Informations</a></li>
+                                    <li>
+                                        <button type="submit" class="dropdown-item reset-btn" name="reset">
+                                        Reset password
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button type="submit" class="dropdown-item status-btn" name="status">
+                                        Toggle active status
+                                        </button>
+                                    </li>
+                                </ul>
+                            </form>
                         </div>
                     </td>
                 </tr>
@@ -302,14 +319,6 @@ class TeacherInformationView extends \Models\Teachers{
                                         <div id="emailHelp" class="form-text">Promotes and retain learners.</div>
                                     </div>
                                 </div>
-                                <div class="col-md">
-                                    <div class="form-check">
-                                        <input class="form-check-input role-radio-input" type="radio" name="role" id="flexRadioDefault4" value='author' <?= $result[0]['author'] == 1 ? 'checked' : '' ?>>
-                                        <label class="form-check-label" for="flexRadioDefault4">
-                                            Author
-                                        </label>
-                                    <div id="emailHelp" class="form-text ">Manage grades levels, sections, and subjects.</div>
-                                </div>
                             </div>
                     </div>
                 </div>
@@ -364,14 +373,175 @@ class TeacherInformationView extends \Models\Teachers{
         <div class="container my-3">
             <div class="row">
                 <div class="col-md-3">
-                    <img class="rounded" style="object-fit: cover;" width=250px height=300px src=data:image;base64,<?= $result[0]['image'] ?>>
-                    <div class="mt-2">
-                        <div class="fw-semibold fs-5">
-                            <?= ucfirst($result[0]['surname']) . ', ' . ucfirst($result[0]['first_name']) . ' ' . ucfirst($result[0]['middle_name']) ?> <?= $result[0]['ext_name'] == 'None' ? '' : $result[0]['ext_name'] ?>
+                    <div class="d-flex align-items-center border-bottom">
+                        <span class="fw-semibold fs-5 ">Profile</span>
+                        <a class="ms-auto my-2 btn <?= isset($_GET['edit_profile']) ? 'btn-danger' : 'btn-primary' ?>" <?= isset($_GET['edit_profile']) ? 'href="index.php"' : 'href="?edit_profile"' ?>><?= isset($_GET['edit_profile']) ? 'Cancel' : 'Edit' ?></a>
+                    </div>
+                    <img class="mt-2 rounded" style="object-fit: cover;" width=100% height=250px src=data:image;base64,<?= $result[0]['image'] ?>>
+                    <div class="d-flex flex-column gap-1 mt-3">
+                        <div class="fw-semibold border-bottom">
+                            Personal
                         </div>
+                        <form action="./includes/teachers.inc.php" method="post" enctype="multipart/form-data">
+                            <div class="d-flex <?= isset($_GET['edit_profile']) ? 'flex-column' : 'flex-row'?> justify-content-between gap-1">
+                                <?php if (isset($_GET['edit_profile'])) { ?>
+                                <span>Surname: </span>
+                                <input type="text" class="form-control" name="sname" placeholder="Enter surname" value="<?= $result[0]['surname'] ?>">
+                                <span>First name: </span>
+                                <input type="text" class="form-control" name="fname" placeholder="Enter first name" value="<?= $result[0]['first_name'] ?>">
+                                <span>Middle name: </span>
+                                <input type="text" class="form-control" name="mname" placeholder="Enter middle name" value="<?= $result[0]['middle_name'] ?>">
+                                <?php } else { ?>
+                                <span>Name: </span>
+                                <span class="fs-6 text-end">
+                                    <?= ucfirst($result[0]['surname']) . ', ' . ucfirst($result[0]['first_name']) . ' ' . ucfirst($result[0]['middle_name']) ?> <?= $result[0]['ext_name'] == 'None' ? '' : $result[0]['ext_name'] ?>
+                                </span>
+                                <?php } ?>
+                            </div>
+                            <div class="d-flex <?= isset($_GET['edit_profile']) ? 'flex-column' : 'flex-row'?> justify-content-between gap-1">
+                                <span>Gender:</span>
+                                <?php if (isset($_GET['edit_profile'])) { ?>
+                                <div class="form-check me-3">
+                                    <input type="radio" class="form-check-input" id="male-gender" name="gender" value="Male" <?= $result[0]['gender'] == 'Male' ? 'checked' : '' ?> required>
+                                    <label class="form-check-label" for="male-gender">Male</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="radio" class="form-check-input" id="female-gender" name="gender" value="Female" <?= $result[0]['gender'] == 'Female' ? 'checked' : '' ?> required>
+                                    <label class="form-check-label" for="female-gender">Female</label>
+                                </div>
+                                <?php } else {?>
+                                <span class=" text-end"><?= $result[0]['gender'] ?></span>
+                                <?php } ?>
+                            </div>
+                            <div class="d-flex <?= isset($_GET['edit_profile']) ? 'flex-column' : 'flex-row'?> justify-content-between gap-1">
+                                <span>Email:</span>
+                                <?php if (isset($_GET['edit_profile'])) { ?>      
+                                <input type="text" class="form-control" name="email" placeholder="Enter new email" value="<?= $result[0]['email'] ?>">                      
+                                <?php } else {?>
+                                <span class=" text-end"><?= $result[0]['email'] ?></span>
+                                <?php } ?>
+                            </div>
+                            <div class="d-flex <?= isset($_GET['edit_profile']) ? 'flex-column' : 'flex-row'?> justify-content-between gap-1">
+                                <span>Birth date: </span>
+                                <?php if (isset($_GET['edit_profile'])) { ?>      
+                                <input type="date" class="form-control" name="birth-date" placeholder="Enter new email" value="<?= $result[0]['birth_date'] ?>">                      
+                                <?php } else {?>
+                                <span class=" text-end"><?= $result[0]['birth_date'] ?></span>
+                                <?php } ?>
+                            </div>
+                            <div class="d-flex <?= isset($_GET['edit_profile']) ? 'flex-column' : 'flex-row'?> justify-content-between gap-1">
+                                <span>Contact: </span>
+                                <?php if (isset($_GET['edit_profile'])) { ?>      
+                                <input type="text" class="form-control" name="contact" placeholder="Enter new contact" value="<?= $result[0]['contact'] ?>">    
+                                <span>Profile image: </span>                  
+                                <input type="file" class="form-control" name="file" placeholder="Enter new contact" accept="image/png, image/gif, image/jpeg">                      
+                                <?php } else {?>
+                                <span class=" text-end"><?= $result[0]['contact'] ?></span>
+                                <?php } ?>
+                            </div>
+                            <div class="d-flex <?= isset($_GET['edit_profile']) ? 'flex-column' : 'flex-row'?> justify-content-between gap-1">
+                                <span>Religion: </span>
+                                <?php if (isset($_GET['edit_profile'])) { ?>      
+                                <input type="text" class="form-control" name="religion" placeholder="Enter new religion" value="<?= $result[0]['religion'] ?>">                    
+                                <?php } else {?>
+                                <span class=" text-end"><?= $result[0]['religion'] ?></span>
+                                <?php } ?>
+                            </div>
+                            <div class="fw-semibold mt-3 border-bottom">
+                                Address
+                            </div>
+                            <?php if (isset($_GET['edit_profile'])) { ?>   
+                            <div class="d-flex flex-column justify-content-between gap-1">
+                                <span>House street: </span>
+                                <input type="text" class="form-control" name="house-number-street" value="<?= $result[0]['house_street'] ?>">
+                            </div>
+                            <div class="d-flex flex-column justify-content-between gap-1">
+                                <span>Subdivision: </span>
+                                <input type="text" class="form-control" name="subdv-village-zone" value="<?= $result[0]['subdivision'] ?>">
+                            </div>
+                            <div class="d-flex flex-column justify-content-between gap-1">
+                                <span>Barangay: </span>
+                                <input type="text" class="form-control" name="barangay" value="<?= $result[0]['barangay'] ?>">
+                            </div>
+                            <div class="d-flex flex-column justify-content-between gap-1">
+                                <span>City: </span>
+                                <input type="text" class="form-control" name="city-municipality" value="<?= $result[0]['city'] ?>">
+                            </div>
+                            <div class="d-flex flex-column justify-content-between gap-1">
+                                <span>Province: </span>
+                                <input type="text" class="form-control" name="province" value="<?= $result[0]['province'] ?>">
+                            </div>
+                            <div class="d-flex flex-column justify-content-between gap-1">
+                                <span>Region: </span>
+                                <input type="text" class="form-control" name="region" value="<?= $result[0]['region'] ?>">
+                            </div>
+                            <div class="d-flex flex-column justify-content-between gap-1 mt-2">
+                                <input type="submit" class="btn btn-primary" name="edit-profile" value="Submit">
+                            </div>
+                            <?php } else { ?>   
+                            <div class="d-flex justify-content-between text-end">
+                                <span>House street: </span>
+                                <span class=" "><?= $result[0]['house_street'] ?></span>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <span>Subdivision: </span>
+                                <span class=" "><?= $result[0]['subdivision'] ?></span>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <span>Barangay: </span>
+                                <span class=" "><?= $result[0]['barangay'] ?></span>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <span>City: </span>
+                                <span class=" "><?= $result[0]['city'] ?></span>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <span>Province: </span>
+                                <span class=" "><?= $result[0]['province'] ?></span>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <span>Region: </span>
+                                <span class=""><?= $result[0]['region'] ?></span>
+                            </div>
+                            <?php } ?>
+                        </form>
+                    </div>
+                    <div class="d-flex align-items-center border-bottom mt-3">
+                        <span class="fw-semibold fs-5 ">Account</span>
+                        <a class="ms-auto my-2 btn <?= isset($_GET['edit_account']) ? 'btn-danger' : 'btn-primary' ?>" <?= isset($_GET['edit_account']) ? 'href="index.php"' : 'href="?edit_account#account_section"' ?>><?= isset($_GET['edit_account']) ? 'Cancel' : 'Edit' ?></a>
+                    </div>
+                    <form action="./includes/teachers.inc.php" method="post" enctype="multipart/form-data">
+
+                    <div class="d-flex flex-column gap-1 mt-2" id="account_section">
+                        <div class="d-flex <?= isset($_GET['edit_account']) ? 'flex-column' : '' ?> justify-content-between">
+                            <span>Username: </span>
+                            <?php if (isset($_GET['edit_account'])) { ?>
+                            <input type="text" class="form-control" name="username" placeholder="Enter new username" value="<?= $result[0]['username'] ?>">
+                            <?php } else { ?>
+                            <span class=""><?= $result[0]['username'] ?></span>
+                            <?php } ?>
+                        </div>
+                        <div class="d-flex <?= isset($_GET['edit_account']) ? 'flex-column' : '' ?> justify-content-between">
+                            <?php if (!isset($_GET['edit_account'])) { ?>
+                            <span>Email: </span>
+                            <span class=""><?= $result[0]['email'] ?></span>                            
+                            <?php } ?>
+                        </div>
+                            <?php if (isset($_GET['edit_account'])) { ?>
+                            <span>Current password: </span>
+
+                            <input type="password" class="form-control" name="old-password" placeholder="Enter current password">
+                            <span>New password: </span>
+
+                            <input type="password" class="form-control mt-1" name="new-password" placeholder="Enter new password">
+                            <span>Retype password: </span>
+
+                            <input type="password" class="form-control mt-1" name="retype-password" placeholder="Retype password">
+                            <input type="submit" class="btn btn-primary mt-1" name="edit-account" name="edit-account" value="Submit">
+                            <?php } ?>
                         <div>
-                            
-                        </div>
+                    </div>
+                    </form>
                     </div>
                 </div>
                 <main class="col-md">

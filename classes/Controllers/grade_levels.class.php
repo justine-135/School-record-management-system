@@ -19,6 +19,8 @@ class GradeLevelsController extends \Models\GradeLevels{
 
         else{
             $this->initCreate($grade, $section);
+            header("Location: ../operations_sections.ph?operations_sections&submitted");
+            die();
         }
     }
 

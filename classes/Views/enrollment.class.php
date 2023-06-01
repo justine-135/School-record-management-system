@@ -86,6 +86,7 @@ class EnrollmentView extends \Models\Enrollment{
                         </div>
                     </th>
                     <th scope="col">LRN</th>
+                    <th scope="col">Image</th>
                     <th scope="col">Student</th>
                     <th scope="col">Recorded at</th>
                     <th scope="col">Gender</th>
@@ -111,6 +112,15 @@ class EnrollmentView extends \Models\Enrollment{
                             </div>
                         </td>
                         <td><?= $row['lrn'] ?></td>
+                        <td class="d-flex align-items-center justify-content-center border-0">
+                            <?php if ($row['image'] === null) { ?>
+                            <img class="rounded-circle" style="object-fit: cover;" width=50px height=50px src='./images/profile.jpg'>
+
+                            <?php } else { ?>
+                            <img class="rounded-circle" style="object-fit: cover;" width=50px height=50px src=data:image;base64,<?= $row['image'] ?>>
+
+                            <?php } ?>
+                        </td>
                         <td><?= strtoupper($row['surname']) . ', ' . strtoupper($row['first_name']) . ' ' . strtoupper($row['middle_name'])  ?> <?= strtoupper($row['ext']) == 'NONE' ? '' : strtoupper($row['ext']) ?></td>
                         <td><?= $row['enrolled_at'] ?></td>
                         <td><?= $row['gender'] ?></td>
