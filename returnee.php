@@ -13,7 +13,7 @@ include './includes/session.inc.php';
 include './includes/permission.inc.php';
 ?>
 
-<main class="container-fluid w-90 mt-4 ">
+<main class="container-fluid w-90 mt-4 mb-5 ">
   <?php include './partials/nav_enrollment_tabs.php'; ?>
   <form class="border border-top-0 p-0 bg-white mb-3" action="./includes/enrollment.inc.php" method="post" enctype="multipart/form-data">
     <h5 class="border-bottom p-3">Search learner's reference number</h5>
