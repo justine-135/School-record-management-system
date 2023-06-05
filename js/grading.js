@@ -200,7 +200,6 @@ openGradeBtns.forEach((element) => {
             }
           }
 
-          console.log(totalFailedRemark);
           if (finalTrue) {
             totalFinalGrade = totalFinalGrade / finalGrades.length;
             totalFinalGradeInput.value = totalFinalGrade.toFixed(2);
@@ -217,10 +216,6 @@ openGradeBtns.forEach((element) => {
             }
           }
         };
-
-        getQuarterlyGrades();
-        getFinalGrade();
-        getSummary();
       }
     };
 
@@ -237,6 +232,25 @@ openGradeBtns.forEach((element) => {
     );
     xmlhttp.send();
   });
+});
+
+const submitGradeForm = document.querySelector(".submit-grade-form");
+
+submitGradeForm.addEventListener("submit", (e) => {
+  let finalGradeSubmit =
+    submitGradeForm.childNodes[7].childNodes[1].childNodes[1].childNodes[3]
+      .childNodes[3].childNodes[5].childNodes[1].childNodes[11].childNodes[1]
+      .value;
+
+  if (!finalGradeSubmit) {
+    alert("Review grades before submitting.");
+    e.preventDefault();
+  } else {
+    let text = "Are you sure you want to submit grades?";
+    if (confirm(text) == false) {
+      e.preventDefault();
+    }
+  }
 });
 
 const subjectToastBtn = document.querySelector("#subjects-toast-btn");

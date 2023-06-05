@@ -1,29 +1,44 @@
-// Checkbox all student
-const masterlistChkbxAll = document.querySelector(".masterlist-chkbox-all");
-const masterlistChkbxs = document.querySelectorAll(".masterlist-chkbox");
+const loadPhp = () => {
+  const xhttp = new XMLHttpRequest();
+  xhttp.onload = function () {
+    document.querySelector(".load-promotion").innerHTML = this.responseText;
 
-let checkAll = false;
+    // Checkbox all student
+    const masterlistChkbxAll = document.querySelector(".masterlist-chkbox-all");
+    const masterlistChkbxs = document.querySelectorAll(".masterlist-chkbox");
 
-// Uncheck and check checkboxes
-const checkUncheck = (bool1) => {
-  masterlistChkbxs.forEach((element) => {
-    let chkBx = element;
+    let checkAll = false;
 
-    chkBx.checked = bool1;
-    checkAll = bool1;
-  });
+    // Uncheck and check checkboxes
+    const checkUncheck = (bool1) => {
+      masterlistChkbxs.forEach((element) => {
+        let chkBx = element;
+
+        chkBx.checked = bool1;
+        checkAll = bool1;
+      });
+    };
+
+    // Checkbox conditions
+    masterlistChkbxAll.addEventListener("change", () => {
+      if (!checkAll) {
+        // Check all
+        checkUncheck(true);
+      } else {
+        // Uncheck all
+        checkUncheck(false);
+      }
+    });
+  };
+  xhttp.open(
+    "GET",
+    "./includes/promotion_retention.inc.php?view=promotion",
+    true
+  );
+  xhttp.send();
 };
 
-// Checkbox conditions
-masterlistChkbxAll.addEventListener("change", () => {
-  if (!checkAll) {
-    // Check all
-    checkUncheck(true);
-  } else {
-    // Uncheck all
-    checkUncheck(false);
-  }
-});
+loadPhp();
 
 const subjectToastBtn = document.querySelector("#subjects-toast-btn");
 const subjectToast = document.querySelector("#subjects-toast");
