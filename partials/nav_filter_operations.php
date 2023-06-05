@@ -48,19 +48,16 @@ $level = isset($_GET['level']) ? $_GET['level'] : "" ;
             <?php if ($view == 'operations_subjects') { ?>
             <button type="button" class="btn btn-primary d-flex align-items-center ms-auto" data-bs-toggle="modal" data-bs-target="#subjectsModal">
                 Add
-            <?php require './partials/add_icon.php' ?>
             </button>  
             <?php } ?>
             <?php if ($view == 'operations_grading') { ?>
             <button type="button" class="btn btn-primary d-flex align-items-center ms-auto" data-bs-toggle="modal" data-bs-target="#scheduleModal">
             Schedule
-            <?php require './partials/add_icon.php' ?>
             </button>   
             <?php } ?>
             <?php if ($view == 'operations_sections') { ?>
             <button type="button" class="btn btn-primary d-flex align-items-center ms-auto" data-bs-toggle="modal" data-bs-target="#gradeLevelsModal">
             Add
-            <?php require './partials/add_icon.php' ?>
             </button> 
             <?php } ?>
         </div>

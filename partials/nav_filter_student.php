@@ -93,7 +93,7 @@ $section = isset($_GET['section']) ? $_GET['section'] : "";
         <?php } ?>
     </div>
 
-    <?php if ($view == 'masterlist' || $view == 'all_students') {  ?>
+    <?php if ($view == 'masterlist' || $view == 'all_students' || $view == 'grading') {  ?>
     <form class="input-group w-25 search-form ms-auto" action="../sabanges/includes/student.inc.php" method="post" enctype="multipart/form-data">
         <input type="text" class="form-control search-input" placeholder="Search" name="query" value="<?= $query ?>"/>
         <input type="hidden" class="form-control search-input" placeholder="Search" name="row" value="<?= $row ?>"/>

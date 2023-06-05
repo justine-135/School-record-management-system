@@ -65,7 +65,7 @@ if (isset($_GET['grades'])) {
   <div class="alert alert-<?= isset($_GET['error']) ? 'danger' : (isset($_GET['submitted']) ? 'success' : '')  ?> d-flex align-items-center alert-dismissible fade show" role="alert">
   <?php require isset($_GET['error']) ? 'danger_icon.php' : (isset($_GET['submitted']) ? 'success_icon.php' : '') ?>
     <div>
-      <?= isset($_GET['exist']) ? 'Grades are already submitted.' : (isset($_GET['empty']) ? 'Fill up all grades input.' : (isset($_GET['unenrolled']) ? 'Student not enrolled to the grade level submitted.' : (isset($_GET['value']) ? 'Grades cannot be lower than 60, and higher than 100.' : (isset($_GET['characters']) ? 'Grades only accept number values.' : (isset($_GET['permission']) ? 'You are not permitted to submit grade to this student.' : (isset($_GET['schedule']) ? 'Grading period is closed.' : 'Grades submitted.'))))))?>
+      <?= isset($_GET['exist']) ? 'Grades are already submitted.' : (isset($_GET['empty']) ? 'Fill up all grades input.' : (isset($_GET['unenrolled']) ? 'Student not enrolled to the grade level submitted.' : (isset($_GET['value']) ? 'Grades cannot be lower than 60, and higher than 100.' : (isset($_GET['characters']) ? 'Grades only accept number values.' : (isset($_GET['permission']) ? 'You are not permitted to submit grade to this student.' : (isset($_GET['schedule']) ? 'Grading period is closed.' : (isset($_GET['remark']) ? 'Review grade before submitting.' : 'Submitted grades for student ' . $_GET['lrn'] . '.')))))))?>
     </div>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
@@ -108,22 +108,6 @@ if (isset($_GET['returnee'])) {
   </div>
   <?php
 }
-?>
-
-<?php if (isset($_GET['permission']) && isset($_GET['error'])) { ?>
-<div class="toast-container position-fixed p-3">
-  <div id="subjects-toast" class="toast <?= isset($_GET['permission']) && isset($_GET['error']) ? 'show' : 'hide' ?>" role="alert" aria-live="assertive" aria-atomic="true">
-    <div class="toast-header">
-      <strong class="me-auto">Notification</strong>
-      <a type="button" class="btn-close" href='index.php' aria-label="Close"></a>
-    </div>
-    <div class="toast-body">
-      <p>You are not permitted to enter the page.</p>
-    </div>
-  </div>
-</div>
-<?php }
-
 
 if (isset($_GET['reset_password'])) {
   ?>
@@ -148,4 +132,53 @@ if (isset($_GET['update_status'])) {
   </div>
   <?php
 }
-?>
+
+if (isset($_GET['operations'])) {
+  ?>
+  <div class="alert alert-<?= isset($_GET['error']) ? 'danger' : (isset($_GET['submitted']) ? 'success' : '')  ?> d-flex align-items-center alert-dismissible fade show" role="alert">
+  <?php require isset($_GET['error']) ? 'danger_icon.php' : (isset($_GET['submitted']) ? 'success_icon.php' : '') ?>
+    <div>
+      <?= isset($_GET['exist']) ? 'Row already existing.' : (isset($_GET['value']) ? 'Cannot input special characters.' : 'Row successfully submited.')?>
+    </div>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  <?php
+}
+
+if (isset($_GET['promotion'])) {
+  ?>
+  <div class="alert alert-<?= isset($_GET['error']) ? 'danger' : (isset($_GET['submitted']) ? 'success' : '')  ?> d-flex align-items-center alert-dismissible fade show" role="alert">
+  <?php require isset($_GET['error']) ? 'danger_icon.php' : (isset($_GET['submitted']) ? 'success_icon.php' : '') ?>
+    <div>
+      <!-- Button trigger modal -->
+      Promoted selected students.
+    </div>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  <?php
+}
+
+if (isset($_GET['retention'])) {
+  ?>
+  <div class="alert alert-<?= isset($_GET['error']) ? 'danger' : (isset($_GET['submitted']) ? 'success' : '')  ?> d-flex align-items-center alert-dismissible fade show" role="alert">
+  <?php require isset($_GET['error']) ? 'danger_icon.php' : (isset($_GET['submitted']) ? 'success_icon.php' : '') ?>
+    <div>
+      <!-- Button trigger modal -->
+      Retained selected students.
+    </div>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  <?php
+}
+
+if (isset($_GET['account'])) {
+  ?>
+  <div class="alert alert-<?= isset($_GET['error']) ? 'danger' : (isset($_GET['submitted']) ? 'success' : '')  ?> d-flex align-items-center alert-dismissible fade show" role="alert">
+  <?php require isset($_GET['error']) ? 'danger_icon.php' : (isset($_GET['submitted']) ? 'success_icon.php' : '') ?>
+    <div>
+      <?= isset($_GET['superadmin']) ? 'Cannot submit changes for this account.' : ''?>
+    </div>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  <?php
+}
