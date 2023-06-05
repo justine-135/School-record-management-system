@@ -29,6 +29,8 @@ include './includes/permission.inc.php';
             <label for="file" class="form-label">Profile image</label>
             <input type="file" class="form-control" id="file" name="file" accept="image/png, image/gif, image/jpeg" value="<?= isset($_GET['file']) ? $_GET['file'] : "" ?>">
             <div id="emailHelp" class="form-text ps-3" >*Choose jpeg/jpg, and png only.</div>
+            <div id="emailHelp" class="form-text ps-3" >*Acceptable file size is 2mb.</div>
+            <div id="emailHelp" class="form-text ps-3" >*Ignore if not applicable.</div>
           </div>
         </div>
         <div class="row g-3 p-3">
