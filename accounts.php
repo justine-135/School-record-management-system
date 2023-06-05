@@ -25,7 +25,6 @@ include './includes/permission.inc.php';
 
         <?php require $_SERVER['DOCUMENT_ROOT'].'/sabanges/partials/nav_filter_accounts.php'; ?>
         <a class="d-flex align-items-center btn btn-primary ms-2" href="register.php">
-            <?php include $_SERVER['DOCUMENT_ROOT'].'/sabanges/partials/add_icon.php'; ?>
             Add
         </a>
 
