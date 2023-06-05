@@ -12,7 +12,7 @@ if (isset($_GET['edit_profile']) && isset($_GET['profile'])) {
   <?php
 }
 
-if (isset($_GET['edit_account']) && isset($_GET['account'])) {
+if (isset($_GET['edit_account'])) {
   ?>
   <div class="alert alert-<?= isset($_GET['error']) ? 'danger' : (isset($_GET['submitted']) ? 'success' : '')  ?> d-flex align-items-center alert-dismissible fade show" role="alert">
   <?php require isset($_GET['error']) ? 'danger_icon.php' : (isset($_GET['submitted']) ? 'success_icon.php' : '') ?>
