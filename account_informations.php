@@ -12,7 +12,7 @@ include './includes/session.inc.php';
 include './includes/permission.inc.php';
 ?>
 
-<main class="container-fluid w-90 mt-4 mb-5 p-4 bg-white <?= $view ?>">
+<main class="container-fluid w-90 mt-4 mb-5 p-0 bg-white <?= $view ?>">
 <?php include 'includes/teachers.inc.php'; ?>
 </main>
 <?php require $_SERVER['DOCUMENT_ROOT'].'/sabanges/partials/footer.php'; ?>
