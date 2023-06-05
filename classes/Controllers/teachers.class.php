@@ -82,27 +82,27 @@ class TeachersController extends \Models\Teachers{
     public function initChangePasswordProfile($username,$oldpass,$newpass,$retypepass){
         session_start();
         if ($this->changePassEmptyInputs($username, $oldpass, $newpass, $retypepass) !== false) {
-            header("Location: ../index.php?edit_account&account&error&empty");
+            header("Location: ../index.php?edit_account&error&empty");
             die();
         }
         elseif ($this->changePassSpecialChars($username, $oldpass, $newpass, $retypepass) !== false) {
-            header("Location: ../index.php?edit_account&account&error&specialchars");
+            header("Location: ../index.php?edit_account&error&specialchars");
         }
         elseif ($this->validatePassword($oldpass, $newpass, $retypepass) !== false) {
-            header("Location: ../index.php?edit_account&account&error&pwdsame");
+            header("Location: ../index.php?edit_account&error&pwdsame");
         }
         elseif ($this->initValidateUserChangePassProfile($oldpass) !== true) {
-            header("Location: ../index.php?edit_account&account&error&notfound");
+            header("Location: ../index.php?edit_account&error&notfound");
         }
         elseif ($this->initUsernameExistUpdate($username) !== false) {
             // header("Location: ../index.php?edit_profile&profile&error&emailexist");
-            header("Location: ../index.php?edit_account&account&error&exist");
+            header("Location: ../index.php?edit_account&error&exist");
             die();
         }
         else{
             $this->changePasswordProfile($newpass, $username);
             $_SESSION['username'] = $username;
-            header("Location: ../index.php?edit_account&account&submitted");
+            header("Location: ../index.php?edit_account&submitted");
             die();
         }
     }
