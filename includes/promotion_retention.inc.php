@@ -26,7 +26,8 @@ function index($view){
     $obj->initIndex($view);
 }
 
-if (isset($view)) {
+if (isset($_GET['view'])) {
+    $view = $_GET['view'];
     if ($view == 'promotion') {
         index($view);
     }

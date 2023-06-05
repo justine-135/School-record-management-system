@@ -10,13 +10,6 @@ use Controllers\EnrollmentController;
 use Controllers\EnrollmentHistoryController;
 use Views\StudentInformationView;
 
-// function enrollment_form_obj($edit_id){
-//     $view_form_obj = new StudentInformationView();
-//     $view_form_obj->viewStudentForm($edit_id);
-
-//     return $view_form_obj;
-// }
-
 if (isset($_POST["enroll"])) {
     // Student information
     $sname = $_POST['sname'];

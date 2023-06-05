@@ -212,12 +212,24 @@ if (isset($_POST['edit-account'])) {
 
 if (isset($_POST['reset'])){
     $id = $_POST['id'];
+    $curr_role = $_POST['curr_role'];
+
+    if ($curr_role == 'superadmin') {
+        header("Location: ../accounts.php?account&error&superadmin");
+        die();
+    }
 
     initResetPassword($id);
 }
 
 if (isset($_POST['status'])){
     $id = $_POST['id'];
+    $curr_role = $_POST['curr_role'];
+
+    if ($curr_role == 'superadmin') {
+        header("Location: ../accounts.php?account&error&superadmin");
+        die();
+    }
 
     initUpdateStatus($id);
 }

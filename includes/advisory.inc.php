@@ -21,9 +21,15 @@ if (isset($_POST['add'])) {
 
     initCreate($email, $username, $grade_level, $section);
 }
+else{
+    header("Location: ../index.php");
+}
 
 if (isset($_POST['delete'])) {
     $id = $_POST['id'];
 
     initDestroy($id);
+}
+else{
+    header("Location: ../index.php");
 }

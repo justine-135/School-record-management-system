@@ -102,10 +102,6 @@ if (isset($_GET['section_select_enrollment_edit'])) {
     initIndexSelectEnrollmentEdit($section_params);
 }
 
-// if (isset($_GET['grade_level_table'])) {
-//     initIndexGradeLevels();
-// }
-
 if (isset($view)) {
     if ($view == 'operations_subjects') {
         initIndexSections();
@@ -117,6 +113,7 @@ if (isset($view)) {
         initIndexSchedule();
     }
 }
+
 
 if (isset($sections) || isset($_GET['level'])) {
     if ($view !== 'operations_subjects' && $view !== 'operations_sections' && $view !== 'operations_grading') {
@@ -137,11 +134,13 @@ if (isset($_POST['delete-subject'])) {
     initDeleteSubject($id);
 }
 
+
 if (isset($_POST['delete-schedule'])) {
     $id = $_POST['id'];
 
     initDeleteSchedule($id);
 }
+
 
 if (isset($_POST['schedule-submit'])) {
     $start = $_POST['start'];
