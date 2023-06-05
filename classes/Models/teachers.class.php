@@ -323,7 +323,7 @@ class Teachers extends \Dbh{
     protected function indexDashboard($grade_level, $section){
         try {
             $sql = "SELECT history.enrollment_id, history.student_lrn, history.grade_level, history.section, history.status,
-            student.student_id, student.lrn, student.image, student.first_name, student.middle_name, student.surname, student.ext, student.gender   
+            student.student_id, student.lrn, student.image, student.first_name, student.middle_name, student.surname, student.ext, student.gender, student.birth_date
             FROM enrollment_history_table as history, students_table as student 
             WHERE history.status = ? 
             AND history.grade_level = ? 

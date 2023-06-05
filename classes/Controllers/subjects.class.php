@@ -7,7 +7,7 @@ include $_SERVER['DOCUMENT_ROOT'].'/sabanges/classes/Models/subjects.class.php';
 class SubjectsController extends \Models\Subjects{
     public function checkValidationSubject($subject, $grade, $quarter1, $quarter2, $quarter3, $quarter4){
         if ($this->initExists($subject, $grade) !== false) {
-            header("Location: ../operations_subjects.php?operations&error&exists");
+            header("Location: ../operations_subjects.php?operations&error&exist");
             die();
         }
         elseif ($this->validateSpecialChars($subject, $grade) !== false) {

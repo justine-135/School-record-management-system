@@ -58,6 +58,8 @@ class PromotionRetentionView extends \Models\PromotionRetention{
         $this->validateRequest($rows, $offset, $page_no, $status, $query, $level, $section);
 
         $results = $this->index($status, $offset, $total_records_per_page, $query, $level, $section);
+
+        if (count($results) > 0) {
         ?>
 
         <table class="table table-hover mb-0 mt-2 border-top table-bordered student-table">
@@ -65,7 +67,6 @@ class PromotionRetentionView extends \Models\PromotionRetention{
                 <tr>
                     <th scope="col">     
                         <div class="d-flex">
-                            <span class="me-2">#</span>      
                             <div class="form-check">
                                 <input class="form-check-input masterlist-chkbox-all" type="checkbox" value="" id="flexCheckDefault">
                             </div>
@@ -94,9 +95,6 @@ class PromotionRetentionView extends \Models\PromotionRetention{
                     <tr>
                         <td>
                             <div class="d-flex">
-                                <span class="me-2">
-                                <?= $row['enrollment_id'] ?>
-                                </span>
                                 <?php if ($view == 'promotion') { ?>            
                                 <div class="form-check">
                                     <input class="form-check-input masterlist-chkbox" type="checkbox" name="chkbox-student[]" value="<?= $row['enrollment_id'] ?>,<?= $row['student_lrn'] ?>,<?= $row['grade_level'] ?>,<?= $row['promotion_status'] ?>" id="flexCheckDefault">
@@ -180,6 +178,9 @@ class PromotionRetentionView extends \Models\PromotionRetention{
             <span class="fw-semibold">Page <?= $page_no ?> out of <?= $total_no_page ?></span>
         </nav>
         <?php
+        } else {
+            echo "<p class='p-2'>No cannot be promoted or retained.</p>";
+        }
     }
         
 }

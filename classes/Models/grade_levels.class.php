@@ -65,6 +65,20 @@ class GradeLevels extends \Dbh{
         }
     }
 
+    protected function singleIndex($grade, $section){
+        try {
+            $sql = "SELECT `grade`, `section` FROM `grade_levels_table` WHERE `grade` = ? AND `section` = ?;";
+            $stmt = $this->connection()->prepare($sql);
+            $stmt->execute([$grade, $section]);
+    
+            $results = $stmt->fetchAll();
+            return $results;
+            
+        } catch(PDOException $e) {
+            echo "Error: " . $e->getMessage();
+        }
+    }
+
     protected function sectionsCount($level){
         try {
             if (!empty($level)) {

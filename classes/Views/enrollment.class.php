@@ -62,6 +62,7 @@ class EnrollmentView extends \Models\Enrollment{
         $this->validateRequest($rows, $offset, $page_no, $status, $query, $level, $section);
 
         $results = $this->index($status, $offset, $total_records_per_page, $query, $level, $section);
+
         ?>
 
         <div class="d-flex align-items-center mb-2">
@@ -71,7 +72,7 @@ class EnrollmentView extends \Models\Enrollment{
         <select class="form-select section-select w-25 me-2" id="section" aria-label="Default select example" name="section">
             <option value="None" selected>Select section to enroll ---</option>
         </select>
-        <input type="submit" class="btn btn-primary" name="batch" value='Batch enroll'>
+        <input type="submit" class="btn btn-primary" name="batch" value='Enroll learners'>
         </div>
 
         <table class="table table-hover mb-0 border-top table-bordered student-table">
@@ -154,6 +155,7 @@ class EnrollmentView extends \Models\Enrollment{
             <span class="fw-semibold">Page <?= $page_no ?> out of <?= $total_no_page ?></span>
         </nav>
         <?php
+        
     }
 
     public function initSingleIndex($lrn){

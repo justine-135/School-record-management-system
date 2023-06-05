@@ -54,22 +54,12 @@ class StudentView extends \Models\Student{
         $this->validateRequest($rows, $offset, $page_no, $query, $level, $section);
 
         $results = $this->indexEnrollmentHistory($offset, $total_records_per_page, $query, $level, $section);
-
+        if (count($results) > 0) {
         ?>
 
         <table class="table table-hover mt-2 mb-0 border-top table-bordered student-table">
             <thead>
                 <tr>
-                    <th scope="col">     
-                        <div class="d-flex">
-                            <span class="me-2">#</span>      
-                            <?php if ($view == 'promotion' || $view == 'batch_enrollment') { ?>            
-                            <div class="form-check">
-                                <input class="form-check-input masterlist-chkbox-all" type="checkbox" value="" id="flexCheckDefault">
-                            </div>
-                            <?php } ?>
-                        </div>
-                    </th>
                     <th scope="col">LRN</th>
                     <th scope="col">Image</th>
                     <th scope="col">Student</th>
@@ -97,18 +87,6 @@ class StudentView extends \Models\Student{
                 foreach ($results as $row) {
                 ?>
                     <tr>
-                        <td>
-                            <div class="d-flex">
-                                <span class="me-2">
-                                <?= $row['enrollment_id'] ?>
-                                </span>
-                                <?php if ($view == 'promotion') { ?>            
-                                <div class="form-check">
-                                    <input class="form-check-input masterlist-chkbox" type="checkbox" name="chkbox-student[]" value="<?= $row['enrollment_id'] ?>,<?= $row['student_lrn'] ?>,<?= $row['grade_level'] ?>,<?= $row['promotion_status'] ?>" id="flexCheckDefault">
-                                </div>
-                                <?php } ?>
-                            </div>
-                        </td>
                         <td><?= $row['lrn'] ?></td>
                         <td class="d-flex align-items-center justify-content-center border-0">
                             <?php if ($row['image'] === null) { ?>
@@ -213,6 +191,9 @@ class StudentView extends \Models\Student{
             <span class="fw-semibold">Page <?= $page_no ?> out of <?= $total_no_page ?></span>
         </nav>        
         <?php
+        } else {
+            echo "<p class='p-2'>No students are enrolled.</p>";
+        }
     }
 
     public function initStudentRecords($view){
@@ -367,453 +348,455 @@ class StudentInformationView extends \Models\Student{
     public function initSingleIndex($id){
         $result = $this->singleIndex($id);
 
-        foreach ($result as $row) {
-            $result2 = $this->enrollmentHistory($row['student_lrn']);
-        }
-        $grade_levels = array();
-        foreach ($result2 as $row2) {
-            array_push($grade_levels, $row2['grade_level']);
-        }
-        count($result) === 0 ? header("Location: ./masterlist.php?id={$id}&err=not_found") : "";
-        ?>
-        <div class="row gap-3">
-            <form class="border col-md" action="./includes/enrollment.inc.php" method="post" enctype="multipart/form-data">
-                <div class="row ">
-                    <div class="d-flex align-items-center justify-content-between py-3 px-3 border-bottom">
-                        <h5>Information</h5>
-                        <a class="btn btn-primary" href="../sabanges/student_informations.php?id=<?= $result[0]['student_id'] ?>&edit_enrollment">
-                            <?php include_once $_SERVER['DOCUMENT_ROOT'].'/sabanges/partials/edit_icon.php'; ?>
-                            Edit
-                        </a>
-                    </div>
-                    <div class="d-flex align-items-center justify-content-between py-3 px-3">
-                        <div>
-                        <?php foreach($result as $row){ ?>
-                            <img class="rounded-circle" style="object-fit: cover;" width=200px height=200px src=data:image;base64,<?= $row['image'] ?>>
-                        <?php } ?>
+        if (count($result) !== 0) {
+            foreach ($result as $row) {
+                $result2 = $this->enrollmentHistory($row['student_lrn']);
+            }
+            $grade_levels = array();
+            foreach ($result2 as $row2) {
+                array_push($grade_levels, $row2['grade_level']);
+            }
+            // count($result) === 0 ? header("Location: ./masterlist.php?id={$id}&err=not_found") : "";
+            ?>
+            <div class="row gap-3">
+                <form class="border col-md" action="./includes/enrollment.inc.php" method="post" enctype="multipart/form-data">
+                    <div class="row ">
+                        <div class="d-flex align-items-center justify-content-between py-3 px-3 border-bottom">
+                            <h5>Information</h5>
+                            <a style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;" class="btn btn-primary" href="../sabanges/student_informations.php?id=<?= $result[0]['student_id'] ?>&edit_enrollment">
+                                Edit
+                            </a>
                         </div>
-                        <div class="ms-3 py-1 w-75">
-                        <?php foreach($result as $row){ ?>
-                            <h2 class="text-end"><?= strtoupper($row['surname']) . ", " . strtoupper($row['first_name']) . " " . strtoupper($row['middle_name']) . " " ?> <?= strtoupper($row['ext']) == 'NONE' ? '' : strtoupper($row['ext']) ?></h2>
-                            <span class="d-block text-end"> <?= strtoupper($row['lrn']) ?></span>
-                        <?php } ?>
-                        </div>
-                    </div>
-                    <div class="px-0">
-                        <?php foreach($result as $row){ ?>
-                        <div class="border-top">
-                            <div class="py-2 px-2 border-bottom">
-                                <h6 class="m-0">Student information</h6>
+                        <div class="d-flex align-items-center justify-content-between py-3 px-3">
+                            <div>
+                                <?php if ($result[0]['image'] === null) { ?>
+                                <img class="rounded-circle" style="object-fit: cover;" width=200px height=200px src='./images/profile.jpg'>
+                                <?php } else { ?>
+                                <img class="rounded-circle" style="object-fit: cover;" width=200px height=200px src=data:image;base64,<?= $result[0]['image'] ?>>
+                                <?php } ?>   
                             </div>
-                            <div class="row py-2 px-2">
-                                <div class="col-md py-1">
-                                    <span class="fw-semibold">LRN : </span>
-                                    <span><?= strtoupper($row['lrn']) ?></span>
+                            <div class="ms-3 py-1 w-75">
+                                <h2 class="text-end"><?= strtoupper($result[0]['surname']) . ", " . strtoupper($result[0]['first_name']) . " " . strtoupper($result[0]['middle_name']) . " " ?> <?= strtoupper($result[0]['ext']) == 'NONE' ? '' : strtoupper($result[0]['ext']) ?></h2>
+                                <span class="d-block text-end"> <?= strtoupper($result[0]['lrn']) ?></span>
+                            </div>
+                        </div>
+                        <div class="px-0">
+                            <?php foreach($result as $row){ ?>
+                            <div class="border-top">
+                                <div class="py-2 px-2 border-bottom">
+                                    <h6 class="m-0">Student information</h6>
+                                </div>
+                                <div class="row py-2 px-2">
+                                    <div class="col-md py-1">
+                                        <span class="fw-semibold">LRN : </span>
+                                        <span><?= strtoupper($row['lrn']) ?></span>
+                                    </div>
+                                </div>
+                                <div class="py-2 px-2 border-top border-bottom">
+                                    <h6 class="m-0">Basic information</h6>
+                                </div>
+                                <div class="row py-2 px-2">
+                                    <div class="col-md-4 py-1">
+                                        <span class="fw-semibold">Surname :</span>
+                                        <?php if (isset($_GET['edit_enrollment'])) { ?>
+                                        <input  class="form-control " type="text" name="sname" id="" value="<?= $row['surname'] ?>">
+                                        <?php } else { ?>
+                                        <span><?= strtoupper($row['surname']) ?></span>
+                                        <?php } ?>
+                                    </div>
+                                    <div class="col-md-4 py-1">
+                                        <span class="fw-semibold">First name :</span>
+                                        <?php if (isset($_GET['edit_enrollment'])) { ?>
+                                        <input  class="form-control " type="text" name="fname" id="" value="<?= $row['first_name'] ?>">
+                                        <?php } else { ?>
+                                        <span><?= strtoupper($row['first_name']) ?></span>
+                                        <?php } ?>
+                                    </div>
+                                    <div class="col-md-4 py-1">
+                                        <span class="fw-semibold">Middle name :</span>
+                                        <?php if (isset($_GET['edit_enrollment'])) { ?>
+                                        <input  class="form-control " type="text" name="mname" id="" value="<?= $row['middle_name'] ?>">
+                                        <?php } else { ?>
+                                        <span><?= strtoupper($row['middle_name']) ?></span>
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                                <?php if (isset($_GET['edit_enrollment'])) { ?>
+                                <div class="row py-2 px-2">
+                                    <div class="col-md-4 py-1">
+                                        <span class="fw-semibold">Extension :</span>
+                                        <select class="form-select" id="ext" aria-label="Default select example" name="extname">
+                                            <option value="None" <?= $row['ext'] !== "None" ? '' : 'selected' ?>>N/A</option>
+                                            <option value="Jr" <?= $row['ext'] !== "Jr" ? '' : 'selected' ?>>Jr</option>
+                                            <option value="I"  <?= $row['ext'] !== "I" ? '' : 'selected' ?>>I</option>
+                                            <option value="II" <?= $row['ext'] !== "II" ? '' : 'selected' ?>>II</option>
+                                            <option value="III" <?= $row['ext'] !== "III" ? '' : 'selected' ?>>III</option>
+                                            <option value="IV" <?= $row['ext'] !== "IV" ? '' : 'selected' ?>>IV</option>
+                                            <option value="V" <?= $row['ext'] !== "V" ? '' : 'selected' ?>>V</option>
+                                            <option value="VI"<?= $row['ext'] !== "VI" ? '' : 'selected' ?>>VI</option>
+                                            <option value="VII" <?= $row['ext'] !== "VII" ? '' : 'selected' ?>>VII</option>
+                                            <option value="VIII" <?= $row['ext'] !== "VIII" ? '' : 'selected' ?>>VIII</option>
+                                            <option value="IX" <?= $row['ext'] !== "IX" ? '' : 'selected' ?>>IX</option>
+                                            <option value="X" <?= $row['ext'] !== "X" ? '' : 'selected' ?>>X</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4 py-1">
+                                        <span class="fw-semibold">Photo</span>
+                                        <input type="file" class="form-control" id="file" name="file" accept="image/png, image/gif, image/jpeg" value="<?= $row['image'] ?>" required>
+                                        <div id="emailHelp" class="form-text ps-3" >*Choose jpeg/jpg, and png only.</div>
+                                    </div>
+                                </div>
+                                <?php } ?>
+                                        
+                                <div class="row py-2 px-2">
+                                    <div class="col-md-4 py-1">
+                                        <span class="fw-semibold">Gender :</span>
+                                        <?php if (isset($_GET['edit_enrollment'])) { ?>
+                                        <div class="d-flex">
+                                            <div class="form-check me-3">
+                                                <input type="radio" class="form-check-input" id="male-gender" name="gender" value="Male" <?= $row['gender'] == "Male" ? "checked" : "" ?> required>
+                                                <label class="form-check-label" for="male-gender">Male</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input type="radio" class="form-check-input" id="female-gender" name="gender" value="Female" <?= $row['gender'] == "Female" ? "checked" : ""?> required>
+                                                <label class="form-check-label" for="female-gender">Female</label>
+                                            </div>
+                                        </div>
+                                        <?php } else { ?>
+                                        <span><?= strtoupper($row['gender']) ?></span>
+                                        <?php } ?>
+                                    </div>
+                                    <div class="col-md-4 py-1">
+                                        <span class="fw-semibold">Religion :</span>
+                                        <?php if (isset($_GET['edit_enrollment'])) { ?>
+                                        <input  class="form-control " type="text" name="religion" id="" value="<?= $row['religion'] ?>">
+                                        <?php } else { ?>
+                                        <span><?= strtoupper($row['religion']) ?></span>
+                                        <?php } ?>
+                                    </div>
+                                    <div class="col-md-4 py-1">
+                                        <span class="fw-semibold">Birth date :</span>
+                                        <?php if (isset($_GET['edit_enrollment'])) { ?>
+                                        <input type="date" class="form-control" id="bdate" name="birth-date" value="<?= $row['birth_date'] ?>" required>
+                                        <?php } else { ?>
+                                        <span class="bday"><?= strtoupper($row['birth_date']) ?></span>
+                                        <span class="age-calc fw-light">(16)</span>
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                                <?php if (isset($_GET['edit_enrollment'])) { ?> 
+                                <div class="py-2 px-2 border-top border-bottom">
+                                    <h6 class="m-0">Address</h6>
+                                </div>
+                                <div class="row py-2 px-2">
+                                    <div class="col-md-4 py-1">
+                                        <span class="fw-semibold">House number & street :</span>
+                                        <input type="text" class="form-control" id="house-number-street" placeholder="Enter house number & street" name="house-number-street" value="<?= $row['house_street'] ?>" required>
+                                    </div>
+                                    <div class="col-md-4 py-1">
+                                        <span class="fw-semibold">Subdivision/Village/Zone :</span>
+                                        <input type="text" class="form-control" id="subdv-village-zone" placeholder="Enter subdivision/village/zone" name="subdv-village-zone" value="<?= $row['subdivision'] ?>" required>
+                                    </div>
+                                    <div class="col-md-4 py-1">
+                                        <span class="fw-semibold">Barangay :</span>
+                                        <input type="text" class="form-control" id="barangay" placeholder="Enter barangay" name="barangay" value="<?= $row['barangay'] ?>" required>
+                                    </div>
+                                </div>
+
+                                <div class="row py-2 px-2">
+                                    <div class="col-md-4 py-1">
+                                        <span class="fw-semibold">City/Municipality :</span>
+                                        <input type="text" class="form-control" id="city-municipality" placeholder="Enter city/municipality" name="city-municipality" value="<?= $row['city'] ?>" required>
+                                    </div>
+                                    <div class="col-md-4 py-1">
+                                        <span class="fw-semibold">Province :</span>
+                                        <input type="text" class="form-control" id="province" placeholder="Enter province" name="province" value="<?= $row['province'] ?>" required>
+                                    </div>
+                                    <div class="col-md-4 py-1">
+                                        <span class="fw-semibold">Region :</span>
+                                        <input type="text" class="form-control" id="region" placeholder="Enter region" name="region" value="<?= $row['region'] ?>" required>
+                                    </div>
+                                </div>
+                                <?php } else { ?>
+                                <div class="row py-2 px-2">
+                                    <div class="col-md py-1">
+                                        <span class="fw-semibold">Current address :</span>
+                                        <span class="w-50"><?= $row['house_street'] . ". " . $row['subdivision'] . " " . $row['barangay'] . " " . $row['city'] . ", " . $row['province'] ?></span>
+                                    </div>
+                                </div>
+                                <?php } ?>
+                            </div>
+                            <div class="py-2 px-2 border-top border-bottom">
+                                <h6 class="m-0">Mother</h6>
+                            </div>
+                            <div class="py-2 px-2">
+                                <div class="row">
+                                    <div class="col-md-4 py-1">
+                                        <span class="fw-semibold">Surname :</span>
+                                        <?php if (isset($_GET['edit_enrollment'])) { ?>
+                                        <input  class="form-control " type="text" name="m-surname" id="" value="<?= $row['mother_surname'] ?>">
+                                        <?php } else { ?>
+                                        <span><?= strtoupper($row['mother_surname']) ?></span>
+                                        <?php } ?>
+                                    </div>
+                                    <div class="col-md-4 py-1">
+                                        <span class="fw-semibold">First name :</span>
+                                        <?php if (isset($_GET['edit_enrollment'])) { ?>
+                                        <input  class="form-control" type="text" name="m-fname" id="" value="<?= $row['mother_first_name'] ?>">
+                                        <?php } else { ?>
+                                        <span><?= strtoupper($row['mother_first_name']) ?></span>
+                                        <?php } ?>
+                                    </div>
+                                    <div class="col-md-4 py-1">
+                                        <span class="fw-semibold">Middle name :</span>
+                                        <?php if (isset($_GET['edit_enrollment'])) { ?>
+                                        <input  class="form-control" type="text" name="m-mname" id="" value="<?= $row['mother_middle_name'] ?>">
+                                        <?php } else { ?>
+                                        <span><?= strtoupper($row['mother_middle_name']) ?></span>
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md py-1">
+                                        <span class="fw-semibold">Educational attainment :</span>
+                                        <?php if (isset($_GET['edit_enrollment'])) { ?>
+                                        <input  class="form-control" type="text" name="m-highest-education" id="" value="<?= $row['mother_education'] ?>">
+                                        <?php } else { ?>
+                                        <span><?= $row['mother_education'] ?></span>
+                                        <?php } ?>
+                                    </div>
+                                    <div class="col-md py-1">
+                                        <span class="fw-semibold">Employment :</span>
+                                        <?php if (isset($_GET['edit_enrollment'])) { ?>
+                                        <input  class="form-control" type="text" name="m-employment-status" id="" value="<?= $row['mother_employment'] ?>">
+                                        <?php } else { ?>
+                                        <span><?= $row['mother_employment'] ?></span>
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 py-1">
+                                        <span class="fw-semibold">Contact number :</span>
+                                        <?php if (isset($_GET['edit_enrollment'])) { ?>
+                                        <input  class="form-control" type="text" name="m-contact-number" id="" value="<?= $row['mother_contact_number'] ?>">
+                                        <?php } else { ?>
+                                        <span><?= $row['mother_contact_number'] ?></span>
+                                        <?php } ?>
+                                    </div>
                                 </div>
                             </div>
                             <div class="py-2 px-2 border-top border-bottom">
-                                <h6 class="m-0">Basic information</h6>
+                                <h6 class="m-0">Father</h6>
                             </div>
-                            <div class="row py-2 px-2">
-                                <div class="col-md-4 py-1">
-                                    <span class="fw-semibold">Surname :</span>
-                                    <?php if (isset($_GET['edit_enrollment'])) { ?>
-                                    <input  class="form-control " type="text" name="sname" id="" value="<?= $row['surname'] ?>">
-                                    <?php } else { ?>
-                                    <span><?= strtoupper($row['surname']) ?></span>
-                                    <?php } ?>
-                                </div>
-                                <div class="col-md-4 py-1">
-                                    <span class="fw-semibold">First name :</span>
-                                    <?php if (isset($_GET['edit_enrollment'])) { ?>
-                                    <input  class="form-control " type="text" name="fname" id="" value="<?= $row['first_name'] ?>">
-                                    <?php } else { ?>
-                                    <span><?= strtoupper($row['first_name']) ?></span>
-                                    <?php } ?>
-                                </div>
-                                <div class="col-md-4 py-1">
-                                    <span class="fw-semibold">Middle name :</span>
-                                    <?php if (isset($_GET['edit_enrollment'])) { ?>
-                                    <input  class="form-control " type="text" name="mname" id="" value="<?= $row['middle_name'] ?>">
-                                    <?php } else { ?>
-                                    <span><?= strtoupper($row['middle_name']) ?></span>
-                                    <?php } ?>
-                                </div>
-                            </div>
-                            <?php if (isset($_GET['edit_enrollment'])) { ?>
-                            <div class="row py-2 px-2">
-                                <div class="col-md-4 py-1">
-                                    <span class="fw-semibold">Extension :</span>
-                                    <select class="form-select" id="ext" aria-label="Default select example" name="extname">
-                                        <option value="None" <?= $row['ext'] !== "None" ? '' : 'selected' ?>>N/A</option>
-                                        <option value="Jr" <?= $row['ext'] !== "Jr" ? '' : 'selected' ?>>Jr</option>
-                                        <option value="I"  <?= $row['ext'] !== "I" ? '' : 'selected' ?>>I</option>
-                                        <option value="II" <?= $row['ext'] !== "II" ? '' : 'selected' ?>>II</option>
-                                        <option value="III" <?= $row['ext'] !== "III" ? '' : 'selected' ?>>III</option>
-                                        <option value="IV" <?= $row['ext'] !== "IV" ? '' : 'selected' ?>>IV</option>
-                                        <option value="V" <?= $row['ext'] !== "V" ? '' : 'selected' ?>>V</option>
-                                        <option value="VI"<?= $row['ext'] !== "VI" ? '' : 'selected' ?>>VI</option>
-                                        <option value="VII" <?= $row['ext'] !== "VII" ? '' : 'selected' ?>>VII</option>
-                                        <option value="VIII" <?= $row['ext'] !== "VIII" ? '' : 'selected' ?>>VIII</option>
-                                        <option value="IX" <?= $row['ext'] !== "IX" ? '' : 'selected' ?>>IX</option>
-                                        <option value="X" <?= $row['ext'] !== "X" ? '' : 'selected' ?>>X</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-4 py-1">
-                                    <span class="fw-semibold">Photo</span>
-                                    <input type="file" class="form-control" id="file" name="file" accept="image/png, image/gif, image/jpeg" value="<?= $row['image'] ?>" required>
-                                    <div id="emailHelp" class="form-text ps-3" >*Choose jpeg/jpg, and png only.</div>
-                                </div>
-                            </div>
-                            <?php } ?>
-                                    
-                            <div class="row py-2 px-2">
-                                <div class="col-md-4 py-1">
-                                    <span class="fw-semibold">Gender :</span>
-                                    <?php if (isset($_GET['edit_enrollment'])) { ?>
-                                    <div class="d-flex">
-                                        <div class="form-check me-3">
-                                            <input type="radio" class="form-check-input" id="male-gender" name="gender" value="Male" <?= $row['gender'] == "Male" ? "checked" : "" ?> required>
-                                            <label class="form-check-label" for="male-gender">Male</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input type="radio" class="form-check-input" id="female-gender" name="gender" value="Female" <?= $row['gender'] == "Female" ? "checked" : ""?> required>
-                                            <label class="form-check-label" for="female-gender">Female</label>
-                                        </div>
+                            <div class="py-2 px-2">
+                                <div class="row">
+                                    <div class="col-md-4 py-1">
+                                        <span class="fw-semibold">Surname :</span>
+                                        <?php if (isset($_GET['edit_enrollment'])) { ?>
+                                        <input  class="form-control " type="text" name="f-surname" id="" value="<?= $row['father_surname'] ?>">
+                                        <?php } else { ?>
+                                        <span><?= strtoupper($row['father_surname']) ?></span>
+                                        <?php } ?>
                                     </div>
-                                    <?php } else { ?>
-                                    <span><?= strtoupper($row['gender']) ?></span>
-                                    <?php } ?>
+                                    <div class="col-md-4 py-1">
+                                        <span class="fw-semibold">First name :</span>
+                                        <?php if (isset($_GET['edit_enrollment'])) { ?>
+                                        <input  class="form-control" type="text" name="f-fname" id="" value="<?= $row['father_first_name'] ?>">
+                                        <?php } else { ?>
+                                        <span><?= strtoupper($row['father_first_name']) ?></span>
+                                        <?php } ?>
+                                    </div>
+                                    <div class="col-md-4 py-1">
+                                        <span class="fw-semibold">Middle name :</span>
+                                        <?php if (isset($_GET['edit_enrollment'])) { ?>
+                                        <input  class="form-control" type="text" name="f-mname" id="" value="<?= $row['father_middle_name'] ?>">
+                                        <?php } else { ?>
+                                        <span><?= strtoupper($row['father_middle_name']) ?></span>
+                                        <?php } ?>
+                                    </div>
                                 </div>
-                                <div class="col-md-4 py-1">
-                                    <span class="fw-semibold">Religion :</span>
-                                    <?php if (isset($_GET['edit_enrollment'])) { ?>
-                                    <input  class="form-control " type="text" name="religion" id="" value="<?= $row['religion'] ?>">
-                                    <?php } else { ?>
-                                    <span><?= strtoupper($row['religion']) ?></span>
-                                    <?php } ?>
+                                <div class="row">
+                                    <div class="col-md py-1">
+                                        <span class="fw-semibold">Educational attainment :</span>
+                                        <?php if (isset($_GET['edit_enrollment'])) { ?>
+                                        <input  class="form-control" type="text" name="f-highest-education" id="" value="<?= $row['father_education'] ?>">
+                                        <?php } else { ?>
+                                        <span><?= $row['father_education'] ?></span>
+                                        <?php } ?>
+                                    </div>
+                                    <div class="col-md py-1">
+                                        <span class="fw-semibold">Employment :</span>
+                                        <?php if (isset($_GET['edit_enrollment'])) { ?>
+                                        <input  class="form-control" type="text" name="f-employment-status" id="" value="<?= $row['father_employment'] ?>">
+                                        <?php } else { ?>
+                                        <span><?= $row['father_employment'] ?></span>
+                                        <?php } ?>
+                                    </div>
                                 </div>
-                                <div class="col-md-4 py-1">
-                                    <span class="fw-semibold">Birth date :</span>
-                                    <?php if (isset($_GET['edit_enrollment'])) { ?>
-                                    <input type="date" class="form-control" id="bdate" name="birth-date" value="<?= $row['birth_date'] ?>" required>
-                                    <?php } else { ?>
-                                    <span class="bday"><?= strtoupper($row['birth_date']) ?></span>
-                                    <span class="age-calc fw-light">(16)</span>
-                                    <?php } ?>
+                                <div class="row">
+                                    <div class="col-md-4 py-1">
+                                        <span class="fw-semibold">Contact number :</span>
+                                        <?php if (isset($_GET['edit_enrollment'])) { ?>
+                                        <input  class="form-control" type="text" name="f-contact-number" id="" value="<?= $row['father_contact_number'] ?>">
+                                        <?php } else { ?>
+                                        <span><?= $row['father_contact_number'] ?></span>
+                                        <?php } ?>
+                                    </div>
                                 </div>
                             </div>
-                            <?php if (isset($_GET['edit_enrollment'])) { ?> 
                             <div class="py-2 px-2 border-top border-bottom">
-                                <h6 class="m-0">Address</h6>
+                                <h6 class="m-0">Guardian</h6>
                             </div>
-                            <div class="row py-2 px-2">
-                                <div class="col-md-4 py-1">
-                                    <span class="fw-semibold">House number & street :</span>
-                                    <input type="text" class="form-control" id="house-number-street" placeholder="Enter house number & street" name="house-number-street" value="<?= $row['house_street'] ?>" required>
+                            <div class="py-2 px-2">
+                                <div class="row">
+                                    <div class="col-md-4 py-1">
+                                        <span class="fw-semibold">Surname :</span>
+                                        <?php if (isset($_GET['edit_enrollment'])) { ?>
+                                        <input  class="form-control" type="text" name="g-surname" id="" value="<?= $row['guardian_surname'] ?>">
+                                        <?php } else { ?>
+                                        <span><?= strtoupper($row['guardian_surname']) ?></span>
+                                        <?php } ?>
+                                    </div>
+                                    <div class="col-md-4 py-1">
+                                        <span class="fw-semibold">First name :</span>
+                                        <?php if (isset($_GET['edit_enrollment'])) { ?>
+                                        <input  class="form-control" type="text" name="g-fname" id="" value="<?= $row['guardian_first_name'] ?>">
+                                        <?php } else { ?>
+                                        <span><?= strtoupper($row['guardian_first_name']) ?></span>
+                                        <?php } ?>
+                                    </div>
+                                    <div class="col-md-4 py-1">
+                                        <span class="fw-semibold">Middle name :</span>
+                                        <?php if (isset($_GET['edit_enrollment'])) { ?>
+                                        <input  class="form-control" type="text" name="g-mname" id="" value="<?= $row['guardian_middle_name'] ?>">
+                                        <?php } else { ?>
+                                        <span><?= strtoupper($row['guardian_middle_name']) ?></span>
+                                        <?php } ?>
+                                    </div>
                                 </div>
-                                <div class="col-md-4 py-1">
-                                    <span class="fw-semibold">Subdivision/Village/Zone :</span>
-                                    <input type="text" class="form-control" id="subdv-village-zone" placeholder="Enter subdivision/village/zone" name="subdv-village-zone" value="<?= $row['subdivision'] ?>" required>
+                                
+                                <div class="row">
+                                    <div class="col-md py-1">
+                                        <span class="fw-semibold">Educational attainment :</span>
+                                        <?php if (isset($_GET['edit_enrollment'])) { ?>
+                                        <input  class="form-control" type="text" name="g-highest-education" id="" value="<?= $row['guardian_education'] ?>">
+                                        <?php } else { ?>
+                                            <span><?= $row['guardian_education'] ?></span>
+                                        <?php } ?>
+                                    </div>
+                                    <div class="col-md py-1">
+                                        <span class="fw-semibold">Employment :</span>
+                                        <?php if (isset($_GET['edit_enrollment'])) { ?>
+                                        <input  class="form-control" type="text" name="g-employment-status" id="" value="<?= $row['guardian_employment'] ?>">
+                                        <?php } else { ?>
+                                        <span><?= $row['guardian_employment'] ?></span>
+                                        <?php } ?>
+                                    </div>
                                 </div>
-                                <div class="col-md-4 py-1">
-                                    <span class="fw-semibold">Barangay :</span>
-                                    <input type="text" class="form-control" id="barangay" placeholder="Enter barangay" name="barangay" value="<?= $row['barangay'] ?>" required>
+                                <div class="row">
+                                    <div class="col-md-4 py-1">
+                                        <span class="fw-semibold">Contact number :</span>
+                                        <?php if (isset($_GET['edit_enrollment'])) { ?>
+                                        <input  class="form-control" type="text" name="g-contact-number" id="" value="<?= $row['guardian_contact_number'] ?>">
+                                        <?php } else { ?>
+                                        <span><?= $row['guardian_contact_number'] ?></span>
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="border-top"></div>
+                            <div class="py-2 px-2">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <span class="d-block mb-2">Is the family member beneficiary of 4p's?</span>
+                                        <div class="form-check mb-3">
+                                            <input type="radio" class="form-check-input" id="yes_beneficiary" name="is-beneficiary" value="1" <?= $row['is_beneficiary'] == 1 ? 'checked' : '' ?> required>
+                                            <label class="form-check-label" for="yes_beneficiary">Yes</label>
+                                        </div>
+                                        <div class="form-check mb-3">
+                                            <input type="radio" class="form-check-input" id="no_beneficiary" name="is-beneficiary" value="0" <?= $row['is_beneficiary'] == 0 ? 'checked' : '' ?> required>
+                                            <label class="form-check-label" for="no_beneficiary">No</label>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="row py-2 px-2">
-                                <div class="col-md-4 py-1">
-                                    <span class="fw-semibold">City/Municipality :</span>
-                                    <input type="text" class="form-control" id="city-municipality" placeholder="Enter city/municipality" name="city-municipality" value="<?= $row['city'] ?>" required>
-                                </div>
-                                <div class="col-md-4 py-1">
-                                    <span class="fw-semibold">Province :</span>
-                                    <input type="text" class="form-control" id="province" placeholder="Enter province" name="province" value="<?= $row['province'] ?>" required>
-                                </div>
-                                <div class="col-md-4 py-1">
-                                    <span class="fw-semibold">Region :</span>
-                                    <input type="text" class="form-control" id="region" placeholder="Enter region" name="region" value="<?= $row['region'] ?>" required>
-                                </div>
-                            </div>
-                            <?php } else { ?>
-                            <div class="row py-2 px-2">
-                                <div class="col-md py-1">
-                                    <span class="fw-semibold">Current address :</span>
-                                    <span class="w-50"><?= $row['house_street'] . ". " . $row['subdivision'] . " " . $row['barangay'] . " " . $row['city'] . ", " . $row['province'] ?></span>
-                                </div>
-                            </div>
                             <?php } ?>
-                        </div>
-                        <div class="py-2 px-2 border-top border-bottom">
-                            <h6 class="m-0">Mother</h6>
-                        </div>
-                        <div class="py-2 px-2">
-                            <div class="row">
-                                <div class="col-md-4 py-1">
-                                    <span class="fw-semibold">Surname :</span>
-                                    <?php if (isset($_GET['edit_enrollment'])) { ?>
-                                    <input  class="form-control " type="text" name="m-surname" id="" value="<?= $row['mother_surname'] ?>">
-                                    <?php } else { ?>
-                                    <span><?= strtoupper($row['mother_surname']) ?></span>
-                                    <?php } ?>
-                                </div>
-                                <div class="col-md-4 py-1">
-                                    <span class="fw-semibold">First name :</span>
-                                    <?php if (isset($_GET['edit_enrollment'])) { ?>
-                                    <input  class="form-control" type="text" name="m-fname" id="" value="<?= $row['mother_first_name'] ?>">
-                                    <?php } else { ?>
-                                    <span><?= strtoupper($row['mother_first_name']) ?></span>
-                                    <?php } ?>
-                                </div>
-                                <div class="col-md-4 py-1">
-                                    <span class="fw-semibold">Middle name :</span>
-                                    <?php if (isset($_GET['edit_enrollment'])) { ?>
-                                    <input  class="form-control" type="text" name="m-mname" id="" value="<?= $row['mother_middle_name'] ?>">
-                                    <?php } else { ?>
-                                    <span><?= strtoupper($row['mother_middle_name']) ?></span>
-                                    <?php } ?>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md py-1">
-                                    <span class="fw-semibold">Educational attainment :</span>
-                                    <?php if (isset($_GET['edit_enrollment'])) { ?>
-                                    <input  class="form-control" type="text" name="m-highest-education" id="" value="<?= $row['mother_education'] ?>">
-                                    <?php } else { ?>
-                                    <span><?= $row['mother_education'] ?></span>
-                                    <?php } ?>
-                                </div>
-                                <div class="col-md py-1">
-                                    <span class="fw-semibold">Employment :</span>
-                                    <?php if (isset($_GET['edit_enrollment'])) { ?>
-                                    <input  class="form-control" type="text" name="m-employment-status" id="" value="<?= $row['mother_employment'] ?>">
-                                    <?php } else { ?>
-                                    <span><?= $row['mother_employment'] ?></span>
-                                    <?php } ?>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-4 py-1">
-                                    <span class="fw-semibold">Contact number :</span>
-                                    <?php if (isset($_GET['edit_enrollment'])) { ?>
-                                    <input  class="form-control" type="text" name="m-contact-number" id="" value="<?= $row['mother_contact_number'] ?>">
-                                    <?php } else { ?>
-                                    <span><?= $row['mother_contact_number'] ?></span>
-                                    <?php } ?>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="py-2 px-2 border-top border-bottom">
-                            <h6 class="m-0">Father</h6>
-                        </div>
-                        <div class="py-2 px-2">
-                            <div class="row">
-                                <div class="col-md-4 py-1">
-                                    <span class="fw-semibold">Surname :</span>
-                                    <?php if (isset($_GET['edit_enrollment'])) { ?>
-                                    <input  class="form-control " type="text" name="f-surname" id="" value="<?= $row['father_surname'] ?>">
-                                    <?php } else { ?>
-                                    <span><?= strtoupper($row['father_surname']) ?></span>
-                                    <?php } ?>
-                                </div>
-                                <div class="col-md-4 py-1">
-                                    <span class="fw-semibold">First name :</span>
-                                    <?php if (isset($_GET['edit_enrollment'])) { ?>
-                                    <input  class="form-control" type="text" name="f-fname" id="" value="<?= $row['father_first_name'] ?>">
-                                    <?php } else { ?>
-                                    <span><?= strtoupper($row['father_first_name']) ?></span>
-                                    <?php } ?>
-                                </div>
-                                <div class="col-md-4 py-1">
-                                    <span class="fw-semibold">Middle name :</span>
-                                    <?php if (isset($_GET['edit_enrollment'])) { ?>
-                                    <input  class="form-control" type="text" name="f-mname" id="" value="<?= $row['father_middle_name'] ?>">
-                                    <?php } else { ?>
-                                    <span><?= strtoupper($row['father_middle_name']) ?></span>
-                                    <?php } ?>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md py-1">
-                                    <span class="fw-semibold">Educational attainment :</span>
-                                    <?php if (isset($_GET['edit_enrollment'])) { ?>
-                                    <input  class="form-control" type="text" name="f-highest-education" id="" value="<?= $row['father_education'] ?>">
-                                    <?php } else { ?>
-                                    <span><?= $row['father_education'] ?></span>
-                                    <?php } ?>
-                                </div>
-                                <div class="col-md py-1">
-                                    <span class="fw-semibold">Employment :</span>
-                                    <?php if (isset($_GET['edit_enrollment'])) { ?>
-                                    <input  class="form-control" type="text" name="f-employment-status" id="" value="<?= $row['father_employment'] ?>">
-                                    <?php } else { ?>
-                                    <span><?= $row['father_employment'] ?></span>
-                                    <?php } ?>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-4 py-1">
-                                    <span class="fw-semibold">Contact number :</span>
-                                    <?php if (isset($_GET['edit_enrollment'])) { ?>
-                                    <input  class="form-control" type="text" name="f-contact-number" id="" value="<?= $row['father_contact_number'] ?>">
-                                    <?php } else { ?>
-                                    <span><?= $row['father_contact_number'] ?></span>
-                                    <?php } ?>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="py-2 px-2 border-top border-bottom">
-                            <h6 class="m-0">Guardian</h6>
-                        </div>
-                        <div class="py-2 px-2">
-                            <div class="row">
-                                <div class="col-md-4 py-1">
-                                    <span class="fw-semibold">Surname :</span>
-                                    <?php if (isset($_GET['edit_enrollment'])) { ?>
-                                    <input  class="form-control" type="text" name="g-surname" id="" value="<?= $row['guardian_surname'] ?>">
-                                    <?php } else { ?>
-                                    <span><?= strtoupper($row['guardian_surname']) ?></span>
-                                    <?php } ?>
-                                </div>
-                                <div class="col-md-4 py-1">
-                                    <span class="fw-semibold">First name :</span>
-                                    <?php if (isset($_GET['edit_enrollment'])) { ?>
-                                    <input  class="form-control" type="text" name="g-fname" id="" value="<?= $row['guardian_first_name'] ?>">
-                                    <?php } else { ?>
-                                    <span><?= strtoupper($row['guardian_first_name']) ?></span>
-                                    <?php } ?>
-                                </div>
-                                <div class="col-md-4 py-1">
-                                    <span class="fw-semibold">Middle name :</span>
-                                    <?php if (isset($_GET['edit_enrollment'])) { ?>
-                                    <input  class="form-control" type="text" name="g-mname" id="" value="<?= $row['guardian_middle_name'] ?>">
-                                    <?php } else { ?>
-                                    <span><?= strtoupper($row['guardian_middle_name']) ?></span>
-                                    <?php } ?>
-                                </div>
-                            </div>
-                            
-                            <div class="row">
-                                <div class="col-md py-1">
-                                    <span class="fw-semibold">Educational attainment :</span>
-                                    <?php if (isset($_GET['edit_enrollment'])) { ?>
-                                    <input  class="form-control" type="text" name="g-highest-education" id="" value="<?= $row['guardian_education'] ?>">
-                                    <?php } else { ?>
-                                        <span><?= $row['guardian_education'] ?></span>
-                                    <?php } ?>
-                                </div>
-                                <div class="col-md py-1">
-                                    <span class="fw-semibold">Employment :</span>
-                                    <?php if (isset($_GET['edit_enrollment'])) { ?>
-                                    <input  class="form-control" type="text" name="g-employment-status" id="" value="<?= $row['guardian_employment'] ?>">
-                                    <?php } else { ?>
-                                    <span><?= $row['guardian_employment'] ?></span>
-                                    <?php } ?>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-4 py-1">
-                                    <span class="fw-semibold">Contact number :</span>
-                                    <?php if (isset($_GET['edit_enrollment'])) { ?>
-                                    <input  class="form-control" type="text" name="g-contact-number" id="" value="<?= $row['guardian_contact_number'] ?>">
-                                    <?php } else { ?>
-                                    <span><?= $row['guardian_contact_number'] ?></span>
-                                    <?php } ?>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="border-top"></div>
-                        <div class="py-2 px-2">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <span class="d-block mb-2">Is the family member beneficiary of 4p's?</span>
-                                    <div class="form-check mb-3">
-                                        <input type="radio" class="form-check-input" id="yes_beneficiary" name="is-beneficiary" value="1" <?= $row['is_beneficiary'] == 1 ? 'checked' : '' ?> required>
-                                        <label class="form-check-label" for="yes_beneficiary">Yes</label>
-                                    </div>
-                                    <div class="form-check mb-3">
-                                        <input type="radio" class="form-check-input" id="no_beneficiary" name="is-beneficiary" value="0" <?= $row['is_beneficiary'] == 0 ? 'checked' : '' ?> required>
-                                        <label class="form-check-label" for="no_beneficiary">No</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <?php } ?>
-                        <?php
-                        if (isset($_GET['edit_enrollment'])) { ?>
-                        <div class="d-flex align-items-center border-top p-2">
-                            <input type="hidden" name="curr-lrn" id="" value="<?= $row['lrn'] ?>">
-                            <input type="hidden" name="student_id" id="" value="<?= $row['student_id'] ?>">
-                            <span class="fw-semibold ms-auto">Confirm changes? </span>
-                            <a class="btn btn-danger ms-3" href="../sabanges/student_informations.php?id=<?= $result[0]['student_id'] ?>">Cancel</a>
-                            <input class="btn btn-primary ms-1" type="submit" name="update" value="Submit">
-                        </div>
-                        <?php } ?>
-                    </div>
-                </div>
-
-            </form>
-            <div class="container border col-md-4" id="history-section">
-                <div class="row">
-                    <div class="d-flex align-items-center justify-content-between py-3 px-3 border-bottom">
-                        <h5>Enrolled History</h5>
-                        <?php include $_SERVER['DOCUMENT_ROOT'].'/sabanges/partials/add_enrollment_history_modal.php'; ?>
-                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#enrollment-modal">
-                            <?php include $_SERVER['DOCUMENT_ROOT'].'/sabanges/partials/add_icon.php'; ?>
-                            Add
-                        </button>
-                    </div>
-                    <?php foreach($result2 as $row2){ ?>
-                    <div class="w-100 py-2 px-3 border-bottom">
-                        <div class="d-flex align-items-center justify-content-between">
-                            <span class="fw-semibold">School year :</span>
-                            <span><?= $row2['from_sy'] . " - " . $row2['to_sy'] ?></span>
-                        </div>
-                        <div class="d-flex align-items-center justify-content-between">
-                            <span class="fw-semibold">Grade level :</span>
-                            <span><?= $row2['grade_level'] ?></span>
-                        </div>
-                        <div class="d-flex align-items-center justify-content-between">
-                            <span class="fw-semibold">Section :</span>
-                            <span><?= $row2['section'] ?></span>
-                        </div>
-                        <div class="d-flex align-items-center justify-content-between">
-                            <span class="fw-semibold">School :</span>
-                            <span><?= $row2['school'] ?></span>
-                        </div>
-                        <div class="d-flex align-items-center justify-content-between">
-                            <span class="fw-semibold">Status :</span>
-                            <?php if ($row2['status'] == "Active") {
-                            ?>
-                            <span class="fw-medium text-primary"><?= $row2['status'] ?></span>
-                            <?php } elseif ($row2['status'] == "Completed"){
-                                ?>
-                            <span class="fw-medium text-success"><?= $row2['status'] ?></span>
-                            <?php } else {
-                                ?>
-                            <span class="fw-medium text-danger"><?= $row2['status'] ?></span>
                             <?php
-                            } ?>
+                            if (isset($_GET['edit_enrollment'])) { ?>
+                            <div class="d-flex align-items-center border-top p-2">
+                                <input type="hidden" name="curr-lrn" id="" value="<?= $row['lrn'] ?>">
+                                <input type="hidden" name="student_id" id="" value="<?= $row['student_id'] ?>">
+                                <span class="fw-semibold ms-auto">Confirm changes? </span>
+                                <a class="btn btn-danger ms-3" href="../sabanges/student_informations.php?id=<?= $result[0]['student_id'] ?>">Cancel</a>
+                                <input class="btn btn-primary ms-1" type="submit" name="update" value="Submit">
+                            </div>
+                            <?php } ?>
                         </div>
                     </div>
-                    <?php } ?>
+
+                </form>
+                <div class="container border col-md-4" id="history-section">
+                    <div class="row">
+                        <div class="d-flex align-items-center justify-content-between py-3 px-3 border-bottom">
+                            <h5>Enrolled History</h5>
+                            <?php include $_SERVER['DOCUMENT_ROOT'].'/sabanges/partials/add_enrollment_history_modal.php'; ?>
+                            <button style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#enrollment-modal">
+                                Add
+                            </button>
+                        </div>
+                        <?php foreach($result2 as $row2){ ?>
+                        <div class="w-100 py-2 px-3 border-bottom">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <span class="fw-semibold">School year :</span>
+                                <span><?= $row2['from_sy'] . " - " . $row2['to_sy'] ?></span>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <span class="fw-semibold">Grade level :</span>
+                                <span><?= $row2['grade_level'] ?></span>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <span class="fw-semibold">Section :</span>
+                                <span><?= $row2['section'] ?></span>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <span class="fw-semibold">School :</span>
+                                <span><?= $row2['school'] ?></span>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <span class="fw-semibold">Status :</span>
+                                <?php if ($row2['status'] == "Active") {
+                                ?>
+                                <span class="fw-medium text-primary"><?= $row2['status'] ?></span>
+                                <?php } elseif ($row2['status'] == "Completed"){
+                                    ?>
+                                <span class="fw-medium text-success"><?= $row2['status'] ?></span>
+                                <?php } else {
+                                    ?>
+                                <span class="fw-medium text-danger"><?= $row2['status'] ?></span>
+                                <?php
+                                } ?>
+                            </div>
+                        </div>
+                        <?php } ?>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <?php include './partials/add_grades_modal.php'; ?>
-        
-        <div class="border mt-3 row" id="grades-section">
-            <div class="d-flex align-items-center justify-content-between py-3 px-3">
-                <h5>Grades</h5>               
-            </div>
-            <div class="row grades-section" id="<?= $result2[0]['student_lrn'] ?>">
-                <input type="text" name="grade-lvl" value="<?= $result2[0]['student_lrn'] ?>" id="">
-            </div>
-        <div>
+            <?php include './partials/add_grades_modal.php'; ?>
+            
+            <div class="border mt-3 row" id="grades-section">
+                <div class="d-flex align-items-center justify-content-between py-3 px-3">
+                    <h5>Grades</h5>               
+                </div>
+                <div class="row grades-section" id="<?= $result2[0]['student_lrn'] ?>">
+                    <input type="text" name="grade-lvl" value="<?= $result2[0]['student_lrn'] ?>" id="">
+                </div>
+            <div>
         <?php
+        } else {
+            echo '<p>Student id not found. Redirect <a href="javascript:history.back()">here</a>.</p>';
+        }
     }
 
     public function addGradesTable($grade_level, $lrn){

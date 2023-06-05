@@ -95,137 +95,128 @@ class StudentGradingView extends \Models\StudentGrading{
 
             $results = $this->index($status, $offset, $total_records_per_page, $query, $level, $section);
 
+            if (count($results) > 0) {
         ?>
 
-        <form class="" action="./includes/grades.inc.php" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="rows" value="<?= $rows ?>">
-            <input type="hidden" name="status" value="<?= $status ?>">
-            <input type="hidden" name="page-no" value="<?= $page_no ?>">
-            <div class="modal fade add-grade-form" id="add-grade-modal" aria-hidden="true" aria-labelledby="add-grade-modalLabel" tabindex="-1">
-                <div class="modal-dialog modal-fullscreen modal-dialog-centered">
-                    <div class="modal-content grading-modal-body">
-                        
-                    </div>
-                </div>
-            </div>
-        </form>
-        <table class="table table-hover mb-0 mt-2 border-top table-bordered student-table">
-            <thead>
-                <tr>
-                    <th scope="col">     
-                        <div class="d-flex">
-                            <span class="me-2">#</span>      
-                        </div>
-                    </th>
-                    <th scope="col">LRN</th>
-                    <th scope="col">Image</th>
-                    <th scope="col">Student</th>
-                    <th scope="col">Enrolled at</th>
-                    <th scope="col">Gender</th>
-                    <th scope="col">Class</th>
-                    <th scope="col">Status</th>
-                    <th>Grade</th>
-                    <th scope='col'>Remarks</th>
-                    <th scope="col">Action</th>
-                </tr>
-                </thead>
-                <tbody>
-                <?php
-                    foreach ($results as $row) {
-                        if ($view == 'grading') {
-                        if ($row['grade_level'] !== 'Kindergarten') {
-                ?>
-                    <tr>
-                        <td>
-                            <div class="d-flex">
-                                <span class="me-2">
-                                <?= $row['enrollment_id'] ?>
-                                </span>
+                <form class="submit-grade-form" action="./includes/grades.inc.php" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="rows" value="<?= $rows ?>">
+                    <input type="hidden" name="status" value="<?= $status ?>">
+                    <input type="hidden" name="page-no" value="<?= $page_no ?>">
+                    <div class="modal fade add-grade-form" id="add-grade-modal" aria-hidden="true" aria-labelledby="add-grade-modalLabel" tabindex="-1">
+                        <div class="modal-dialog modal-fullscreen modal-dialog-centered">
+                            <div class="modal-content grading-modal-body">
                                 
                             </div>
-                        </td>
-                        <td><?= $row['lrn'] ?></td>
-                        <td class="d-flex align-items-center justify-content-center border-0">
-                        <?php if ($row['image'] === null) { ?>
-                            <img class="rounded-circle" style="object-fit: cover;" width=50px height=50px src='./images/profile.jpg'>
-                            <?php } else { ?>
-                            <img class="rounded-circle" style="object-fit: cover;" width=50px height=50px src=data:image;base64,<?= $row['image'] ?>>
-                            <?php } ?>
-                        </td>
-                        <td><?= strtoupper($row['surname']) . ', ' . strtoupper($row['first_name']) . ' ' . strtoupper($row['middle_name'])  ?> <?= strtoupper($row['ext']) == 'NONE' ? '' : strtoupper($row['ext']) ?></td>
-                        <td><?= $row['enrolled_at'] ?></td>
-                        <td><?= $row['gender'] ?></td>
-                        <td><?= ($row['grade_level'] !== 'Kindergarten' ? 'Grade ' : '') . $row['grade_level'] . " - " . $row['section'] ?></td>
-                        <td>
-                            <p>
-                                <?= $row['status'] ?>
-                            </p>
-                        </td>
-                        <td>
-                            <?php
-                            $graded = $this->gradesSubmitted($row['grade_level'], $row['lrn']);
-                            if ($row['grade_level'] != 'Kindergarten') {
-                                if (count($graded) <= 0) {
-                                    echo '<span class="">Ungraded</span>';
-                                }
-                                else{
-                                    foreach ($graded as $grade) {
-                                        if (strtoupper($grade['first_quarter']) == 'INC' || strtoupper($grade['second_quarter']) == 'INC' || strtoupper($grade['third_quarter']) == 'INC' || strtoupper($grade['fourth_quarter']) == 'INC') {
-                                            echo '<span class="">Incomplete</span>';
-    
+                        </div>
+                    </div>
+                </form>
+                <table class="table table-hover mb-0 mt-2 border-top table-bordered student-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">LRN</th>
+                            <th scope="col">Image</th>
+                            <th scope="col">Student</th>
+                            <th scope="col">Enrolled at</th>
+                            <th scope="col">Gender</th>
+                            <th scope="col">Class</th>
+                            <th scope="col">Status</th>
+                            <th>Grade</th>
+                            <th scope='col'>Remarks</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php
+                            foreach ($results as $row) {
+                                if ($view == 'grading') {
+                                if ($row['grade_level'] !== 'Kindergarten') {
+                        ?>
+                            <tr>
+                                <td><?= $row['lrn'] ?></td>
+                                <td class="d-flex align-items-center justify-content-center border-0">
+                                <?php if ($row['image'] === null) { ?>
+                                    <img class="rounded-circle" style="object-fit: cover;" width=50px height=50px src='./images/profile.jpg'>
+                                    <?php } else { ?>
+                                    <img class="rounded-circle" style="object-fit: cover;" width=50px height=50px src=data:image;base64,<?= $row['image'] ?>>
+                                    <?php } ?>
+                                </td>
+                                <td><?= strtoupper($row['surname']) . ', ' . strtoupper($row['first_name']) . ' ' . strtoupper($row['middle_name'])  ?> <?= strtoupper($row['ext']) == 'NONE' ? '' : strtoupper($row['ext']) ?></td>
+                                <td><?= $row['enrolled_at'] ?></td>
+                                <td><?= $row['gender'] ?></td>
+                                <td><?= ($row['grade_level'] !== 'Kindergarten' ? 'Grade ' : '') . $row['grade_level'] . " - " . $row['section'] ?></td>
+                                <td>
+                                    <p>
+                                        <?= $row['status'] ?>
+                                    </p>
+                                </td>
+                                <td>
+                                    <?php
+                                    $graded = $this->gradesSubmitted($row['grade_level'], $row['lrn']);
+                                    if ($row['grade_level'] != 'Kindergarten') {
+                                        if (count($graded) <= 0) {
+                                            echo '<span class="">Ungraded</span>';
                                         }
                                         else{
-                                            echo '<span class="">Graded</span>';
+                                            foreach ($graded as $grade) {
+                                                if (strtoupper($grade['first_quarter']) == 'INC' || strtoupper($grade['second_quarter']) == 'INC' || strtoupper($grade['third_quarter']) == 'INC' || strtoupper($grade['fourth_quarter']) == 'INC') {
+                                                    echo '<span class="">Incomplete</span>';
+            
+                                                }
+                                                else{
+                                                    echo '<span class="">Graded</span>';
+                                                }
+                                                break;
+                                            }
                                         }
-                                        break;
                                     }
-                                }
-                            }
-                            else{
-                                echo '<span class="">N/A</span>';
-                            }
-                            ?>
-                        </td>
-                        <td>
-                            <?= $row['promotion_status'] == null ? 'None' : $row['promotion_status'] ?>
-                        </td> 
-                        <td>
-                            <a class="btn btn-primary open-grade-btn" data-bs-toggle="modal" href="#add-grade-modal" role="button">
-                            Grade
-                            </a>     
-                            <input type="hidden" name="lrn" value="<?= $row['lrn'] ?>" id="">
-                            <input type="hidden" name="grade-level" value="<?= $row['grade_level'] ?>" id="">
-                            <input type="hidden" name="section" value="<?= $row['section'] ?>" id="">
-                        </td>
-                    </tr>
-                    <?php
-                }
-            }
-            }
+                                    else{
+                                        echo '<span class="">N/A</span>';
+                                    }
+                                    ?>
+                                </td>
+                                <td>
+                                    <?= $row['promotion_status'] == null ? 'None' : $row['promotion_status'] ?>
+                                </td> 
+                                <td>
+                                    <a class="btn btn-primary open-grade-btn" data-bs-toggle="modal" href="#add-grade-modal" role="button">
+                                    Grade
+                                    </a>     
+                                    <input type="hidden" name="lrn" value="<?= $row['lrn'] ?>" id="">
+                                    <input type="hidden" name="grade-level" value="<?= $row['grade_level'] ?>" id="">
+                                    <input type="hidden" name="section" value="<?= $row['section'] ?>" id="">
+                                </td>
+                            </tr>
+                            <?php
+                        }
+                    }
+                    }
 
-                ?>
-            </tbody>
-        </table>
-        <nav class="mt-2">
-            <ul class="pagination">
-                <li class="page-item">
-                    
-                    <a class="page-link previous-btn <?= $page_no <= 1 ? 'disabled' : '' ?>" href="?row=<?= $rows ?>&page_no=<?= $previous_page ?>&status=<?= $status ?>&level=<?= $level ?>&section=<?= $section ?>&query=<?= $query ?>">Previous</a>
-                </li>
-                <?php for ($i=0; $i < $total_no_page; $i++) { ?>
+                        ?>
+                    </tbody>
+                </table>
+                <nav class="mt-2">
+                    <ul class="pagination">
+                        <li class="page-item">
+                            
+                            <a class="page-link previous-btn <?= $page_no <= 1 ? 'disabled' : '' ?>" href="?row=<?= $rows ?>&page_no=<?= $previous_page ?>&status=<?= $status ?>&level=<?= $level ?>&section=<?= $section ?>&query=<?= $query ?>">Previous</a>
+                        </li>
+                        <?php for ($i=0; $i < $total_no_page; $i++) { ?>
 
-                <li class="page-item">
-                    <a class="page-link page-number <?= $page_no !== $i + 1 ? '' : 'active'?>" href="?row=<?= $rows ?>&page_no=<?= $i + 1 ?>&status=<?= $status ?>&level=<?= $level ?>&section=<?= $section ?>&query=<?= $query ?>"><?= $i + 1?></a>
-                </li>
-                
-                <?php } ?>
-                <li class="page-item">
-                    <a class="page-link next-btn <?= $page_no >= $total_no_page ? 'disabled' : '' ?>" href="?row=<?= $rows ?>&page_no=<?= $next_page ?>status=<?= $status ?>&level=<?= $level ?>&section=<?= $section ?>&query=<?= $query ?>">Next</a>
-                </li>
-            </ul>
-            <span class="fw-semibold">Page <?= $page_no ?> out of <?= $total_no_page ?></span>
-        </nav>
-        <?php }
+                        <li class="page-item">
+                            <a class="page-link page-number <?= $page_no !== $i + 1 ? '' : 'active'?>" href="?row=<?= $rows ?>&page_no=<?= $i + 1 ?>&status=<?= $status ?>&level=<?= $level ?>&section=<?= $section ?>&query=<?= $query ?>"><?= $i + 1?></a>
+                        </li>
+                        
+                        <?php } ?>
+                        <li class="page-item">
+                            <a class="page-link next-btn <?= $page_no >= $total_no_page ? 'disabled' : '' ?>" href="?row=<?= $rows ?>&page_no=<?= $next_page ?>status=<?= $status ?>&level=<?= $level ?>&section=<?= $section ?>&query=<?= $query ?>">Next</a>
+                        </li>
+                    </ul>
+                    <span class="fw-semibold">Page <?= $page_no ?> out of <?= $total_no_page ?></span>
+                </nav>
+        <?php } else {
+            echo "<p class='p-2'>No students are eligible to be graded.</p>";
+            }
+        }
     }
         
 }

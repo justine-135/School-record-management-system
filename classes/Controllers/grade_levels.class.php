@@ -6,26 +6,38 @@ include $_SERVER['DOCUMENT_ROOT'].'/sabanges/classes/Models/grade_levels.class.p
 
 class GradeLevelsController extends \Models\GradeLevels{
     public function initCreate($grade, $section){
-        $this->create($grade, $section);
-        header("Location: ../operations_sections.php?operations_sections&submitted");
-        die();
-    }
-
-    protected function checkValidation($grade, $section){
-        if ($this->exists($grade, $section) !== false) {
-            header("Location: ../operations_sections.ph?operations_sections&err&exist");
+        if ($this->initExists($grade, $section) !== false) {
+            header("Location: ../operations_sections.ph?operations&error&exist");
             die();
         }
-
+        elseif ($this->validateSpecialChars($section) !== false) {
+            header("Location: ../operations_subjects.php?operations&error&value");
+            die();
+        }
         else{
-            $this->initCreate($grade, $section);
-            header("Location: ../operations_sections.ph?operations_sections&submitted");
+            $this->create($grade, $section);
+            header("Location: ../operations_sections.php?operations&submitted");
             die();
         }
     }
 
     protected function initExists($grade, $section){
-        $results = $this->exists($grade, $section);
+        $result = false;
+        $exist = $this->singleIndex($grade, $section);
+
+        if (count($exist) > 0) {
+            $result = true;
+        }
+        
+        return $result;
+    }
+
+    protected function validateSpecialChars($section){
+        $result = false;
+        if (!preg_match("/^[a-zA-Z0-9\s]*$/", $section)) {
+            $result = true;
+        }
+        return $result;
     }
 
     public function initDestroy($id){
