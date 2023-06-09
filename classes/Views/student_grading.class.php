@@ -195,7 +195,7 @@ class StudentGradingView extends \Models\StudentGrading{
                     </tbody>
                 </table>
                 <nav class="mt-2">
-                    <ul class="pagination">
+                    <ul class="pagination d-flex flex-wrap">
                         <li class="page-item">
                             
                             <a class="page-link previous-btn <?= $page_no <= 1 ? 'disabled' : '' ?>" href="?row=<?= $rows ?>&page_no=<?= $previous_page ?>&status=<?= $status ?>&level=<?= $level ?>&section=<?= $section ?>&query=<?= $query ?>">Previous</a>

@@ -94,12 +94,13 @@ class Student extends \Dbh{
             if (!empty($query)) {
                 $sql = "SELECT *
                 FROM `students_table`
-                WHERE ? in (student_id, lrn, surname, first_name, middle_name, ext)
+                WHERE ? in (student_id, enrolled_at, lrn, surname, first_name, middle_name, ext, birth_date, gender, religion, house_street, subdivision, barangay, city, province, region)
+                OR YEAR (enrolled_at) = ?
                 LIMIT $offset, $total_records_per_page
                 ";
                 
                 $stmt = $this->connection()->prepare($sql);
-                $stmt->execute([$query]);        
+                $stmt->execute([$query, $query]);        
                 $results = $stmt->fetchAll();
             
                 return $results;

@@ -1,12 +1,12 @@
 <ul class="nav nav-tabs d-flex">
     <li class="nav-item">
-        <a class="nav-link <?= $view == 'operations_subjects' ? 'active' : '' ?>" aria-current="page" href="operations_subjects.php">Subjects</a>
+        <a class="nav-link <?= $view == 'operations_subjects' ? 'active' : '' ?>" aria-current="page" href="operations_subjects.php">Lists of subjects</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link <?= $view == 'operations_sections' ? 'active' : '' ?>" href="operations_sections.php">Sections</a>
+        <a class="nav-link <?= $view == 'operations_sections' ? 'active' : '' ?>" href="operations_sections.php">Lists of classes</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link  <?= $view == 'operations_grading' ? 'active' : '' ?>" href="operations_grading.php">Grading</a>
+        <a class="nav-link  <?= $view == 'operations_grading' ? 'active' : '' ?>" href="operations_grading.php">Lists of grading periods</a>
     </li>
     <button type="button" class="btn text-primary ms-auto" id="subjects-toast-btn">Help ?</button>
 </ul>

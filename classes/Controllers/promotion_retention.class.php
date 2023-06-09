@@ -7,27 +7,30 @@ include $_SERVER['DOCUMENT_ROOT'].'/sabanges/classes/Models/promotion_retention.
 class PromotionRetentionController extends \Models\PromotionRetention{
     public function initPromote($ids, $lrns, $grade_levels){
         $promote = 1;
-        if (count($this->checkPassingGrades($ids, $lrns, $grade_levels, $promote)) > 0) {
-            $results = $this->checkPassingGrades($ids, $lrns, $grade_levels, $promote);
+        $results = $this->checkPassingGrades($ids, $lrns, $grade_levels, $promote);
+        if (count($results) > 0) {
             $url = "Location: ../promotion.php?promotion&submitted";
-            // $id_param = 'id[]=';
-            // $lrn_param = 'lrn[]=';
-            // $remark_param = 'remark[]=';
-            // foreach ($results as $result) {
-            //     foreach ($result as $key => $value) {
-            //         if ($key == 'id') {
-            //             $url .= '&id[]=' . $value; 
-            //         }
-            //         elseif ($key == 'lrn') {
-            //             $url .= '&lrn[]=' . $value; 
-            //         }
-            //         else{
-            //             $url .= '&remark[]=' . $value; 
-            //         }
-            //     }
-            // }
-            // var_dump($results);
-            // die();
+            $id_param = 'id[]=';
+            $lrn_param = 'lrn[]=';
+            $remark_param = 'remark[]=';
+            foreach ($results as $result) {
+                foreach ($result as $key => $value) {
+                    if ($key == 'id') {
+                        $url .= '&id[]=' . $value; 
+                    }
+                    elseif ($key == 'lrn') {
+                        $url .= '&lrn[]=' . $value; 
+                    }
+                    else{
+                        $url .= '&remark[]=' . $value; 
+                    }
+                }
+            }
+            header($url);
+            die();
+        }
+        else{
+            $url = "Location: ../promotion.php?promotion&error";
             header($url);
             die();
         }
@@ -35,25 +38,30 @@ class PromotionRetentionController extends \Models\PromotionRetention{
 
     public function initPromoteTransfer($ids, $lrns, $grade_levels){
         $promote = 2;
-        if ($this->checkPassingGrades($ids, $lrns, $grade_levels, $promote) !== false) {
-            $results = $this->checkPassingGrades($ids, $lrns, $grade_levels, $promote);
+        $results = $this->checkPassingGrades($ids, $lrns, $grade_levels, $promote);
+        if (count($results) > 0) {
             $url = "Location: ../promotion.php?promotiontransfer&submitted";
-            // $id_param = 'id[]=';
-            // $lrn_param = 'lrn[]=';
-            // $remark_param = 'remark[]=';
-            // foreach ($results as $result) {
-            //     foreach ($result as $key => $value) {
-            //         if ($key == 'id') {
-            //             $url .= '&id[]=' . $value; 
-            //         }
-            //         elseif ($key == 'lrn') {
-            //             $url .= '&lrn[]=' . $value; 
-            //         }
-            //         else{
-            //             $url .= '&remark[]=' . $value; 
-            //         }
-            //     }
-            // }
+            $id_param = 'id[]=';
+            $lrn_param = 'lrn[]=';
+            $remark_param = 'remark[]=';
+            foreach ($results as $result) {
+                foreach ($result as $key => $value) {
+                    if ($key == 'id') {
+                        $url .= '&id[]=' . $value; 
+                    }
+                    elseif ($key == 'lrn') {
+                        $url .= '&lrn[]=' . $value; 
+                    }
+                    else{
+                        $url .= '&remark[]=' . $value; 
+                    }
+                }
+            }
+            header($url);
+            die();
+        }
+        else{
+            $url = "Location: ../promotion.php?promotion&error";
             header($url);
             die();
         }
@@ -61,25 +69,30 @@ class PromotionRetentionController extends \Models\PromotionRetention{
 
     public function initRetention($ids, $lrns, $grade_levels){
         $promote = 0;
-        if ($this->checkPassingGrades($ids, $lrns, $grade_levels, $promote) !== false) {
-            $results = $this->checkPassingGrades($ids, $lrns, $grade_levels, $promote);
+        $results = $this->checkPassingGrades($ids, $lrns, $grade_levels, $promote);
+        if (count($results) > 0) {
             $url = "Location: ../promotion.php?retention&submitted";
-            // $id_param = 'id[]=';
-            // $lrn_param = 'lrn[]=';
-            // $remark_param = 'remark[]=';
-            // foreach ($results as $result) {
-            //     foreach ($result as $key => $value) {
-            //         if ($key == 'id') {
-            //             $url .= '&id[]=' . $value; 
-            //         }
-            //         elseif ($key == 'lrn') {
-            //             $url .= '&lrn[]=' . $value; 
-            //         }
-            //         else{
-            //             $url .= '&remark[]=' . $value; 
-            //         }
-            //     }
-            // }
+            $id_param = 'id[]=';
+            $lrn_param = 'lrn[]=';
+            $remark_param = 'remark[]=';
+            foreach ($results as $result) {
+                foreach ($result as $key => $value) {
+                    if ($key == 'id') {
+                        $url .= '&id[]=' . $value; 
+                    }
+                    elseif ($key == 'lrn') {
+                        $url .= '&lrn[]=' . $value; 
+                    }
+                    else{
+                        $url .= '&remark[]=' . $value; 
+                    }
+                }
+            }
+            header($url);
+            die();
+        }
+        else{
+            $url = "Location: ../promotion.php?promotion&error";
             header($url);
             die();
         }
@@ -114,10 +127,8 @@ class PromotionRetentionController extends \Models\PromotionRetention{
                     array_push($return_result, $student);
                 }
             }
-
-
         }
-        
+
         return $return_result;
     }
 }

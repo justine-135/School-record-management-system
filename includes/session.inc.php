@@ -5,7 +5,7 @@ if (empty($_SESSION['username']) && empty($_SESSION['account_id'])) {
 }
 else{
     // If inactive for 15 mins, logout user
-    if ((time() - $_SESSION['last_login_timestamp']) > 3600) {
+    if ((time() - $_SESSION['last_login_timestamp']) > 900) {
         session_destroy();
     }
     else{

@@ -12,7 +12,7 @@ include './includes/session.inc.php';
 
 <main class="container-fluid w-90 border mt-4 mb-5 p-0 bg-white">
   <div class="d-flex justify-content-between align-items-center p-2 border-bottom">
-    <h5>Welcome user # <?= $_SESSION['account_id']; ?></h5>
+    <h5>Hello <?= ucfirst($_SESSION['surname']) . ', ' . ucfirst($_SESSION['first_name']) . ' ' . ucfirst($_SESSION['middle_name']) ?></h5>
     <h6>Role: <?= $_SESSION['is_superadmin'] == 1 ? 'Superadmin' : ($_SESSION['is_admin'] == 1 ? 'Admin' : ($_SESSION['is_teacher'] == 1 ? 'Teacher' : ($_SESSION['is_guidance'] == 1 ? 'Guidance' : ($_SESSION['author'] == 1 ? 'Author' : 'None')))) ?></h6>
   </div>
   <div>

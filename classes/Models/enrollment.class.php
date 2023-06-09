@@ -46,35 +46,14 @@ class Enrollment extends \Dbh{
     }
     protected function studentCount($status, $level, $section){
         try{
-            if (empty($level) || empty($section)) {
+            if (!empty($level)) {
                 $sql = "SELECT `enrollment_id` FROM `enrollment_history_table` 
-                WHERE `status` = ?
-                AND `grade_level` < 7
-                AND `transfer` IS NOT NULL
-                ";
-                $stmt = $this->connection()->prepare($sql);
-                $stmt->execute([$status]);
-            }
-            else{
-                $sql = "SELECT `enrollment_id` FROM `enrollment_history_table` 
-                WHERE `status` = ? AND `grade_level` = ? AND `section` = ?
-                AND `grade_level` < 7
-                AND `transfer` IS NOT NULL
-                ";
-                $stmt = $this->connection()->prepare($sql);
-                $stmt->execute([$status, $level, $section]);
-            }
-
-            if (!empty($level) && empty($section)) {
-                $sql = "SELECT `enrollment_id` FROM `enrollment_history_table` 
-                WHERE `status` = ? AND `grade_level` = ?
-                AND `grade_level` < 7
-                AND `transfer` IS NOT NULL
+                WHERE `status` = ? 
+                AND `grade_level` = ?
                 ";
                 $stmt = $this->connection()->prepare($sql);
                 $stmt->execute([$status, $level]);
             }
-
             $results = $stmt->fetchAll();
             return $results;
         }

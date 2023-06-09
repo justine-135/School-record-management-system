@@ -18,11 +18,11 @@ include './includes/permission.inc.php';
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="promotionResultLabel">Promoted/Retained students</h1>
+        <h1 class="modal-title fs-5" id="promotionResultLabel">Summary</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <p>Successfully promoted students: </p>
+        <p>Successfully promoted <?= count($_GET['id']) ?> students: </p>
         <table class="table">
           <thead>
             <tr>
@@ -50,7 +50,6 @@ include './includes/permission.inc.php';
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Understood</button>
       </div>
     </div>
   </div>
@@ -60,15 +59,13 @@ include './includes/permission.inc.php';
 <main class="container-fluid w-90 mt-4 mb-5 ">
   <?php include './partials/nav_records_tabs.php'; ?>
   <div class="p-2 border border-top-0">
-    <form action="../sabanges/includes/promotion_retention.inc.php" method="post" enctype="multipart/form-data">
+    <form class="promotion-form" action="../sabanges/includes/promotion_retention.inc.php" method="post" enctype="multipart/form-data">
         <div>
         <?php include './partials/nav_filter_student.php'; ?>
         </div>
-        <div class="load-promotion">
         <?php
         require $_SERVER['DOCUMENT_ROOT'].'/sabanges/includes/promotion_retention.inc.php';
         ?>
-        </div>
     </form>
 </main>
 

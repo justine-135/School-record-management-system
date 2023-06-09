@@ -29,7 +29,7 @@ include './includes/permission.inc.php';
         </a>
 
     </div>
-    <div class="px-2 table-responsive <?= $view ?>-table min-vh-100">
+    <div class="px-2 pb-2 table-responsive <?= $view ?>-table">
     <?php
         $accounts = true;
         require $_SERVER['DOCUMENT_ROOT'].'/sabanges/includes/teachers.inc.php';

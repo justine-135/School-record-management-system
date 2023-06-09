@@ -40,7 +40,7 @@ class EnrollmentView extends \Models\Enrollment{
     public function initIndex($view){
         $rows = isset($_GET['row']) ? $_GET['row'] : '10';
         $page_no = isset($_GET['page_no']) ? $_GET['page_no'] : '1';
-        $status = isset($_GET['status']) ? $_GET['status'] : 'active';
+        $status = isset($_GET['status']) ? $_GET['status'] : 'Unenrolled';
         $query = isset($_GET['query']) ? $_GET['query'] : '';
         $level = isset($_GET['level']) ? $_GET['level'] : "all";
         $section = isset($_GET['section']) ? $_GET['section'] : "";
@@ -62,7 +62,6 @@ class EnrollmentView extends \Models\Enrollment{
         $this->validateRequest($rows, $offset, $page_no, $status, $query, $level, $section);
 
         $results = $this->index($status, $offset, $total_records_per_page, $query, $level, $section);
-
         ?>
 
         <div class="d-flex align-items-center mb-2">
@@ -112,7 +111,7 @@ class EnrollmentView extends \Models\Enrollment{
                                 </div>
                             </div>
                         </td>
-                        <td><?= $row['lrn'] ?></td>
+                        <td><?= $row['student_lrn'] ?></td>
                         <td class="d-flex align-items-center justify-content-center border-0">
                             <?php if ($row['image'] === null) { ?>
                             <img class="rounded-circle" style="object-fit: cover;" width=50px height=50px src='./images/profile.jpg'>
@@ -136,20 +135,19 @@ class EnrollmentView extends \Models\Enrollment{
             </tbody>
         </table>
         <nav class="mt-2">
-            <ul class="pagination">
+            <ul class="pagination d-flex flex-wrap">
                 <li class="page-item">
-                    
-                    <a class="page-link previous-btn <?= $page_no <= 1 ? 'disabled' : '' ?>" href="?row=<?= $rows ?>&page_no=<?= $previous_page ?>&status=<?= $status ?>&level=<?= $level ?>&section=<?= $section ?>&query=<?= $query ?>">Previous</a>
+                    <a class="page-link previous-btn <?= $page_no <= 1 ? 'disabled' : '' ?>" href="?row=<?= $rows ?>&page_no=<?= $previous_page ?>&level=<?= $level ?>">Previous</a>
                 </li>
                 <?php for ($i=0; $i < $total_no_page; $i++) { ?>
 
                 <li class="page-item">
-                    <a class="page-link page-number <?= $page_no !== $i + 1 ? '' : 'active'?>" href="?row=<?= $rows ?>&page_no=<?= $i + 1 ?>&status=<?= $status ?>&level=<?= $level ?>&section=<?= $section ?>&query=<?= $query ?>"><?= $i + 1?></a>
+                    <a class="page-link page-number <?= $page_no != $i + 1 ? '' : 'active'?>" href="?row=<?= $rows ?>&page_no=<?= $i + 1 ?>&level=<?= $level ?>"><?= $i + 1?></a>
                 </li>
                 
                 <?php } ?>
                 <li class="page-item">
-                    <a class="page-link next-btn <?= $page_no >= $total_no_page ? 'disabled' : '' ?>" href="?row=<?= $rows ?>&page_no=<?= $next_page ?>status=<?= $status ?>&level=<?= $level ?>&section=<?= $section ?>&query=<?= $query ?>">Next</a>
+                    <a class="page-link next-btn <?= $page_no >= $total_no_page ? 'disabled' : '' ?>" href="?row=<?= $rows ?>&page_no=<?= $next_page ?>&level=<?= $level ?>">Next</a>
                 </li>
             </ul>
             <span class="fw-semibold">Page <?= $page_no ?> out of <?= $total_no_page ?></span>

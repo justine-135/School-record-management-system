@@ -42,6 +42,38 @@ openGradeBtns.forEach((element) => {
         let finalGrades = [];
         let remarks = [];
 
+        firstQuarterInputs.forEach((inputGrade) => {
+          inputGrade.addEventListener("keyup", () => {
+            getQuarterlyGrades();
+            getFinalGrade();
+            getSummary();
+          });
+        });
+
+        secondQuarterInputs.forEach((inputGrade) => {
+          inputGrade.addEventListener("keyup", () => {
+            getQuarterlyGrades();
+            getFinalGrade();
+            getSummary();
+          });
+        });
+
+        thirdQuarterInputs.forEach((inputGrade) => {
+          inputGrade.addEventListener("keyup", () => {
+            getQuarterlyGrades();
+            getFinalGrade();
+            getSummary();
+          });
+        });
+
+        fourthQuarterInputs.forEach((inputGrade) => {
+          inputGrade.addEventListener("keyup", () => {
+            getQuarterlyGrades();
+            getFinalGrade();
+            getSummary();
+          });
+        });
+
         reviewBtn.forEach((element) => {
           element.addEventListener("click", () => {
             getQuarterlyGrades();

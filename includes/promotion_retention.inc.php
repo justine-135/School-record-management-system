@@ -26,8 +26,7 @@ function index($view){
     $obj->initIndex($view);
 }
 
-if (isset($_GET['view'])) {
-    $view = $_GET['view'];
+if (isset($view)) {
     if ($view == 'promotion') {
         index($view);
     }
@@ -35,10 +34,14 @@ if (isset($_GET['view'])) {
 
 if (isset($_POST['promote'])) {
     $select_promotion = $_POST['select-promotion'];    
-    $chkbox_students = $_POST['chkbox-student'];
+    $chkbox_students = isset($_POST['chkbox-student']) ? $_POST['chkbox-student'] : 0;
     $ids = array();
     $lrns = array();
     $grade_levels = array();
+
+    if ($chkbox_students == 0) {
+        header("location:javascript://history.go(-1)");
+    }
 
     foreach ($chkbox_students as $key => $obj) {
         $data = explode(",",$obj);

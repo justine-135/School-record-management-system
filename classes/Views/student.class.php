@@ -172,7 +172,7 @@ class StudentView extends \Models\Student{
             </tbody>
         </table>
         <nav class="m-2 ms-0">
-            <ul class="pagination">
+            <ul class="pagination d-flex flex-wrap">
                 <li class="page-item">
                     
                     <a class="page-link previous-btn <?= $page_no <= 1 ? 'disabled' : '' ?>" href="?row=<?= $rows ?>&page_no=<?= $previous_page ?>&level=<?= $level ?>&section=<?= $section ?>&query=<?= $query ?>">Previous</a>
@@ -212,7 +212,6 @@ class StudentView extends \Models\Student{
         $total_no_page = ceil($records / intval($total_records_per_page));
 
         $results = $this->indexStudents($offset, $total_records_per_page, $query);
-
         ?>
 
         <table class="table table-hover mt-2 mb-0 border-top table-bordered student-table">
@@ -225,9 +224,10 @@ class StudentView extends \Models\Student{
                         </div>
                     </th>
                     <th scope="col">LRN</th>
+                    <th scope="col">Date recorded</th>
                     <th scole='col'>Image</th>
                     <th scope="col">Student</th>
-                    <th scope="col">Date recorded</th>
+                    <th scope="col">Birth date</th>
                     <th scope="col">Gender</th>
                     <th scope="col">Action</th>
                 </tr>
@@ -246,6 +246,7 @@ class StudentView extends \Models\Student{
                             </div>
                         </td>
                         <td><?= $row['lrn'] ?></td>
+                        <td><?= $row['enrolled_at'] ?></td>
                         <td class="d-flex align-items-center justify-content-center border-0">
                             <?php if ($row['image'] === null) { ?>
                             <img class="rounded-circle" style="object-fit: cover;" width=50px height=50px src='./images/profile.jpg'>
@@ -256,7 +257,7 @@ class StudentView extends \Models\Student{
                             <?php } ?>
                         </td>
                         <td><?= strtoupper($row['surname']) . ', ' . strtoupper($row['first_name']) . ' ' . strtoupper($row['middle_name'])  ?> <?= strtoupper($row['ext']) == 'NONE' ? '' : strtoupper($row['ext']) ?></td>
-                        <td><?= $row['enrolled_at'] ?></td>
+                        <td><?= $row['birth_date'] ?> <span class="text-secondary">(<?= intval(date('Y', time() - strtotime($row['birth_date']))) - 1970 ?> years old)</span></td>
                         <td><?= $row['gender'] ?></td>
                         <td>
                             <div class="dropdown ml-auto">
@@ -288,20 +289,20 @@ class StudentView extends \Models\Student{
             </tbody>
         </table>
         <nav class="m-2 ms-0">
-            <ul class="pagination">
+            <ul class="pagination d-flex flex-wrap"">
                 <li class="page-item">
                     
-                    <a class="page-link previous-btn <?= $page_no <= 1 ? 'disabled' : '' ?>" href="?row=<?= $rows ?>&page_no=<?= $previous_page ?>&level=<?= $level ?>&section=<?= $section ?>&query=<?= $query ?>">Previous</a>
+                    <a class="page-link previous-btn <?= $page_no <= 1 ? 'disabled' : '' ?>" href="?row=<?= $rows ?>&page_no=<?= $previous_page ?>&query=<?= $query ?>">Previous</a>
                 </li>
                 <?php for ($i=0; $i < $total_no_page; $i++) { ?>
 
                 <li class="page-item">
-                    <a class="page-link page-number <?= $page_no !== $i + 1 ? '' : 'active'?>" href="?row=<?= $rows ?>&page_no=<?= $i + 1 ?>&level=<?= $level ?>&section=<?= $section ?>&query=<?= $query ?>"><?= $i + 1?></a>
+                    <a class="page-link page-number <?= $page_no !== $i + 1 ? '' : 'active'?>" href="?row=<?= $rows ?>&page_no=<?= $i + 1 ?>&query=<?= $query ?>"><?= $i + 1?></a>
                 </li>
                
                 <?php } ?>
                 <li class="page-item">
-                    <a class="page-link next-btn <?= $page_no >= $total_no_page ? 'disabled' : '' ?>" href="?row=<?= $rows ?>&page_no=<?= $next_page ?>&level=<?= $level ?>&section=<?= $section ?>&query=<?= $query ?>">Next</a>
+                    <a class="page-link next-btn <?= $page_no >= $total_no_page ? 'disabled' : '' ?>" href="?row=<?= $rows ?>&page_no=<?= $next_page ?>&query=<?= $query ?>">Next</a>
                 </li>
             </ul>
             <span class="fw-semibold">Page <?= $page_no ?> out of <?= $total_no_page ?></span>
@@ -356,7 +357,6 @@ class StudentInformationView extends \Models\Student{
             foreach ($result2 as $row2) {
                 array_push($grade_levels, $row2['grade_level']);
             }
-            // count($result) === 0 ? header("Location: ./masterlist.php?id={$id}&err=not_found") : "";
             ?>
             <div class="row gap-3">
                 <form class="border col-md" action="./includes/enrollment.inc.php" method="post" enctype="multipart/form-data">
@@ -745,7 +745,9 @@ class StudentInformationView extends \Models\Student{
                                 Add
                             </button>
                         </div>
-                        <?php foreach($result2 as $row2){ ?>
+                        <?php foreach($result2 as $row2){ 
+                            if ($row2['grade_level'] < 7 || $row2['grade_level'] == 'Kindergarten'){
+                        ?>
                         <div class="w-100 py-2 px-3 border-bottom">
                             <div class="d-flex align-items-center justify-content-between">
                                 <span class="fw-semibold">School year :</span>
@@ -778,7 +780,7 @@ class StudentInformationView extends \Models\Student{
                                 } ?>
                             </div>
                         </div>
-                        <?php } ?>
+                        <?php } } ?>
                     </div>
                 </div>
             </div>
@@ -789,7 +791,7 @@ class StudentInformationView extends \Models\Student{
                 <div class="d-flex align-items-center justify-content-between py-3 px-3">
                     <h5>Grades</h5>               
                 </div>
-                <div class="row grades-section" id="<?= $result2[0]['student_lrn'] ?>">
+                <div class="row grades-section mb-3" id="<?= $result2[0]['student_lrn'] ?>">
                     <input type="text" name="grade-lvl" value="<?= $result2[0]['student_lrn'] ?>" id="">
                 </div>
             <div>

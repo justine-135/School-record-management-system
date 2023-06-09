@@ -104,7 +104,7 @@ class TeachersView extends \Models\Teachers{
             </tbody>
         </table>
         <nav >
-            <ul class="pagination">
+            <ul class="pagination d-flex flex-wrap">
                 <li class="page-item">
                     <a class="page-link previous-btn <?= $page_no <= 1 ? 'disabled' : '' ?>" href="?row=<?= isset($_GET['row']) ? $_GET['row'] : 10 ?>&page_no=<?= $previous_page ?>&status=<?= isset($_GET['status']) ? $_GET['status'] : 'active' ?>">Previous</a>
                 </li>
@@ -382,26 +382,27 @@ class TeacherInformationView extends \Models\Teachers{
         $advisories = $this->getAdvisories($result[0]['email'], $result[0]['username']);
         ?>
     
-        <div class="container my-3">
+        <div class="container my-3 ">
             <div class="row">
-                <div class="col-md-3">
-                    <div class="d-flex align-items-center border-bottom">
+                <div class="col-md-3 border p-0">
+                    <div class="d-flex align-items-center p-2">
                         <span class="fw-semibold fs-5 ">Profile</span>
                         <a style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;" class="ms-auto my-2 btn <?= isset($_GET['edit_profile']) ? 'btn-danger' : 'btn-primary' ?>" <?= isset($_GET['edit_profile']) ? 'href="index.php"' : 'href="?edit_profile"' ?>><?= isset($_GET['edit_profile']) ? 'Cancel' : 'Edit' ?></a>
                     </div>
-                    <?php 
-                    if ($result[0]['image'] == null) { ?>
-                    <img class="rounded-circle" style="object-fit: cover;" width=100% height=250px src='./images/profile.jpg'>
-                    <?php } else { ?>
-                    <img class="mt-2 rounded" style="object-fit: cover;" width=100% height=250px src=data:image;base64,<?= $result[0]['image'] ?>>
-
-                    <?php } ?>
-                    <div class="d-flex flex-column gap-1 mt-3">
-                        <div class="fw-semibold border-bottom">
+                    <div class="">
+                        <?php 
+                        if ($result[0]['image'] == null) { ?>
+                        <img style="object-fit: cover; max-height: 300px" width=100% height=100% src='./images/profile.jpg'>
+                        <?php } else { ?>
+                        <img style="object-fit: cover; max-height: 300px" width=100% height=100% src=data:image;base64,<?= $result[0]['image'] ?>>
+                        <?php } ?>
+                    </div>
+                    <div class="d-flex flex-column gap-1">
+                        <div class="fw-semibold border-bottom p-2">
                             Personal
                         </div>
                         <form action="./includes/teachers.inc.php" method="post" enctype="multipart/form-data">
-                            <div class="d-flex <?= isset($_GET['edit_profile']) ? 'flex-column' : 'flex-row'?> justify-content-between gap-1">
+                            <div class="d-flex <?= isset($_GET['edit_profile']) ? 'flex-column' : 'flex-row'?> justify-content-between gap-1 px-2">
                                 <?php if (isset($_GET['edit_profile'])) { ?>
                                 <span>Surname: </span>
                                 <input type="text" class="form-control" name="sname" placeholder="Enter surname" value="<?= $result[0]['surname'] ?>">
@@ -416,7 +417,7 @@ class TeacherInformationView extends \Models\Teachers{
                                 </span>
                                 <?php } ?>
                             </div>
-                            <div class="d-flex <?= isset($_GET['edit_profile']) ? 'flex-column' : 'flex-row'?> justify-content-between gap-1">
+                            <div class="d-flex <?= isset($_GET['edit_profile']) ? 'flex-column' : 'flex-row'?> justify-content-between gap-1 px-2">
                                 <span>Gender:</span>
                                 <?php if (isset($_GET['edit_profile'])) { ?>
                                 <div class="form-check me-3">
@@ -431,7 +432,7 @@ class TeacherInformationView extends \Models\Teachers{
                                 <span class=" text-end"><?= $result[0]['gender'] ?></span>
                                 <?php } ?>
                             </div>
-                            <div class="d-flex <?= isset($_GET['edit_profile']) ? 'flex-column' : 'flex-row'?> justify-content-between gap-1">
+                            <div class="d-flex <?= isset($_GET['edit_profile']) ? 'flex-column' : 'flex-row'?> justify-content-between gap-1 px-2">
                                 <span>Email:</span>
                                 <?php if (isset($_GET['edit_profile'])) { ?>      
                                 <input type="text" class="form-control" name="email" placeholder="Enter new email" value="<?= $result[0]['email'] ?>">                      
@@ -439,7 +440,7 @@ class TeacherInformationView extends \Models\Teachers{
                                 <span class=" text-end"><?= $result[0]['email'] ?></span>
                                 <?php } ?>
                             </div>
-                            <div class="d-flex <?= isset($_GET['edit_profile']) ? 'flex-column' : 'flex-row'?> justify-content-between gap-1">
+                            <div class="d-flex <?= isset($_GET['edit_profile']) ? 'flex-column' : 'flex-row'?> justify-content-between gap-1 px-2">
                                 <span>Birth date: </span>
                                 <?php if (isset($_GET['edit_profile'])) { ?>      
                                 <input type="date" class="form-control" name="birth-date" placeholder="Enter new email" value="<?= $result[0]['birth_date'] ?>">                      
@@ -447,7 +448,7 @@ class TeacherInformationView extends \Models\Teachers{
                                 <span class=" text-end"><?= $result[0]['birth_date'] ?></span>
                                 <?php } ?>
                             </div>
-                            <div class="d-flex <?= isset($_GET['edit_profile']) ? 'flex-column' : 'flex-row'?> justify-content-between gap-1">
+                            <div class="d-flex <?= isset($_GET['edit_profile']) ? 'flex-column' : 'flex-row'?> justify-content-between gap-1 px-2">
                                 <span>Contact: </span>
                                 <?php if (isset($_GET['edit_profile'])) { ?>      
                                 <input type="text" class="form-control" name="contact" placeholder="Enter new contact" value="<?= $result[0]['contact'] ?>">    
@@ -457,7 +458,7 @@ class TeacherInformationView extends \Models\Teachers{
                                 <span class=" text-end"><?= $result[0]['contact'] ?></span>
                                 <?php } ?>
                             </div>
-                            <div class="d-flex <?= isset($_GET['edit_profile']) ? 'flex-column' : 'flex-row'?> justify-content-between gap-1">
+                            <div class="d-flex <?= isset($_GET['edit_profile']) ? 'flex-column' : 'flex-row'?> justify-content-between gap-1 px-2">
                                 <span>Religion: </span>
                                 <?php if (isset($_GET['edit_profile'])) { ?>      
                                 <input type="text" class="form-control" name="religion" placeholder="Enter new religion" value="<?= $result[0]['religion'] ?>">                    
@@ -465,72 +466,72 @@ class TeacherInformationView extends \Models\Teachers{
                                 <span class=" text-end"><?= $result[0]['religion'] ?></span>
                                 <?php } ?>
                             </div>
-                            <div class="fw-semibold mt-3 border-bottom">
+                            <div class="fw-semibold mt-3 border-bottom border-top p-2">
                                 Address
                             </div>
                             <?php if (isset($_GET['edit_profile'])) { ?>   
-                            <div class="d-flex flex-column justify-content-between gap-1">
+                            <div class="d-flex flex-column justify-content-between gap-1 px-2">
                                 <span>House street: </span>
                                 <input type="text" class="form-control" name="house-number-street" value="<?= $result[0]['house_street'] ?>">
                             </div>
-                            <div class="d-flex flex-column justify-content-between gap-1">
+                            <div class="d-flex flex-column justify-content-between gap-1 px-2">
                                 <span>Subdivision: </span>
                                 <input type="text" class="form-control" name="subdv-village-zone" value="<?= $result[0]['subdivision'] ?>">
                             </div>
-                            <div class="d-flex flex-column justify-content-between gap-1">
+                            <div class="d-flex flex-column justify-content-between gap-1 px-2">
                                 <span>Barangay: </span>
                                 <input type="text" class="form-control" name="barangay" value="<?= $result[0]['barangay'] ?>">
                             </div>
-                            <div class="d-flex flex-column justify-content-between gap-1">
+                            <div class="d-flex flex-column justify-content-between gap-1 px-2">
                                 <span>City: </span>
                                 <input type="text" class="form-control" name="city-municipality" value="<?= $result[0]['city'] ?>">
                             </div>
-                            <div class="d-flex flex-column justify-content-between gap-1">
+                            <div class="d-flex flex-column justify-content-between gap-1 px-2">
                                 <span>Province: </span>
                                 <input type="text" class="form-control" name="province" value="<?= $result[0]['province'] ?>">
                             </div>
-                            <div class="d-flex flex-column justify-content-between gap-1">
+                            <div class="d-flex flex-column justify-content-between gap-1 px-2">
                                 <span>Region: </span>
                                 <input type="text" class="form-control" name="region" value="<?= $result[0]['region'] ?>">
                             </div>
-                            <div class="d-flex flex-column justify-content-between gap-1 mt-2">
+                            <div class="d-flex flex-column justify-content-between gap-1 mt-2 px-2">
                                 <input type="submit" class="btn btn-primary" name="edit-profile" value="Submit">
                             </div>
                             <?php } else { ?>   
-                            <div class="d-flex justify-content-between text-end">
+                            <div class="d-flex justify-content-between text-end px-2">
                                 <span>House street: </span>
                                 <span class=" "><?= $result[0]['house_street'] ?></span>
                             </div>
-                            <div class="d-flex justify-content-between">
+                            <div class="d-flex justify-content-between px-2">
                                 <span>Subdivision: </span>
                                 <span class=" "><?= $result[0]['subdivision'] ?></span>
                             </div>
-                            <div class="d-flex justify-content-between">
+                            <div class="d-flex justify-content-between px-2">
                                 <span>Barangay: </span>
                                 <span class=" "><?= $result[0]['barangay'] ?></span>
                             </div>
-                            <div class="d-flex justify-content-between">
+                            <div class="d-flex justify-content-between px-2">
                                 <span>City: </span>
                                 <span class=" "><?= $result[0]['city'] ?></span>
                             </div>
-                            <div class="d-flex justify-content-between">
+                            <div class="d-flex justify-content-between px-2">
                                 <span>Province: </span>
                                 <span class=" "><?= $result[0]['province'] ?></span>
                             </div>
-                            <div class="d-flex justify-content-between">
+                            <div class="d-flex justify-content-between px-2">
                                 <span>Region: </span>
                                 <span class=""><?= $result[0]['region'] ?></span>
                             </div>
                             <?php } ?>
                         </form>
                     </div>
-                    <div class="d-flex align-items-center border-bottom mt-3">
+                    <div class="d-flex align-items-center border-bottom mt-3 border-top p-2">
                         <span class="fw-semibold fs-5 ">Account</span>
                         <a style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;" class="ms-auto my-2 btn <?= isset($_GET['edit_account']) ? 'btn-danger' : 'btn-primary' ?>" <?= isset($_GET['edit_account']) ? 'href="index.php"' : 'href="?edit_account#account_section"' ?>><?= isset($_GET['edit_account']) ? 'Cancel' : 'Edit' ?></a>
                     </div>
                     <form action="./includes/teachers.inc.php" method="post" enctype="multipart/form-data">
 
-                    <div class="d-flex flex-column gap-1 mt-2" id="account_section">
+                    <div class="d-flex flex-column gap-1 mt-2 px-2" id="account_section">
                         <div class="d-flex <?= isset($_GET['edit_account']) ? 'flex-column' : '' ?> justify-content-between">
                             <span>Username: </span>
                             <?php if (isset($_GET['edit_account'])) { ?>
@@ -678,7 +679,7 @@ class TeacherInformationView extends \Models\Teachers{
                             <?php } ?>        
                         </td>
                         <td><?= ucfirst($dashboard['surname']) . ', ' . ucfirst($dashboard['first_name']) . ' ' . ucfirst($dashboard['middle_name']) ?></td>
-                        <td><?= $dashboard['birth_date'] ?></td>
+                        <td><?= $dashboard['birth_date'] ?> <span class="text-secondary">(<?= intval(date('Y', time() - strtotime($dashboard['birth_date']))) - 1970 ?>)</span></td>
                         <td><?= $dashboard['grade_level'] !== 'Kindergarten' ? 'Grade ' . $dashboard['grade_level'] : $dashboard['grade_level'] ?> - <?= $dashboard['section'] ?></td>
                         <td><?= $dashboard['gender'] ?></td>
                         <td>

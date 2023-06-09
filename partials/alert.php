@@ -12,7 +12,7 @@ if (isset($_GET['edit_profile']) && isset($_GET['profile'])) {
   <?php
 }
 
-if (isset($_GET['edit_account'])) {
+if (isset($_GET['edit_account']) && isset($_GET['account'])) {
   ?>
   <div class="alert alert-<?= isset($_GET['error']) ? 'danger' : (isset($_GET['submitted']) ? 'success' : '')  ?> d-flex align-items-center alert-dismissible fade show" role="alert">
   <?php require isset($_GET['error']) ? 'danger_icon.php' : (isset($_GET['submitted']) ? 'success_icon.php' : '') ?>
@@ -151,7 +151,30 @@ if (isset($_GET['promotion'])) {
   <?php require isset($_GET['error']) ? 'danger_icon.php' : (isset($_GET['submitted']) ? 'success_icon.php' : '') ?>
     <div>
       <!-- Button trigger modal -->
-      Promoted selected students.
+      <?php if (!isset($_GET['error'])) { ?>
+      Promoted selected students. 
+      <a type="button" class="link-primary" data-bs-toggle="modal" data-bs-target="#promotionResult">
+        View summary
+      </a>
+      <?php } else { ?>
+      An error has occured. Data cannot be submitted.
+      <?php } ?>
+    </div>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  <?php
+}
+
+if (isset($_GET['promotiontransfer'])) {
+  ?>
+  <div class="alert alert-<?= isset($_GET['error']) ? 'danger' : (isset($_GET['submitted']) ? 'success' : '')  ?> d-flex align-items-center alert-dismissible fade show" role="alert">
+  <?php require isset($_GET['error']) ? 'danger_icon.php' : (isset($_GET['submitted']) ? 'success_icon.php' : '') ?>
+    <div>
+      <!-- Button trigger modal -->
+      Promoted selected students. 
+      <a type="button" class="link-primary" data-bs-toggle="modal" data-bs-target="#promotionResult">
+        View summary
+      </a>
     </div>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
@@ -165,13 +188,16 @@ if (isset($_GET['retention'])) {
     <div>
       <!-- Button trigger modal -->
       Retained selected students.
+      <a type="button" class="link-primary" data-bs-toggle="modal" data-bs-target="#promotionResult">
+        View summary
+      </a>
     </div>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
   <?php
 }
 
-if (isset($_GET['account'])) {
+if (isset($_GET['superadmin'])) {
   ?>
   <div class="alert alert-<?= isset($_GET['error']) ? 'danger' : (isset($_GET['submitted']) ? 'success' : '')  ?> d-flex align-items-center alert-dismissible fade show" role="alert">
   <?php require isset($_GET['error']) ? 'danger_icon.php' : (isset($_GET['submitted']) ? 'success_icon.php' : '') ?>

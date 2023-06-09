@@ -25,4 +25,6 @@ include './includes/permission.inc.php';
   </div>
 </main>
 
+<?php include "partials/footer.php"; ?>
+
 <script src="js/masterlist.js"></script>

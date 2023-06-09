@@ -51,7 +51,7 @@ class SubjectsView extends \Models\Subjects{
             </tbody>
         </table>
         <nav class="m-2">
-            <ul class="pagination">
+            <ul class="pagination d-flex flex-wrap">
                 <li class="page-item">
                     
                     <a class="page-link previous-btn <?= $page_no <= 1 ? 'disabled' : '' ?>" href="?row=<?= $rows ?>&page_no=<?= $previous_page ?>&level=<?= $level ?>">Previous</a>
