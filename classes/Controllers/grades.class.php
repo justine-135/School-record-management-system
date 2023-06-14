@@ -32,7 +32,7 @@ class GradesController extends \Models\Grades{
         }
         else{
             $this->update($id, $lrn, $grade_level, $section, $subjects, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter, $remark);
-            header("Location: ../grading.php?grades&submitted&rows={$rows}&page_no={$page_no}&status={$status}");
+            header("Location: ../grading.php?grades&submitted&rows={$rows}&page_no={$page_no}&status={$status}&lrn={$lrn}");
             die();
         }
     }

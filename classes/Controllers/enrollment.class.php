@@ -229,7 +229,7 @@ class EnrollmentController extends \Models\Enrollment{
         }
         else{
             $this->createReturnee($lrn, $from_sy, $to_sy, $grade_level, $section);
-            header("Location: ../returnee.php?submitted");
+            header("Location: ../returnee.php?returnee&submitted");
             die();
         }
     }

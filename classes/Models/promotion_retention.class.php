@@ -153,19 +153,19 @@ class PromotionRetention extends \Dbh{
             $results = $stmt->fetchAll();
             $stmt = null;
 
-            $sql = "SELECT * FROM `enrollment_history_table` WHERE `enrollment_id` = ? AND `student_lrn` = ? AND `grade_level` = ?;";
-            $stmt = $this->connection()->prepare($sql);
-            $stmt->execute([$id, $lrn, $grade_level]);
-            $history = $stmt->fetchAll();
-            $stmt = null;
+            // $sql = "SELECT * FROM `enrollment_history_table` WHERE `enrollment_id` = ? AND `student_lrn` = ? AND `grade_level` = ?;";
+            // $stmt = $this->connection()->prepare($sql);
+            // $stmt->execute([$id, $lrn, $grade_level]);
+            // $history = $stmt->fetchAll();
+            // $stmt = null;
 
-            $promoted_level = $history[0]['grade_level'] == 'Kindergarten' ? 1 : intval($history[0]['grade_level']) + 1;
+            // $promoted_level = $history[0]['grade_level'] == 'Kindergarten' ? 1 : intval($history[0]['grade_level']) + 1;
             
-            $sql = 
-            "INSERT INTO `enrollment_history_table` (`student_lrn`, `from_sy`, `to_sy`, `school`, `grade_level`, `status`, `transfer`)
-            VALUES (?, ?, ?, ?, ?, ?, ?);";
-            $stmt = $this->connection()->prepare($sql);
-            $stmt->execute([$lrn, 0000, 0000, 'Sabang Elementary School', $promoted_level, 'Unenrolled', '1']);
+            // $sql = 
+            // "INSERT INTO `enrollment_history_table` (`student_lrn`, `from_sy`, `to_sy`, `school`, `grade_level`, `status`, `transfer`)
+            // VALUES (?, ?, ?, ?, ?, ?, ?);";
+            // $stmt = $this->connection()->prepare($sql);
+            // $stmt->execute([$lrn, 0000, 0000, 'Sabang Elementary School', $promoted_level, 'Unenrolled', '1']);
     
         } catch (PDOException $e) {
             echo "Error: " . $e->getMessage();

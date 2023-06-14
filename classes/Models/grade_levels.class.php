@@ -38,7 +38,6 @@ class GradeLevels extends \Dbh{
             if (!empty($level)) {
                 $sql = "SELECT * FROM `grade_levels_table`
                 WHERE `grade` = ?
-                ORDER BY `grade` ASC, `section` ASC
                 LIMIT $offset, $total_records_per_page
                 ;";
                 $stmt = $this->connection()->prepare($sql);
@@ -49,7 +48,6 @@ class GradeLevels extends \Dbh{
             }
             else{
                 $sql = "SELECT * FROM `grade_levels_table`
-                ORDER BY `grade` ASC
                 LIMIT $offset, $total_records_per_page
                 ;";
                 $stmt = $this->connection()->prepare($sql);

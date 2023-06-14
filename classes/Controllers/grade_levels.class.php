@@ -7,7 +7,7 @@ include $_SERVER['DOCUMENT_ROOT'].'/sabanges/classes/Models/grade_levels.class.p
 class GradeLevelsController extends \Models\GradeLevels{
     public function initCreate($grade, $section){
         if ($this->initExists($grade, $section) !== false) {
-            header("Location: ../operations_sections.ph?operations&error&exist");
+            header("Location: ../operations_sections.php?operations&error&exist");
             die();
         }
         elseif ($this->validateSpecialChars($section) !== false) {

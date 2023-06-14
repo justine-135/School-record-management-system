@@ -97,14 +97,16 @@ class EnrollmentView extends \Models\Enrollment{
                 </thead>
                 <tbody>
                 <?php
+                $i = 0;
                     foreach ($results as $row) {
+                        $i++;
                     if ($row['grade_level'] < 7) {
                 ?>
                     <tr>
                         <td>
                             <div class="d-flex">
                                 <span class="me-2">
-                                <?= $row['enrollment_id'] ?>
+                                <?= $i ?>
                                 </span>
                                 <div class="form-check">
                                     <input class="form-check-input masterlist-chkbox" type="checkbox" name="chkbox-student[]" value="<?= $row['enrollment_id'] ?>,<?= $row['student_lrn'] ?>,<?= $row['grade_level'] ?>,<?= $row['promotion_status'] ?>" id="flexCheckDefault">

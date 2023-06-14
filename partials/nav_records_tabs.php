@@ -1,15 +1,15 @@
 <ul class="nav nav-tabs">
     <li class="nav-item">
-        <a class="nav-link <?= $view == 'masterlist' ? 'active' : '' ?>" aria-current="page" href="masterlist.php">Masterlist</a>
+        <a class="nav-link <?= $view == 'masterlist' ? 'active' : '' ?>" aria-current="page" href="masterlist.php">Enrolled students</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link <?= $view == 'all_students' ? 'active' : '' ?>" href="students.php">Student records</a>
+        <a class="nav-link <?= $view == 'all_students' ? 'active' : '' ?>" href="students.php">All students</a>
     </li>
     <li class="nav-item">
         <a class="nav-link  <?= $view == 'grading' ? 'active' : '' ?>" href="grading.php">Grading</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link  <?= $view == 'promotion' ? 'active' : '' ?>" href="promotion.php">Promotion and retention</a>
+        <a class="nav-link  <?= $view == 'promotion' ? 'active' : '' ?>" href="promotion.php">Promotion/Retention</a>
     </li>
     <?php if ($view === 'grading' || $view === 'promotion') { ?>
     <button type="button" class="btn text-primary ms-auto" id="subjects-toast-btn">Help ?</button>

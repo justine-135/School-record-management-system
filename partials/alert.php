@@ -102,7 +102,7 @@ if (isset($_GET['returnee'])) {
   <div class="alert alert-<?= isset($_GET['error']) ? 'danger' : (isset($_GET['submitted']) ? 'success' : '')  ?> d-flex align-items-center alert-dismissible fade show" role="alert">
   <?php require isset($_GET['error']) ? 'danger_icon.php' : (isset($_GET['submitted']) ? 'success_icon.php' : '') ?>
     <div>
-      <?= isset($_GET['active']) ? 'Student is actively enrolled to the system.' : (isset($_GET['empty']) ? 'Fill up all input.' : (isset($_GET['lrn']) ? 'Invalid learners reference number.' : (isset($_GET['gradelevel']) ? 'Cannot enroll student to selected grade level.' : (isset($_GET['transferree']) ? 'Student is not a returnee student.' : ''))))?>
+      <?= isset($_GET['active']) ? 'Student is actively enrolled to the system.' : (isset($_GET['empty']) ? 'Fill up all input.' : (isset($_GET['lrn']) ? 'Invalid learners reference number.' : (isset($_GET['gradelevel']) ? 'Cannot enroll student to selected grade level.' : (isset($_GET['transferree']) ? 'Student is not a returnee student.' : 'Student enrolled.'))))?>
     </div>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
