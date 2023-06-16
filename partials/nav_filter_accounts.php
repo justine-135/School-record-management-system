@@ -5,10 +5,10 @@ $status = isset($_GET['status']) ? $_GET['status'] : 'active';
 $query = isset($_GET['query']) ? $_GET['query'] : '';
 ?>
 <div class="d-flex w-100 justify-content-between">
-    <div class="ms-1 row gap-2 align-items-center">
-        <div class="col-md p-0">
-            <div class="dropdown border">
-                <button class="btn btn-white dropdown-toggle btn-sm" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+    <div class="d-flex gap-2 align-items-center">
+        <div class=" p-0">
+            <div class="dropdown">
+                <button class="btn btn-white dropdown-toggle btn-sm border" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                     Number of rows
                     <span class="fw-semibold">
                         <?= $row ?>
@@ -23,9 +23,9 @@ $query = isset($_GET['query']) ? $_GET['query'] : '';
             </div>
         </div>
 
-        <div class="col-md p-0">
-            <div class="dropdown border">
-                <button class="btn btn-white dropdown-toggle btn-sm" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+        <div class=" p-0">
+            <div class="dropdown">
+                <button class="btn btn-white dropdown-toggle btn-sm border" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                     Filter account status
                     <span class="fw-semibold">
                         <?= isset($_GET['status']) ? ucfirst($_GET['status']) : "Active" ?>

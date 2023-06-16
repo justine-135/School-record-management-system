@@ -7,10 +7,10 @@ $level = isset($_GET['level']) ? $_GET['level'] : "";
 $section = isset($_GET['section']) ? $_GET['section'] : "";
 ?>
 <div class="d-flex w-100 justify-content-between align-items-center">
-    <div class="container row align-items-center w-75">
-        <div class="col-md-3 p-0">
-            <div class="dropdown border">
-                <button class="btn btn-white dropdown-toggle btn-sm" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+    <div class="d-flex gap-2 align-items-center w-75">
+        <div class=" p-0">
+            <div class="dropdown ">
+                <button class="btn btn-white dropdown-toggle btn-sm border" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                     Number of rows
                     <span class="fw-semibold">
                         <?= $row ?>
@@ -26,10 +26,10 @@ $section = isset($_GET['section']) ? $_GET['section'] : "";
         </div>
 
         <?php if ($view !== 'all_students') { ?>
-        <div class="<?= $view == 'batch_enrollment' ? 'col-md-4' : 'col-md-3' ?> p-0">
+        <div class="<?= $view == 'batch_enrollment' ? 'col-md-4' : '' ?> p-0">
             <?php if ($view == 'batch_enrollment') { ?>
-                <div class="dropdown border">
-                    <button class="btn btn-white dropdown-toggle btn-sm" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                <div class="dropdown ">
+                    <button class="btn btn-white dropdown-toggle btn-sm border" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                         Grade level
                         <span class="fw-semibold">
                             <?= isset($_GET['level']) ? (empty($level) ? "Select" : ucfirst($_GET['level'])) : 'Select' ?>
@@ -48,8 +48,8 @@ $section = isset($_GET['section']) ? $_GET['section'] : "";
                     </ul>
                 </div>
             <?php } else { ?>
-                <div class="dropdown border">
-                    <button class="btn btn-white dropdown-toggle btn-sm" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                <div class="dropdown ">
+                    <button class="btn btn-white dropdown-toggle btn-sm border" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                         Grade level
                         <span class="fw-semibold">
                             <?= isset($_GET['level']) ? (empty($level) ? "All" : ucfirst($_GET['level'])) : 'All' ?>
@@ -73,9 +73,9 @@ $section = isset($_GET['section']) ? $_GET['section'] : "";
         <?php } ?>
 
         <?php if ($view !== 'batch_enrollment' && $view !== 'all_students') { ?>
-        <div class="col-md-3 p-0">
-            <div class="dropdown border">
-                <button class="btn btn-white dropdown-toggle btn-sm" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+        <div class=" p-0">
+            <div class="dropdown ">
+                <button class="btn btn-white dropdown-toggle btn-sm border" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                     Section
                     <span class="fw-semibold">
                         <?= isset($_GET['section']) ? (empty($section) ? "All" : ucfirst($_GET['section'])) : 'All' ?>

@@ -34,7 +34,7 @@
               class="img-round"
 
               style="object-fit: cover;"
-              src=<?= isset($_SESSION['image']) ? 'data:image;base64,' . $_SESSION['image'] : 'images/profile.png' ?>
+              src=<?= !empty($_SESSION['image']) ? 'data:image;base64,' . $_SESSION['image'] : 'images/profile.png' ?>
               height="35px"
               width="35px"
               alt=""

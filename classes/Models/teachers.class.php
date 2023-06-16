@@ -380,7 +380,13 @@ class Teachers extends \Dbh{
     $subdivision, $barangay, $city, $province, $region, $email, $file){
         try {           
             $image = $file['tmp_name'];
-            $base64_image = base64_encode(file_get_contents(addslashes($image)));
+
+            if (empty($image)) {
+                $base64_image = null;
+            }
+            else{
+                $base64_image = base64_encode(file_get_contents(addslashes($image)));
+            }
 
             $sql = "UPDATE `teachers_table` SET `surname` = ?, `first_name` = ?, `middle_name` = ?, `birth_date` = ?, `gender` = ?, `contact` = ?,`religion` = ?,
             `house_street` = ?, `subdivision` = ?, `barangay` = ?, `city` = ?, `province` = ?, `region` = ? WHERE `teacher_id` = ?;
@@ -398,6 +404,7 @@ class Teachers extends \Dbh{
             $_SESSION['middle_name'] = $middle_name;
             $_SESSION['surname'] = $surname;
             $_SESSION['email'] = $email;
+            $_SESSION['image'] = $image;
 
             $results = $stmt->fetchAll();
 

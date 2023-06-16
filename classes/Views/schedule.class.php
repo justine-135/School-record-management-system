@@ -18,10 +18,12 @@ class ScheduleView extends \Models\Schedule{
             </thead>
             <tbody>
             <?php
+            $i = 0;
             foreach ($results as $row) {
+                $i++;
             ?>
                 <tr>
-                    <th scope="row"><?= $row['id'] ?></th>
+                    <th scope="row"><?= $i ?></th>
                     <td><?= $row['from'] ?></td>
                     <td><?= $row['to'] ?></td>
                     <td>

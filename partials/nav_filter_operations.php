@@ -3,11 +3,11 @@ $row = isset($_GET['row']) ? $_GET['row'] : '10';
 $page_no = isset($_GET['page_no']) ? $_GET['page_no'] : '1';
 $level = isset($_GET['level']) ? $_GET['level'] : "" ;
 ?>
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-3 p-0">
-            <div class="dropdown border">
-                <button class="btn btn-white dropdown-toggle btn-sm" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+<div class="">
+    <div class="d-flex gap-2">
+        <div class=" p-0">
+            <div class="dropdown ">
+                <button class="btn btn-white dropdown-toggle btn-sm border" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                     Number of rows
                     <span class="fw-semibold">
                         <?= $row ?>
@@ -23,9 +23,9 @@ $level = isset($_GET['level']) ? $_GET['level'] : "" ;
         </div>
 
         <?php if ($view !== 'operations_grading') { ?>
-        <div class="col-md-3 p-0">
-            <div class="dropdown border">
-                <button class="btn btn-white dropdown-toggle btn-sm" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+        <div class=" p-0">
+            <div class="dropdown ">
+                <button class="btn btn-white dropdown-toggle btn-sm border" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                     Grade level
                     <span class="fw-semibold">
                         <?= isset($_GET['level']) ? (empty($level) ? "All" : ucfirst($_GET['level'])) : 'All' ?>
@@ -44,7 +44,7 @@ $level = isset($_GET['level']) ? $_GET['level'] : "" ;
         </div>
         <?php } ?>
 
-        <div class="col-md-3 p-0 ms-auto">
+        <div class=" p-0 ms-auto">
             <?php if ($view == 'operations_subjects') { ?>
             <button type="button" class="btn btn-primary d-flex align-items-center ms-auto" data-bs-toggle="modal" data-bs-target="#subjectsModal">
                 Add

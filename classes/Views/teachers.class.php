@@ -389,7 +389,7 @@ class TeacherInformationView extends \Models\Teachers{
                         <span class="fw-semibold fs-5 ">Profile</span>
                         <a style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;" class="ms-auto my-2 btn <?= isset($_GET['edit_profile']) ? 'btn-danger' : 'btn-primary' ?>" <?= isset($_GET['edit_profile']) ? 'href="index.php"' : 'href="?edit_profile"' ?>><?= isset($_GET['edit_profile']) ? 'Cancel' : 'Edit' ?></a>
                     </div>
-                    <div class="">
+                    <div class="border-top border-bottom">
                         <?php 
                         if ($result[0]['image'] == null) { ?>
                         <img style="object-fit: cover; max-height: 300px" width=100% height=100% src='./images/profile.jpg'>
